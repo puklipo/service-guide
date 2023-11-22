@@ -3,8 +3,11 @@
 use App\Models\Pref;
 use function Livewire\Volt\computed;
 use function Livewire\Volt\layout;
+use function Livewire\Volt\title;
 
 layout('layouts.app');
+
+title('サイトマップ '.config('app.name'));
 
 $prefs = computed(function () {
     return Pref::with('areas')->get();
@@ -27,11 +30,13 @@ $prefs = computed(function () {
                     href="/?pref={{ $pref->id }}" wire:navigate>{{ $pref->name }}</a></h2>
             <ul class="ml-10 list-disc">
                 @foreach($pref->areas as $area)
-                    <li class="my-1"><a href="/?pref={{ $pref->id }}&area={{ $area->id }}" class="text-indigo-500 underline" wire:navigate>{{ $area->name }}</a>
+                    <li class="my-1"><a href="/?pref={{ $pref->id }}&area={{ $area->id }}"
+                                        class="text-indigo-500 underline" wire:navigate>{{ $area->name }}</a>
                     </li>
                     <ul class="ml-5">
                         @foreach(config('service') as $service_id => $service)
-                            <a href="/?pref={{ $pref->id }}&area={{ $area->id }}&service={{ $service_id }}" class="text-xs hover:text-indigo-500 hover:underline" wire:navigate>{{ $service }}</a>
+                            <a href="/?pref={{ $pref->id }}&area={{ $area->id }}&service={{ $service_id }}"
+                               class="text-xs hover:text-indigo-500 hover:underline" wire:navigate>{{ $service }}</a>
                         @endforeach
                     </ul>
                 @endforeach

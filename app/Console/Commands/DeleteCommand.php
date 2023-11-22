@@ -29,6 +29,7 @@ class DeleteCommand extends Command
         foreach (config('deleted') as $id) {
             $facility = Facility::where('no', $id)->first();
             if ($facility?->exists) {
+                $this->info($facility->name);
                 $facility->delete();
             }
         }
