@@ -1,6 +1,9 @@
 <?php
 
+use App\Http\Controllers\SitemapController;
+use App\Livewire\FacilityShow;
 use Illuminate\Support\Facades\Route;
+use Livewire\Volt\Volt;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,7 +16,13 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::view('/', 'welcome');
+Volt::route('/',  'home')->name('home');
+Route::get('f/{facility}', FacilityShow::class)->name('facility');
+Volt::route('map',  'map')->name('map');
+
+Route::get('sitemap.xml', SitemapController::class)->name('sitemap');
+
+//Route::view('/', 'welcome');
 
 Route::view('dashboard', 'dashboard')
     ->middleware(['auth', 'verified'])
