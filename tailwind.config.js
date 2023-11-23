@@ -13,7 +13,7 @@ export default {
     theme: {
         extend: {
             fontFamily: {
-                sans: ['M PLUS 2', ...defaultTheme.fontFamily.sans],
+                sans: ['"M PLUS 2"', ...defaultTheme.fontFamily.sans],
             },
             colors: {
                 indigo: colors.emerald
