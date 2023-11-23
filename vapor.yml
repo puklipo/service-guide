@@ -4,7 +4,7 @@ environments:
     production:
         memory: 1024
         cli-memory: 512
-        runtime: 'php-8.2:al2-arm'
+        runtime: docker
         database: grouphome
         storage: pcs-service-guide
         queue-timeout: 600
@@ -20,7 +20,7 @@ environments:
     staging:
         memory: 1024
         cli-memory: 512
-        runtime: 'php-8.2:al2-arm'
+        runtime: docker
         database: grouphome
         storage: pcs-service-guide-staging
         queue-timeout: 600
