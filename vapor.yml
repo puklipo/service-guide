@@ -5,6 +5,8 @@ environments:
         memory: 1024
         cli-memory: 512
         runtime: docker
+        warm: 5
+        domain: service.grouphome.guide
         database: grouphome
         storage: pcs-service-guide
         queue-timeout: 600
