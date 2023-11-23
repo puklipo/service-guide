@@ -8,6 +8,7 @@ state('pref');
 placeholder('<div class="py-3 text-sm text-gray-400">読み込み中...</div>');
 ?>
 
+<div>
 <ul class="ml-6 list-disc">
     @foreach($pref->areas as $area)
         <li class="my-1">
@@ -22,3 +23,4 @@ placeholder('<div class="py-3 text-sm text-gray-400">読み込み中...</div>');
         </ul>
     @endforeach
 </ul>
+</div>
