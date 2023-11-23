@@ -29,7 +29,7 @@ $prefs = computed(function () {
             <h2 class="text-3xl p-3 bg-indigo-300 border-2 border-indigo-500" id="{{ $pref->key }}">
                 <a href="/?pref={{ $pref->id }}" wire:navigate>{{ $pref->name }}</a>
             </h2>
-            <livewire:map-pref :pref="$pref" lazy="on-load"></livewire:map-pref>
+            <livewire:map-pref :pref="$pref"></livewire:map-pref>
         </div>
 
     @endforeach
