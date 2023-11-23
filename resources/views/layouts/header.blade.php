@@ -4,8 +4,8 @@
         <div><a href="{{ route('map') }}" class="hover:underline" wire:navigate>サイトマップ</a></div>
     </nav>
 
-    <h1 class="text-3xl">
-        <a href="{{ route('home') }}" wire:navigate>{{ config('app.name') }}</a>
+    <h1 class="text-3xl my-1">
+        <a href="{{ route('home') }}" class="hover:text-indigo-500 hover:underline" wire:navigate>{{ config('app.name') }}</a>
     </h1>
 
     <div class="text-sm my-2 py-2 px-2 ring-1 ring-indigo-500">
