@@ -34,7 +34,7 @@
             <tr class="border border-indigo-500">
                 <th class="bg-indigo-300">URL</th>
                 <td class="p-1">@if(filled($facility->url))
-                        <a href="{{ $facility->url }}" class="text-indigo-500 hover:underline" target="_blank">{{ $facility->url }}</a>
+                        <a href="{{ $facility->url }}" class="text-indigo-500 hover:underline" target="_blank">{{ Str::limit($facility->url, 100) }}</a>
                     @endif</td>
             </tr>
             <tr class="border border-indigo-500">
