@@ -28,6 +28,7 @@ environments:
         runtime: docker
         database: grouphome
         storage: pcs-service-guide-staging
+        scheduler: false
         queue-timeout: 600
         queue-memory: 2048
         queue-database-session-persist: true
