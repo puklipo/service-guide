@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use App\Jobs\ImportJob;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Bus;
 
 class ImportCommand extends Command
 {
@@ -26,15 +27,13 @@ class ImportCommand extends Command
      */
     public function handle(): void
     {
-        collect(config('service'))->each(function ($name, $id) {
-            $csv = resource_path('csv/csvdownload0'.$id.'.csv');
+        $jobs = collect(config('service'))
+            ->filter(fn ($name, $id) => file_exists(resource_path('csv/csvdownload0'.$id.'.csv')))
+            ->map(function ($name, $id) {
+                $this->info($name);
+                return new ImportJob($id);
+            });
 
-            if (!file_exists($csv)) {
-                return;
-            }
-
-            $this->info($name);
-            ImportJob::dispatch($id);
-        });
+        Bus::chain($jobs)->dispatch();
     }
 }
