@@ -1,2 +1,4 @@
 User-agent: *
 Disallow:
+
+Sitemap: https://service.grouphome.guide/sitemap.xml
