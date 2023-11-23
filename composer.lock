@@ -984,33 +984,29 @@
         },
         {
             "name": "guzzlehttp/promises",
-            "version": "2.0.1",
+            "version": "1.5.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/guzzle/promises.git",
-                "reference": "111166291a0f8130081195ac4556a5587d7f1b5d"
+                "reference": "67ab6e18aaa14d753cc148911d273f6e6cb6721e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/guzzle/promises/zipball/111166291a0f8130081195ac4556a5587d7f1b5d",
-                "reference": "111166291a0f8130081195ac4556a5587d7f1b5d",
+                "url": "https://api.github.com/repos/guzzle/promises/zipball/67ab6e18aaa14d753cc148911d273f6e6cb6721e",
+                "reference": "67ab6e18aaa14d753cc148911d273f6e6cb6721e",
                 "shasum": ""
             },
             "require": {
-                "php": "^7.2.5 || ^8.0"
+                "php": ">=5.5"
             },
             "require-dev": {
-                "bamarni/composer-bin-plugin": "^1.8.1",
-                "phpunit/phpunit": "^8.5.29 || ^9.5.23"
+                "symfony/phpunit-bridge": "^4.4 || ^5.1"
             },
             "type": "library",
-            "extra": {
-                "bamarni-bin": {
-                    "bin-links": true,
-                    "forward-command": false
-                }
-            },
             "autoload": {
+                "files": [
+                    "src/functions_include.php"
+                ],
                 "psr-4": {
                     "GuzzleHttp\\Promise\\": "src/"
                 }
@@ -1047,7 +1043,7 @@
             ],
             "support": {
                 "issues": "https://github.com/guzzle/promises/issues",
-                "source": "https://github.com/guzzle/promises/tree/2.0.1"
+                "source": "https://github.com/guzzle/promises/tree/1.5.3"
             },
             "funding": [
                 {
@@ -1063,7 +1059,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-08-03T15:11:55+00:00"
+            "time": "2023-05-21T12:31:43+00:00"
         },
         {
             "name": "guzzlehttp/psr7",
@@ -1397,16 +1393,16 @@
         },
         {
             "name": "laravel/framework",
-            "version": "v10.32.1",
+            "version": "v10.33.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/framework.git",
-                "reference": "b30e44f20d244f7ba125283e14a8bbac167f4e5b"
+                "reference": "4536872e3e5b6be51b1f655dafd12c9a4fa0cfe8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/framework/zipball/b30e44f20d244f7ba125283e14a8bbac167f4e5b",
-                "reference": "b30e44f20d244f7ba125283e14a8bbac167f4e5b",
+                "url": "https://api.github.com/repos/laravel/framework/zipball/4536872e3e5b6be51b1f655dafd12c9a4fa0cfe8",
+                "reference": "4536872e3e5b6be51b1f655dafd12c9a4fa0cfe8",
                 "shasum": ""
             },
             "require": {
@@ -1595,7 +1591,7 @@
                 "issues": "https://github.com/laravel/framework/issues",
                 "source": "https://github.com/laravel/framework"
             },
-            "time": "2023-11-14T22:57:08+00:00"
+            "time": "2023-11-21T14:49:31+00:00"
         },
         {
             "name": "laravel/prompts",
@@ -1920,21 +1916,22 @@
         },
         {
             "name": "laravel/vapor-core",
-            "version": "v2.32.0",
+            "version": "v2.33.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/vapor-core.git",
-                "reference": "36886e915b46cbd738ec8e147be09325d00cbee3"
+                "reference": "de2ddb6c279b8e51e9ef9cea3e0f7fda829740b2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/vapor-core/zipball/36886e915b46cbd738ec8e147be09325d00cbee3",
-                "reference": "36886e915b46cbd738ec8e147be09325d00cbee3",
+                "url": "https://api.github.com/repos/laravel/vapor-core/zipball/de2ddb6c279b8e51e9ef9cea3e0f7fda829740b2",
+                "reference": "de2ddb6c279b8e51e9ef9cea3e0f7fda829740b2",
                 "shasum": ""
             },
             "require": {
                 "aws/aws-sdk-php": "^3.80",
                 "guzzlehttp/guzzle": "^6.3|^7.0",
+                "guzzlehttp/promises": "^1.4.0",
                 "hollodotme/fast-cgi-client": "^3.0",
                 "illuminate/container": "^6.0|^7.0|^8.0|^9.0|^10.0",
                 "illuminate/http": "^6.0|^7.0|^8.0|^9.0|^10.0",
@@ -1943,6 +1940,7 @@
                 "monolog/monolog": "^1.12|^2.0|^3.2",
                 "nyholm/psr7": "^1.0",
                 "php": "^7.2|^8.0",
+                "psr/http-message": "^1.0",
                 "riverline/multipart-parser": "^2.0.9",
                 "symfony/process": "^4.3|^5.0|^6.0",
                 "symfony/psr-http-message-bridge": "^1.0|^2.0"
@@ -1961,7 +1959,10 @@
                 "laravel": {
                     "providers": [
                         "Laravel\\Vapor\\VaporServiceProvider"
-                    ]
+                    ],
+                    "aliases": {
+                        "Vapor": "Laravel\\Vapor\\Vapor"
+                    }
                 }
             },
             "autoload": {
@@ -1989,9 +1990,9 @@
                 "vapor"
             ],
             "support": {
-                "source": "https://github.com/laravel/vapor-core/tree/v2.32.0"
+                "source": "https://github.com/laravel/vapor-core/tree/v2.33.2"
             },
-            "time": "2023-07-24T18:45:25+00:00"
+            "time": "2023-09-29T13:37:32+00:00"
         },
         {
             "name": "league/commonmark",
@@ -2594,16 +2595,16 @@
         },
         {
             "name": "livewire/volt",
-            "version": "v1.4.0",
+            "version": "v1.5.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/livewire/volt.git",
-                "reference": "d213c658e482a10c3698148068b0c4d96512bbbb"
+                "reference": "22b15922d02db57e78bd1f1b3bab02843053c3d4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/livewire/volt/zipball/d213c658e482a10c3698148068b0c4d96512bbbb",
-                "reference": "d213c658e482a10c3698148068b0c4d96512bbbb",
+                "url": "https://api.github.com/repos/livewire/volt/zipball/22b15922d02db57e78bd1f1b3bab02843053c3d4",
+                "reference": "22b15922d02db57e78bd1f1b3bab02843053c3d4",
                 "shasum": ""
             },
             "require": {
@@ -2614,7 +2615,7 @@
             "require-dev": {
                 "laravel/folio": "^1.1",
                 "mockery/mockery": "^1.6",
-                "orchestra/testbench": "^8.6.2",
+                "orchestra/testbench": "^8.15.0",
                 "pestphp/pest": "^2.9.5",
                 "phpstan/phpstan": "^1.10"
             },
@@ -2662,7 +2663,7 @@
                 "issues": "https://github.com/livewire/volt/issues",
                 "source": "https://github.com/livewire/volt"
             },
-            "time": "2023-10-19T14:29:53+00:00"
+            "time": "2023-11-20T14:51:18+00:00"
         },
         {
             "name": "maatwebsite/excel",
@@ -4126,16 +4127,16 @@
         },
         {
             "name": "psr/http-message",
-            "version": "2.0",
+            "version": "1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-fig/http-message.git",
-                "reference": "402d35bcb92c70c026d1a6a9883f06b2ead23d71"
+                "reference": "cb6ce4845ce34a8ad9e68117c10ee90a29919eba"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-fig/http-message/zipball/402d35bcb92c70c026d1a6a9883f06b2ead23d71",
-                "reference": "402d35bcb92c70c026d1a6a9883f06b2ead23d71",
+                "url": "https://api.github.com/repos/php-fig/http-message/zipball/cb6ce4845ce34a8ad9e68117c10ee90a29919eba",
+                "reference": "cb6ce4845ce34a8ad9e68117c10ee90a29919eba",
                 "shasum": ""
             },
             "require": {
@@ -4144,7 +4145,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.0.x-dev"
+                    "dev-master": "1.1.x-dev"
                 }
             },
             "autoload": {
@@ -4159,7 +4160,7 @@
             "authors": [
                 {
                     "name": "PHP-FIG",
-                    "homepage": "https://www.php-fig.org/"
+                    "homepage": "http://www.php-fig.org/"
                 }
             ],
             "description": "Common interface for HTTP messages",
@@ -4173,9 +4174,9 @@
                 "response"
             ],
             "support": {
-                "source": "https://github.com/php-fig/http-message/tree/2.0"
+                "source": "https://github.com/php-fig/http-message/tree/1.1"
             },
-            "time": "2023-04-04T09:54:51+00:00"
+            "time": "2023-04-04T09:50:52+00:00"
         },
         {
             "name": "psr/log",
@@ -5091,16 +5092,16 @@
         },
         {
             "name": "spatie/robots-txt",
-            "version": "2.0.2",
+            "version": "2.0.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/robots-txt.git",
-                "reference": "f40a12b89f98dd18f3665673d04757298f5fbbf9"
+                "reference": "dacba2ba159364987392aa1b0002e196c5923970"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spatie/robots-txt/zipball/f40a12b89f98dd18f3665673d04757298f5fbbf9",
-                "reference": "f40a12b89f98dd18f3665673d04757298f5fbbf9",
+                "url": "https://api.github.com/repos/spatie/robots-txt/zipball/dacba2ba159364987392aa1b0002e196c5923970",
+                "reference": "dacba2ba159364987392aa1b0002e196c5923970",
                 "shasum": ""
             },
             "require": {
@@ -5136,7 +5137,7 @@
             ],
             "support": {
                 "issues": "https://github.com/spatie/robots-txt/issues",
-                "source": "https://github.com/spatie/robots-txt/tree/2.0.2"
+                "source": "https://github.com/spatie/robots-txt/tree/2.0.3"
             },
             "funding": [
                 {
@@ -5148,7 +5149,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2022-05-18T15:14:21+00:00"
+            "time": "2023-11-22T12:57:35+00:00"
         },
         {
             "name": "spatie/temporary-directory",
@@ -8915,16 +8916,16 @@
         },
         {
             "name": "laravel/sail",
-            "version": "v1.26.0",
+            "version": "v1.26.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/sail.git",
-                "reference": "c60fe037004e272efd0d81f416ed2bfc623d70b4"
+                "reference": "7a82f5aa364dbee3fd9c52fc464cf0bdd11150ed"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/sail/zipball/c60fe037004e272efd0d81f416ed2bfc623d70b4",
-                "reference": "c60fe037004e272efd0d81f416ed2bfc623d70b4",
+                "url": "https://api.github.com/repos/laravel/sail/zipball/7a82f5aa364dbee3fd9c52fc464cf0bdd11150ed",
+                "reference": "7a82f5aa364dbee3fd9c52fc464cf0bdd11150ed",
                 "shasum": ""
             },
             "require": {
@@ -8976,7 +8977,7 @@
                 "issues": "https://github.com/laravel/sail/issues",
                 "source": "https://github.com/laravel/sail"
             },
-            "time": "2023-10-18T13:57:15+00:00"
+            "time": "2023-11-20T15:56:47+00:00"
         },
         {
             "name": "mockery/mockery",
