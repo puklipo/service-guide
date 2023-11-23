@@ -28,7 +28,7 @@
                     <option value="">サービス</option>
                     <hr>
                     @foreach($this->services as $service)
-                        <option value="{{ $service->id }}">{{ $service->name }} ({{ $service->facilities_count }})
+                        <option value="{{ $service->id }}" wire:key="{{ $service->id }}">{{ $service->name }} ({{ $service->facilities_count }})
                         </option>
                     @endforeach
                 </x-select>
