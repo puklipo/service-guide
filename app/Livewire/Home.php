@@ -65,7 +65,7 @@ class Home extends Component
             })->when(filled($this->pref), function (Builder $query) {
                 $query->where('pref_id', $this->pref);
             });
-        }])->orderBy('id')->get();
+        }])->orderByDesc('facilities_count')->get();
     }
 
     public function render()
