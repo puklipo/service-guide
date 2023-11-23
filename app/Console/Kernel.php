@@ -3,6 +3,7 @@
 namespace App\Console;
 
 use App\Console\Commands\DeleteCommand;
+use App\Console\Commands\ImportCommand;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -15,9 +16,9 @@ class Kernel extends ConsoleKernel
     {
         // $schedule->command('inspire')->hourly();
 
-        //$schedule->command(ImportCommand::class)->monthly();
-        $schedule->command(DeleteCommand::class)->daily();
-        $schedule->command('sitemap')->monthly();
+        $schedule->command(ImportCommand::class)->monthly();
+        $schedule->command(DeleteCommand::class)->monthlyOn(1);
+        $schedule->command('sitemap')->monthlyOn(2);
     }
 
     /**
