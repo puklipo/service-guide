@@ -2,7 +2,7 @@
     <div>
         @include('layouts.header')
 
-        <h2 class="my-3 pt-6 pb-3 px-3 text-4xl bg-indigo-400 border-2 border-indigo-500">
+        <h2 class="my-3 pt-6 pb-3 px-3 text-4xl bg-indigo-300 border-2 border-indigo-500">
             <ruby>
             {{ $facility->name ?? '' }}
                 <rp>(</rp><rt class="text-xs">{{ $facility->name_kana }}</rt><rp>)</rp>
@@ -11,19 +11,19 @@
 
         <table class="table-auto w-full border-collapse border-2 border-indigo-500">
             <tr class="border border-indigo-500">
-                <th class="bg-indigo-400">サービス</th>
+                <th class="bg-indigo-300">サービス</th>
                 <td class="p-1">{{ $facility->service->name }}</td>
             </tr>
             <tr class="border border-indigo-500">
-                <th class="bg-indigo-400">住所</th>
+                <th class="bg-indigo-300">住所</th>
                 <td class="p-1">{{ $facility->area->address }}{{ $facility->address }}</td>
             </tr>
             <tr class="border border-indigo-500">
-                <th class="bg-indigo-400">事業所番号</th>
+                <th class="bg-indigo-300">事業所番号</th>
                 <td class="p-1">{{ $facility->no }}</td>
             </tr>
             <tr class="border border-indigo-500">
-                <th class="bg-indigo-400">運営法人</th>
+                <th class="bg-indigo-300">運営法人</th>
                 <td class="p-1">
                     <ruby>{{ $facility->company->name }}
                         <rp>(</rp><rt class="text-xs">{{ $facility->company->name_kana }}</rt><rp>)</rp>
@@ -32,13 +32,13 @@
                 </td>
             </tr>
             <tr class="border border-indigo-500">
-                <th class="bg-indigo-400">URL</th>
+                <th class="bg-indigo-300">URL</th>
                 <td class="p-1">@if(filled($facility->url))
                         <a href="{{ $facility->url }}" class="text-indigo-500 hover:underline" target="_blank">URL</a>
                     @endif</td>
             </tr>
             <tr class="border border-indigo-500">
-                <th class="bg-indigo-400">WAM</th>
+                <th class="bg-indigo-300">WAM</th>
                 <td class="p-1"><a
                         href="https://www.google.com/search?q={{ rawurlencode($facility->name.' site:www.wam.go.jp/sfkohyoout/') }}"
                         class="text-indigo-500 hover:underline" target="_blank">検索</a></td>
@@ -58,7 +58,7 @@
 
     <table class="table-auto w-full border-collapse border-2 border-indigo-500" id="area">
         <thead>
-        <tr class="bg-indigo-400 border-b-2 border-indigo-500 divide-x-2 divide-solid divide-indigo-500">
+        <tr class="bg-indigo-300 border-b-2 border-indigo-500 divide-x-2 divide-solid divide-indigo-500">
             <th>事業所名</th>
             <th>運営法人</th>
         </tr>

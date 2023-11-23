@@ -18,6 +18,7 @@ use Livewire\Volt\Volt;
 
 Volt::route('/',  'home')->name('home');
 Route::get('f/{facility}', FacilityShow::class)->name('facility');
+Volt::route('contact',  'contact')->name('contact');
 Volt::route('map',  'map')->name('map');
 
 Route::get('sitemap.xml', SitemapController::class)->name('sitemap');
@@ -32,4 +33,4 @@ Route::view('profile', 'profile')
     ->middleware(['auth'])
     ->name('profile');
 
-require __DIR__.'/auth.php';
+//require __DIR__.'/auth.php';
