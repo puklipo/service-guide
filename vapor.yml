@@ -4,7 +4,9 @@ environments:
     production:
         memory: 1024
         cli-memory: 512
-        runtime: 'php-8.2:al2'
+        runtime: 'php-8.2:al2-arm'
+        database: grouphome
+        storage: service-guide
         build:
             - 'COMPOSER_MIRROR_PATH_REPOS=1 composer install --no-dev'
             - 'php artisan event:cache'
@@ -12,7 +14,9 @@ environments:
     staging:
         memory: 1024
         cli-memory: 512
-        runtime: 'php-8.2:al2'
+        runtime: 'php-8.2:al2-arm'
+        database: grouphome
+        storage: service-guide-staging
         build:
             - 'COMPOSER_MIRROR_PATH_REPOS=1 composer install'
             - 'php artisan event:cache'
