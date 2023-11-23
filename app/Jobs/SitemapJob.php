@@ -44,11 +44,11 @@ class SitemapJob implements ShouldQueue
                 Url::create(url('/?pref='.$area->pref->id.'&area='.$area->id))
             );
 
-            foreach (config('service') as $service_id => $service) {
-                $sitemap->add(
-                    Url::create(url('/?pref='.$area->pref->id.'&area='.$area->id.'&service='.$service_id))
-                );
-            }
+//            foreach (config('service') as $service_id => $service) {
+//                $sitemap->add(
+//                    Url::create(url('/?pref='.$area->pref->id.'&area='.$area->id.'&service='.$service_id))
+//                );
+//            }
 
             return $sitemap;
         });
