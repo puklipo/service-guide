@@ -10,6 +10,7 @@ use Illuminate\Contracts\Database\Eloquent\Builder;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Url;
+use Livewire\Attributes\Validate;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -19,12 +20,19 @@ class Home extends Component
     use WithPagination;
 
     #[Url]
-    public ?string $service = '';
+    #[Validate('numeric|integer')]
+    public string $pref = '';
+
     #[Url]
-    public ?string $pref = '';
+    #[Validate('numeric|integer')]
+    public string $area = '';
+
     #[Url]
-    public ?string $area = '';
+    #[Validate('numeric|integer')]
+    public string $service = '';
+
     #[Url]
+    #[Validate('numeric|integer')]
     public int $limit = 100;
 
     #[Computed]
