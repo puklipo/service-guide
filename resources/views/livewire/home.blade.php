@@ -37,7 +37,7 @@
                     <option value="" disabled>表示件数</option>
                     <hr>
                     <option value="50">50</option>
-                    <option value="100">100</option>
+                    <option value="100" selected>100</option>
                     <option value="500">500</option>
                     <option value="1000">1000</option>
                     <option value="5000">5000</option>
