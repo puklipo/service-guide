@@ -19,3 +19,4 @@ yarn-error.log
 /.vscode
 .vapor/
 .env.staging
+_ide_helper_models.php
