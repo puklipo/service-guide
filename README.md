@@ -1,6 +1,11 @@
 # service-guide
 
-##
+## 技術スタック
+- Laravel
+- Breeze(livewire-functional)
+- Livewire
+- AWS
+- Vapor
 
 ## 開発
 ```bash
