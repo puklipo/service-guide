@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\SitemapController;
 use App\Livewire\FacilityShow;
+use App\Livewire\Home;
 use Illuminate\Support\Facades\Route;
 use Livewire\Volt\Volt;
 
@@ -16,8 +17,9 @@ use Livewire\Volt\Volt;
 |
 */
 
-Volt::route('/',  'home')->name('home');
+Route::get('/',  Home::class)->name('home');
 Route::get('f/{facility}', FacilityShow::class)->name('facility');
+
 Volt::route('contact',  'contact')->name('contact');
 Volt::route('map',  'map')->name('map');
 
