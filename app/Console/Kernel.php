@@ -17,8 +17,8 @@ class Kernel extends ConsoleKernel
         // $schedule->command('inspire')->hourly();
 
         $schedule->command(ImportCommand::class)->monthly();
-        $schedule->command(DeleteCommand::class)->monthlyOn(1);
-        $schedule->command('sitemap')->monthlyOn(2);
+        $schedule->command(DeleteCommand::class)->monthlyOn(2);
+        $schedule->command('sitemap')->monthlyOn(3);
     }
 
     /**
