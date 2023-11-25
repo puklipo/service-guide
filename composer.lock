@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "52d55a8d1adda2cda7e9b5fcf2a67ec3",
+    "content-hash": "934cfb278f7d120e2a093bcd7a8ba3c9",
     "packages": [
         {
             "name": "aws/aws-crt-php",
@@ -4358,6 +4358,53 @@
                 "source": "https://github.com/bobthecow/psysh/tree/v0.11.22"
             },
             "time": "2023-10-14T21:56:36+00:00"
+        },
+        {
+            "name": "puklipo/laravel-vapor-gzip",
+            "version": "1.1.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/pop-culture-studio/laravel-vapor-gzip.git",
+                "reference": "51ff7ccd7e6e2bdd457100f05450513f6f1ae02c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/pop-culture-studio/laravel-vapor-gzip/zipball/51ff7ccd7e6e2bdd457100f05450513f6f1ae02c",
+                "reference": "51ff7ccd7e6e2bdd457100f05450513f6f1ae02c",
+                "shasum": ""
+            },
+            "require": {
+                "ext-zlib": "*",
+                "illuminate/http": "^8.0||^9.0||^10.0",
+                "php": "^8.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Puklipo\\Vapor\\Middleware\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "PCS",
+                    "email": "pcs.engineer.team@gmail.com"
+                }
+            ],
+            "description": "Gzip Response middleware for Laravel Vapor",
+            "keywords": [
+                "gzip",
+                "laravel",
+                "vapor"
+            ],
+            "support": {
+                "issues": "https://github.com/pop-culture-studio/laravel-vapor-gzip/issues",
+                "source": "https://github.com/pop-culture-studio/laravel-vapor-gzip/tree/1.1.2"
+            },
+            "time": "2023-11-25T01:41:29+00:00"
         },
         {
             "name": "ralouphie/getallheaders",
@@ -11241,5 +11288,5 @@
         "php": "^8.1"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.6.0"
+    "plugin-api-version": "2.3.0"
 }
