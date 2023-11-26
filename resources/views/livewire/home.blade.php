@@ -77,7 +77,7 @@
                                              class="text-indigo-500 hover:underline"
                                              wire:navigate>{{ $facility->name }}</a></td>
                 <td class="p-1">{{ $facility->area->address }}</td>
-                <td class="p-1">{{ $facility->company->name }}</td>
+                <td class="p-1"><a href="{{ route('company', $facility->company) }}" class="hover:text-indigo-500 hover:underline" wire:navigate>{{ $facility->company->name }}</a></td>
                 <td class="p-1">@if(filled($facility->url))
                         <a href="{{ $facility->url }}" class="text-indigo-500 hover:underline" target="_blank">URL</a>
                     @endif</td>

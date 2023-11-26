@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\SitemapController;
+use App\Livewire\CompanyShow;
 use App\Livewire\FacilityShow;
 use App\Livewire\Home;
 use Illuminate\Support\Facades\Route;
@@ -19,6 +20,7 @@ use Livewire\Volt\Volt;
 
 Route::get('/',  Home::class)->name('home');
 Route::get('f/{facility}', FacilityShow::class)->name('facility');
+Route::get('c/{company}', CompanyShow::class)->name('company');
 
 Volt::route('contact',  'contact')->name('contact');
 Volt::route('map',  'map')->name('map');

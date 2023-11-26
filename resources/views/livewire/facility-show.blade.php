@@ -2,6 +2,8 @@
     <div>
         @include('layouts.header')
 
+        <div>事業所情報</div>
+
         <h2 class="my-3 pt-6 pb-3 px-3 text-4xl bg-indigo-300 border-2 border-indigo-500">
             <ruby>
             {{ $facility->name ?? '' }}
@@ -25,7 +27,8 @@
             <tr class="border border-indigo-500">
                 <th class="bg-indigo-300">運営法人</th>
                 <td class="p-1">
-                    <ruby>{{ $facility->company->name }}
+                    <ruby>
+                        <a href="{{ route('company', $facility->company) }}" class="hover:text-indigo-500 hover:underline" wire:navigate>{{ $facility->company->name }}</a>
                         <rp>(</rp><rt class="text-xs">{{ $facility->company->name_kana }}</rt><rp>)</rp>
                     </ruby>
                     <div class="text-sm">{{ $facility->company->area }}{{ $facility->company->address }}</div>
@@ -70,7 +73,7 @@
                 wire:key="{{ $facility->id  }}">
                 <td class="p-1 font-bold"><a href="{{ route('facility', $facility) }}"
                                              class="text-indigo-500 hover:underline" wire:navigate>{{ $facility->name }}</a></td>
-                <td class="p-1">{{ $facility->company->name }}</td>
+                <td class="p-1"><a href="{{ route('company', $facility->company) }}" class="hover:text-indigo-500 hover:underline" wire:navigate>{{ $facility->company->name }}</a></td>
             </tr>
         @endforeach
         </tbody>
