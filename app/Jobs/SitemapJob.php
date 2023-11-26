@@ -33,7 +33,14 @@ class SitemapJob implements ShouldQueue
     {
         $sitemap = Sitemap::create()
             ->add(Url::create('/')->setPriority(1.0))
+            ->add(Url::create(route('contact')))
             ->add(Url::create(route('map')));
+
+        foreach (config('service') as $service_id => $service) {
+            $sitemap->add(
+                Url::create(url('/?service='.$service_id))
+            );
+        }
 
         Pref::oldest('id')->lazy()->each(fn (Pref $pref) => $sitemap->add(
             Url::create(url('/?pref='.$pref->id))
@@ -43,13 +50,6 @@ class SitemapJob implements ShouldQueue
             $sitemap->add(
                 Url::create(url('/?pref='.$area->pref->id.'&area='.$area->id))
             );
-
-//            foreach (config('service') as $service_id => $service) {
-//                $sitemap->add(
-//                    Url::create(url('/?pref='.$area->pref->id.'&area='.$area->id.'&service='.$service_id))
-//                );
-//            }
-
             return $sitemap;
         });
 
