@@ -14,7 +14,7 @@
         <table class="table-auto w-full border-collapse border-2 border-indigo-500">
             <tr class="border border-indigo-500">
                 <th class="bg-indigo-300">サービス</th>
-                <td class="p-1">{{ $facility->service->name }}</td>
+                <td class="p-1">{{ $facility->service->name }}@if($facility->service->id === 33)<a href="https://grouphome.guide/home/{{ {{ $facility->no }} }}" class="text-indigo-500 hover:underline" target="_blank">グループホームガイドで調べる</a>@endif</td>
             </tr>
             <tr class="border border-indigo-500">
                 <th class="bg-indigo-300">住所</th>
