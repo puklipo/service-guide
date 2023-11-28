@@ -21,6 +21,10 @@
                 <td class="p-1">{{ $facility->area->address }}{{ $facility->address }}</td>
             </tr>
             <tr class="border border-indigo-500">
+                <th class="bg-indigo-300">電話番号</th>
+                <td class="p-1"><a href="tel:{{ $facility->tel }}" class="hover:text-indigo-500 hover:underline" title="電話番号が間違ってる場合は問い合わせフォームから連絡してください">{{ $facility->tel }}</a></td>
+            </tr>
+            <tr class="border border-indigo-500">
                 <th class="bg-indigo-300">事業所番号</th>
                 <td class="p-1">{{ $facility->no }}</td>
             </tr>

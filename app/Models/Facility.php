@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Casts\Telephone;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -17,6 +18,10 @@ class Facility extends Model
     protected $keyType = 'string';
 
     protected $with = ['service', 'area', 'company'];
+
+    protected $casts = [
+        'tel' => Telephone::class,
+    ];
 
     protected $fillable = [
         'id',

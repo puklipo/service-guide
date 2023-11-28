@@ -22,7 +22,7 @@
             </tr>
             <tr class="border border-indigo-500">
                 <th class="bg-indigo-300">電話番号</th>
-                <td class="p-1">{{ $company->tel }}</td>
+                <td class="p-1"><a href="tel:{{ $company->tel }}" class="hover:text-indigo-500 hover:underline" title="電話番号が間違ってる場合は問い合わせフォームから連絡してください">{{ $company->tel }}</a></td>
             </tr>
             <tr class="border border-indigo-500">
                 <th class="bg-indigo-300">URL</th>
