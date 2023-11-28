@@ -45,7 +45,7 @@ class Home extends Component
         })->when(filled($this->area), function (Builder $query) {
             $query->where('area_id', $this->area);
         })
-            ->latest('updated_at')
+            ->latest()
             ->simplePaginate($this->limit)
             ->withQueryString();
     }
