@@ -33,7 +33,9 @@ Route::get('f/{facility:wam}', function (Facility $facility) {
     return to_route('facility', ['service' => $facility->service, 'facility' => $facility], 308);
 })->whereAlphaNumeric('facility');
 
-Volt::route('c/{company}', 'company')->name('company');
+Volt::route('c/{company}', 'company')
+    ->name('company')
+    ->whereNumber('company');
 
 Volt::route('contact', 'contact')->name('contact');
 Volt::route('map', 'map')->name('map');
