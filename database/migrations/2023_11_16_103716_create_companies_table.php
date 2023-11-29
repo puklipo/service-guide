@@ -20,7 +20,6 @@ return new class extends Migration
             $table->string('tel')->comment('法人電話番号');
             $table->string('url')->comment('法人URL');
 
-
             $table->timestamps();
         });
     }
