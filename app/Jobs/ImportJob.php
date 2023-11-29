@@ -35,6 +35,8 @@ class ImportJob implements ShouldQueue
             return;
         }
 
+        info(config('service')[$this->id]);
+
         HeadingRowFormatter::default('none');
 
         try {
