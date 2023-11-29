@@ -22,7 +22,7 @@ class FacilityShow extends Component
     {
         return Facility::where('area_id', $this->facility->area_id)
             ->where('service_id', $this->facility->service_id)
-            ->latest('updated_at')
+            ->latest()
             ->simplePaginate(10)
             ->withQueryString();
     }
