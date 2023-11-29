@@ -26,7 +26,7 @@ $prefs = computed(function () {
 
     @foreach($this->prefs as $pref)
         <div wire:key="{{ $pref->id }}">
-            <h2 class="text-3xl p-3 bg-indigo-300 border-2 border-indigo-500" id="{{ $pref->key }}">
+            <h2 class="text-3xl p-3 bg-indigo-300 dark:bg-indigo-700 border-2 border-indigo-500" id="{{ $pref->key }}">
                 <a href="/?pref={{ $pref->id }}" wire:navigate>{{ $pref->name }}</a>
             </h2>
             <ul class="ml-6 list-disc">

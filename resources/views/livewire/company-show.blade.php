@@ -4,7 +4,7 @@
 
         <div>法人情報</div>
 
-        <h2 class="my-3 pt-6 pb-3 px-3 text-4xl bg-indigo-300 border-2 border-indigo-500">
+        <h2 class="my-3 pt-6 pb-3 px-3 text-4xl bg-indigo-300 dark:bg-indigo-700 border-2 border-indigo-500">
             <ruby>
                 {{ $company->name }}
                 <rp>(</rp><rt class="text-xs">{{ $company->name_kana }}</rt><rp>)</rp>
@@ -13,19 +13,19 @@
 
         <table class="table-auto w-full border-collapse border-2 border-indigo-500">
             <tr class="border border-indigo-500">
-                <th class="bg-indigo-300">法人番号</th>
+                <th class="bg-indigo-300 dark:bg-indigo-700">法人番号</th>
                 <td class="p-1">{{ $company->id }}</td>
             </tr>
             <tr class="border border-indigo-500">
-                <th class="bg-indigo-300">住所</th>
+                <th class="bg-indigo-300 dark:bg-indigo-700">住所</th>
                 <td class="p-1">{{ $company->area }}{{ $company->address }}</td>
             </tr>
             <tr class="border border-indigo-500">
-                <th class="bg-indigo-300">電話番号</th>
+                <th class="bg-indigo-300 dark:bg-indigo-700">電話番号</th>
                 <td class="p-1"><a href="tel:{{ $company->tel }}" class="hover:text-indigo-500 hover:underline" title="電話番号が間違ってる場合は問い合わせフォームから連絡してください">{{ $company->tel }}</a></td>
             </tr>
             <tr class="border border-indigo-500">
-                <th class="bg-indigo-300">URL</th>
+                <th class="bg-indigo-300 dark:bg-indigo-700">URL</th>
                 <td class="p-1">@if(filled($company->url))
                         <a href="{{ $company->url }}" class="text-indigo-500 hover:underline" target="_blank">{{ Str::limit($company->url, 100) }}</a>
                     @endif</td>
@@ -45,7 +45,7 @@
 
     <table class="table-auto w-full border-collapse border-2 border-indigo-500" id="list">
         <thead>
-        <tr class="bg-indigo-300 border-b-2 border-indigo-500 divide-x-2 divide-solid divide-indigo-500">
+        <tr class="bg-indigo-300 dark:bg-indigo-700 border-b-2 border-indigo-500 divide-x-2 divide-solid divide-indigo-500">
             <th>サービス</th>
             <th>事業所名</th>
             <th>自治体</th>

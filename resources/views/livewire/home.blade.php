@@ -57,7 +57,7 @@
 
     <table class="table-auto w-full border-collapse border-2 border-indigo-500">
         <thead class="sticky top-0">
-        <tr class="bg-indigo-300 border-b-2 border-indigo-500 divide-x-2 divide-solid divide-indigo-500">
+        <tr class="bg-indigo-300 dark:bg-indigo-700 border-b-2 border-indigo-500 divide-x-2 divide-solid divide-indigo-500">
             <th>サービス</th>
             <th>事業所名</th>
             <th>自治体</th>
