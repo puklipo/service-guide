@@ -3,10 +3,12 @@
 namespace App\Models;
 
 use App\Casts\Telephone;
+use App\Support\IndexNow;
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use function Illuminate\Events\queueable;
 
 /**
  * @mixin IdeHelperFacility
@@ -35,6 +37,17 @@ class Facility extends Model
         'company_id',
         'service_id',
     ];
+
+    protected static function booted(): void
+    {
+        static::created(queueable(function (Facility $facility) {
+            IndexNow::submit(route('facility', $facility));
+        }));
+
+        static::updated(queueable(function (Facility $facility) {
+            IndexNow::submit(route('facility', $facility));
+        }));
+    }
 
     public function pref(): BelongsTo
     {
