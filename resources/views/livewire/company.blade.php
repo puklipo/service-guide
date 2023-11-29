@@ -14,8 +14,8 @@ layout('layouts.app');
 
 state(['company']);
 
-mount(function (int $company) {
-    $this->company = Company::find($company);
+mount(function (Company $company) {
+    $this->company = $company;
 });
 
 title(fn () => $this->company->name);
