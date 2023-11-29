@@ -31,6 +31,7 @@ class ImportCommand extends Command
             ->filter(fn ($name, $id) => file_exists(resource_path('csv/csvdownload0'.$id.'.csv')))
             ->map(function ($name, $id) {
                 $this->info($name);
+
                 return new ImportJob($id);
             });
 

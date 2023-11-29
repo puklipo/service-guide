@@ -31,7 +31,7 @@ class ImportJob implements ShouldQueue
     {
         $csv = resource_path('csv/csvdownload0'.$this->id.'.csv');
 
-        if (!file_exists($csv)) {
+        if (! file_exists($csv)) {
             return;
         }
 
