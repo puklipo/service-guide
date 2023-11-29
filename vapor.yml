@@ -9,7 +9,7 @@ environments:
         domain: service.grouphome.guide
         database: grouphome
         storage: pcs-service-guide
-        queue-timeout: 600
+        queue-timeout: 1200
         queue-memory: 2048
         queue-database-session-persist: true
         build:
