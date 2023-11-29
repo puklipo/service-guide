@@ -75,7 +75,7 @@
         @foreach($this->area_facilities as $facility)
             <tr class="border border-indigo-500 divide-x divide-solid divide-indigo-500"
                 wire:key="{{ $facility->id  }}">
-                <td class="p-1 font-bold"><a href="{{ route('facility', $facility) }}"
+                <td class="p-1 font-bold"><a href="{{ route('facility', ['service' => $facility->service, 'facility' => $facility]) }}"
                                              class="text-indigo-500 hover:underline" wire:navigate>{{ $facility->name }}</a></td>
                 <td class="p-1"><a href="{{ route('company', $facility->company) }}" class="hover:text-indigo-500 hover:underline" wire:navigate>{{ $facility->company->name }}</a></td>
             </tr>

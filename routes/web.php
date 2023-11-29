@@ -4,6 +4,8 @@ use App\Http\Controllers\SitemapController;
 use App\Livewire\CompanyShow;
 use App\Livewire\FacilityShow;
 use App\Livewire\Home;
+use App\Models\Facility;
+use App\Models\Service;
 use Illuminate\Support\Facades\Route;
 use Livewire\Volt\Volt;
 
@@ -18,12 +20,25 @@ use Livewire\Volt\Volt;
 |
 */
 
-Route::get('/',  Home::class)->name('home');
-Route::get('f/{facility}', FacilityShow::class)->name('facility');
+Route::get('/', Home::class)->name('home');
+
+Route::get('s/{service}/{facility}', FacilityShow::class)
+    ->name('facility')
+    ->whereNumber('service')
+    ->whereUlid('facility');
+
+Route::get('s/{service}', function (Service $service) {
+    return to_route('home', ['service' => $service]);
+})->whereNumber('service');
+
+Route::get('f/{facility:wam}', function (Facility $facility) {
+    return to_route('facility', ['service' => $facility->service, 'facility' => $facility], 308);
+})->whereAlphaNumeric('facility');
+
 Route::get('c/{company}', CompanyShow::class)->name('company');
 
-Volt::route('contact',  'contact')->name('contact');
-Volt::route('map',  'map')->name('map');
+Volt::route('contact', 'contact')->name('contact');
+Volt::route('map', 'map')->name('map');
 
 Route::get('sitemap.xml', SitemapController::class)->name('sitemap');
 

@@ -12,7 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('facilities', function (Blueprint $table) {
-            $table->string('id')->primary()->comment('WAM NO');
+            $table->ulid('id');
+            $table->string('wam')->comment('WAM NO');
             $table->string('name')->comment('事業所名称');
             $table->string('name_kana')->comment('事業所名称かな');
             $table->string('no')->comment('事業所番号');

@@ -57,7 +57,7 @@
             <tr class="border border-indigo-500 divide-x divide-solid divide-indigo-500"
                 wire:key="{{ $facility->id  }}">
                 <td class="p-1">{{ $facility->service->name }}</td>
-                <td class="p-1 font-bold"><a href="{{ route('facility', $facility) }}"
+                <td class="p-1 font-bold"><a href="{{ route('facility', ['service' => $facility->service, 'facility' => $facility]) }}"
                                              class="text-indigo-500 hover:underline" wire:navigate>{{ $facility->name }}</a></td>
                 <td class="p-1">{{ $facility->area->address }}</td>
             </tr>

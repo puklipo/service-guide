@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Casts\Telephone;
+use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -13,9 +14,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class Facility extends Model
 {
     use HasFactory;
-
-    public $incrementing = false;
-    protected $keyType = 'string';
+    use HasUlids;
 
     protected $with = ['service', 'area', 'company'];
 
@@ -24,7 +23,7 @@ class Facility extends Model
     ];
 
     protected $fillable = [
-        'id',
+        'wam',
         'name',
         'name_kana',
         'address',

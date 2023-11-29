@@ -60,11 +60,11 @@ class WamImport implements OnEachRow, WithHeadingRow, WithChunkReading, SkipsEmp
             'pref_id' => $pref->id,
             'area_id' => $area->id,
             'company_id' => $company->id,
-            'service_id' => $this->service_id,
         ];
 
         Facility::updateOrCreate([
-            'id' => $row['NO（※システム内の固有の番号、連番）'],
+            'wam' => $row['NO（※システム内の固有の番号、連番）'],
+            'service_id' => $this->service_id,
         ], $data);
     }
 
