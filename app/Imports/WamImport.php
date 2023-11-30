@@ -59,12 +59,12 @@ class WamImport implements OnEachRow, WithHeadingRow, WithChunkReading, SkipsEmp
             'url' => $row['事業所URL'] ?? '',
             'pref_id' => $pref->id,
             'area_id' => $area->id,
-            'company_id' => $company->id,
         ];
 
         Facility::updateOrCreate([
             'wam' => $row['NO（※システム内の固有の番号、連番）'],
             'service_id' => $this->service_id,
+            'company_id' => $company->id,
         ], $data);
     }
 
