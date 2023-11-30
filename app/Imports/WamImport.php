@@ -109,7 +109,7 @@ class WamImport implements OnEachRow, WithHeadingRow, WithChunkReading, SkipsEmp
     }
 
     /**
-     * @param Failure[] $failures
+     * @param  Failure[]  $failures
      */
     public function onFailure(Failure ...$failures)
     {

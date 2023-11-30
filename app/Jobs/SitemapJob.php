@@ -50,6 +50,7 @@ class SitemapJob implements ShouldQueue
             $sitemap->add(
                 Url::create(url('/?pref='.$area->pref->id.'&area='.$area->id))
             );
+
             return $sitemap;
         });
 

@@ -1,8 +1,6 @@
 <?php
 
 use App\Http\Controllers\SitemapController;
-use App\Livewire\CompanyShow;
-use App\Livewire\FacilityShow;
 use App\Livewire\Home;
 use App\Models\Facility;
 use App\Models\Service;
@@ -22,7 +20,7 @@ use Livewire\Volt\Volt;
 
 Route::get('/', Home::class)->name('home');
 
-Route::get('s/{service}/{facility}', FacilityShow::class)
+Volt::route('s/{service}/{facility}', 'facility')
     ->name('facility')
     ->whereNumber('service')
     ->whereUlid('facility');
@@ -35,7 +33,9 @@ Route::get('f/{facility:wam}', function (Facility $facility) {
     return to_route('facility', ['service' => $facility->service, 'facility' => $facility], 308);
 })->whereAlphaNumeric('facility');
 
-Route::get('c/{company}', CompanyShow::class)->name('company');
+Volt::route('c/{company}', 'company')
+    ->name('company')
+    ->whereNumber('company');
 
 Volt::route('contact', 'contact')->name('contact');
 Volt::route('map', 'map')->name('map');
