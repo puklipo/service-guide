@@ -59,9 +59,14 @@ class Home extends Component
     #[Computed]
     public function areas()
     {
-        return Area::withCount(['facilities'])->when(filled($this->pref), function (Builder $query) {
-            $query->where('pref_id', $this->pref);
-        })->orderByDesc('facilities_count')->get();
+        if (blank($this->pref)) {
+            return [];
+        }
+
+        return Area::withCount(['facilities'])
+            ->where('pref_id', $this->pref)
+            ->orderByDesc('facilities_count')
+            ->get();
     }
 
     #[Computed]

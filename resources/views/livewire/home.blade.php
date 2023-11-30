@@ -1,4 +1,3 @@
-
 <div class="mx-1 sm:mx-10">
     <div>
         @include('layouts.header')
@@ -18,17 +17,20 @@
 
                 <x-select name="area" wire:model.live="area" :disabled="blank($pref)">
                     <option value="">自治体</option>
-                    <hr>
-                    @foreach($this->areas as $area)
-                        <option value="{{ $area->id }}">{{ $area->name }} ({{ $area->facilities_count }})</option>
-                    @endforeach
+                    @if(filled($this->areas))
+                        <hr>
+                        @foreach($this->areas as $area)
+                            <option value="{{ $area->id }}">{{ $area->name }} ({{ $area->facilities_count }})</option>
+                        @endforeach
+                    @endif
                 </x-select>
 
                 <x-select name="service" wire:model.live="service">
                     <option value="">サービス</option>
                     <hr>
                     @foreach($this->services as $service)
-                        <option value="{{ $service->id }}" wire:key="{{ $service->id }}">{{ $service->name }} ({{ $service->facilities_count }})
+                        <option value="{{ $service->id }}" wire:key="{{ $service->id }}">{{ $service->name }}
+                            ({{ $service->facilities_count }})
                         </option>
                     @endforeach
                 </x-select>
@@ -72,11 +74,14 @@
             <tr class="border border-indigo-500 divide-x divide-solid divide-indigo-500"
                 wire:key="{{ $facility->id  }}">
                 <td class="p-1">{{ $facility->service->name }}</td>
-                <td class="p-1 font-bold"><a href="{{ route('facility', ['service' => $facility->service, 'facility' => $facility]) }}"
-                                             class="text-indigo-500 hover:underline"
-                                             wire:navigate>{{ $facility->name }}</a></td>
+                <td class="p-1 font-bold"><a
+                        href="{{ route('facility', ['service' => $facility->service, 'facility' => $facility]) }}"
+                        class="text-indigo-500 hover:underline"
+                        wire:navigate>{{ $facility->name }}</a></td>
                 <td class="p-1">{{ $facility->area->address }}</td>
-                <td class="p-1"><a href="{{ route('company', $facility->company) }}" class="hover:text-indigo-500 hover:underline" wire:navigate>{{ $facility->company->name }}</a></td>
+                <td class="p-1"><a href="{{ route('company', $facility->company) }}"
+                                   class="hover:text-indigo-500 hover:underline"
+                                   wire:navigate>{{ $facility->company->name }}</a></td>
                 <td class="p-1">@if(filled($facility->url))
                         <a href="{{ $facility->url }}" class="text-indigo-500 hover:underline" target="_blank">URL</a>
                     @endif</td>
