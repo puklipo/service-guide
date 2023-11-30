@@ -14,7 +14,7 @@ class SitemapController extends Controller
     public function __invoke(Request $request): Response
     {
         return response(Storage::get('sitemap.xml'), 200, [
-            'Content-Type' => 'text/xml',
+            'Content-Type' => 'application/xml; charset="UTF-8"',
         ]);
     }
 }
