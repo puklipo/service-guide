@@ -12,7 +12,7 @@ usesPagination();
 
 layout('layouts.app');
 
-state(['service', 'facility']);
+state('facility');
 
 mount(function (Facility $facility) {
     $this->facility = $facility;
@@ -23,7 +23,7 @@ title(fn () => $this->facility->name);
 $area_facilities = computed(function () {
     return $this->facility->area
         ->facilities()
-        ->where('service_id', $this->service)
+        ->where('service_id', $this->facility->service_id)
         ->latest()
         ->simplePaginate(10)
         ->withQueryString();

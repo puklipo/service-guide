@@ -20,9 +20,13 @@ use Livewire\Volt\Volt;
 
 Route::get('/', Home::class)->name('home');
 
-Volt::route('s/{service}/{facility}', 'facility')
+Volt::route('s/{facility}', 'facility')
     ->name('facility')
-    ->whereNumber('service')
+    ->whereUlid('facility');
+
+Route::get('s/{service}/{facility}', function ($service, Facility $facility) {
+    return to_route('facility', $facility, 308);
+})->whereNumber('service')
     ->whereUlid('facility');
 
 Route::get('s/{service}', function (Service $service) {
@@ -30,7 +34,7 @@ Route::get('s/{service}', function (Service $service) {
 })->whereNumber('service');
 
 Route::get('f/{facility:wam}', function (Facility $facility) {
-    return to_route('facility', ['service' => $facility->service, 'facility' => $facility], 308);
+    return to_route('facility', $facility, 308);
 })->whereAlphaNumeric('facility');
 
 Volt::route('c/{company}', 'company')
