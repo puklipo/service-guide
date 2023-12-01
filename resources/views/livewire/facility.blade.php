@@ -85,7 +85,8 @@ $area_facilities = computed(function () {
                 <th class="bg-indigo-300 dark:bg-indigo-700">WAM</th>
                 <td class="p-1">
                     <a href="https://www.google.com/search?q={{ rawurlencode($facility->name.' site:www.wam.go.jp/sfkohyoout/') }}"
-                       class="text-indigo-500 hover:underline" target="_blank">Google検索</a></td>
+                       class="text-indigo-500 hover:underline" target="_blank">Google検索</a> <a href="https://www.bing.com/search?q={{ rawurlencode($facility->name.' site:www.wam.go.jp/sfkohyoout/') }}"
+                       class="text-indigo-500 hover:underline" target="_blank">Bing検索</a></td>
             </tr>
         </table>
     </div>
