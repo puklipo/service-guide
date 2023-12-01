@@ -42,11 +42,11 @@ class Facility extends Model
     protected static function booted(): void
     {
         static::created(queueable(function (Facility $facility) {
-            IndexNow::submit(route('facility', ['service' => $facility->service, 'facility' => $facility]));
+            info('IndexNow: '.IndexNow::submit(route('facility', ['service' => $facility->service, 'facility' => $facility])));
         }));
 
         static::updated(queueable(function (Facility $facility) {
-            IndexNow::submit(route('facility', ['service' => $facility->service, 'facility' => $facility]));
+            info('IndexNow: '.IndexNow::submit(route('facility', ['service' => $facility->service, 'facility' => $facility])));
         }));
     }
 
