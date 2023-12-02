@@ -21,10 +21,6 @@ class Facility extends Model
 
     protected $with = ['service', 'area', 'company'];
 
-    protected $casts = [
-        'tel' => Telephone::class,
-    ];
-
     protected $fillable = [
         'wam',
         'name',

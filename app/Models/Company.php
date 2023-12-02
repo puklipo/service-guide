@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Casts\Telephone;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -23,6 +24,10 @@ class Company extends Model
         'address',
         'tel',
         'url',
+    ];
+
+    protected $casts = [
+        'tel' => Telephone::class,
     ];
 
     public function facilities(): HasMany
