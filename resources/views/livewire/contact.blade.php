@@ -1,8 +1,8 @@
 <?php
 
-use App\Notifications\ContactNotification;
-use Illuminate\Support\Facades\Notification;
-use function Livewire\Volt\{state};
+use App\Livewire\Forms\ContactForm;
+
+use function Livewire\Volt\{form, state};
 use function Livewire\Volt\layout;
 use function Livewire\Volt\title;
 
@@ -10,19 +10,12 @@ layout('layouts.app');
 
 state(['name', 'email', 'content']);
 
+form(ContactForm::class);
+
 title('問い合わせ '.config('app.name'));
 
 $sendmail = function () {
-    $validated = $this->validate([
-        'name' => ['required', 'string', 'max:255'],
-        'email' => ['required', 'string', 'lowercase', 'email', 'max:255'],
-        'content' => ['required', 'string', 'max:4000'],
-    ]);
-
-    Notification::route('mail', config('mail.contact.to'))
-        ->notify(new ContactNotification(name: $validated['name'], email: $validated['email'], content: $validated['content']));
-
-    session()->flash('mail_success');
+    $this->form->submit();
 }
 ?>
 <div class="text-xl mx-1 sm:mx-10">
@@ -42,20 +35,23 @@ $sendmail = function () {
             <form wire:submit="sendmail" class="mt-6 space-y-6">
                 <div>
                     <x-input-label for="name" :value="__('名前')"/>
-                    <x-text-input wire:model="name" id="name" name="name" type="text" class="mt-1 block w-full" required autocomplete="name"/>
-                    <x-input-error class="mt-2" :messages="$errors->get('name')"/>
+                    <x-text-input wire:model="form.name" id="name" name="name" type="text" class="mt-1 block w-full" required
+                                  autocomplete="name"/>
+                    <x-input-error class="mt-2" :messages="$errors->get('form.name')"/>
                 </div>
 
                 <div>
                     <x-input-label for="email" :value="__('メール')"/>
-                    <x-text-input wire:model="email" id="email" name="email" type="email" class="mt-1 block w-full" required autocomplete="username"/>
-                    <x-input-error class="mt-2" :messages="$errors->get('email')"/>
+                    <x-text-input wire:model="form.email" id="email" name="email" type="email" class="mt-1 block w-full"
+                                  required autocomplete="username"/>
+                    <x-input-error class="mt-2" :messages="$errors->get('form.email')"/>
                 </div>
 
                 <div>
                     <x-input-label for="content" :value="__('メッセージ')"/>
-                    <x-textarea wire:model="content" id="content" name="content" type="text" class="mt-1 block w-full" required/>
-                    <x-input-error class="mt-2" :messages="$errors->get('content')"/>
+                    <x-textarea wire:model="form.content" id="content" name="content" type="text" class="mt-1 block w-full"
+                                required/>
+                    <x-input-error class="mt-2" :messages="$errors->get('form.content')"/>
                 </div>
 
                 <div class="flex items-center gap-4">
@@ -76,7 +72,8 @@ $sendmail = function () {
             </tr>
             <tr class="border border-indigo-500">
                 <th class="bg-indigo-300 dark:bg-indigo-700">法人</th>
-                <td class="p-1"><a href="{{ route('company', 1290001091513) }}" class="hover:text-indigo-500 hover:underline">株式会社PayForward</a></td>
+                <td class="p-1"><a href="{{ route('company', 1290001091513) }}"
+                                   class="hover:text-indigo-500 hover:underline">株式会社PayForward</a></td>
             </tr>
             <tr class="border border-indigo-500">
                 <th class="bg-indigo-300 dark:bg-indigo-700">住所</th>
