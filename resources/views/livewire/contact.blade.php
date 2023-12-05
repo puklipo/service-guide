@@ -30,7 +30,7 @@ $sendmail = function () {
 
     <div class="px-2">
         @if(session()->has('mail_success'))
-            <div class="font-bold">送信しました。返信をお待ちください。</div>
+            <div class="font-bold text-3xl">送信しました。</div>
         @else
             <form wire:submit="sendmail" class="mt-6 space-y-6">
                 <div>
