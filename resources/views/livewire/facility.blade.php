@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Facility;
+
 use function Livewire\Volt\computed;
 use function Livewire\Volt\layout;
 use function Livewire\Volt\mount;
@@ -54,7 +55,12 @@ $area_facilities = computed(function () {
             </tr>
             <tr class="border border-indigo-500">
                 <th class="bg-indigo-300 dark:bg-indigo-700">住所</th>
-                <td class="p-1">{{ $facility->area->address }}{{ $facility->address }}</td>
+                <td class="p-1">
+                    {{ $facility->area->address }}{{ $facility->address }}
+                    (<a href="https://www.google.com/maps/search/{{ rawurlencode($facility->area->address.$facility->address) }}"
+                        target="_blank"
+                        class="text-indigo-500 hover:underline">Googleマップ</a>)
+                </td>
             </tr>
             <tr class="border border-indigo-500">
                 <th class="bg-indigo-300 dark:bg-indigo-700">事業所番号</th>
@@ -85,8 +91,9 @@ $area_facilities = computed(function () {
                 <th class="bg-indigo-300 dark:bg-indigo-700">WAM</th>
                 <td class="p-1">
                     <a href="https://www.google.com/search?q={{ rawurlencode($facility->name.' site:www.wam.go.jp/sfkohyoout/') }}"
-                       class="text-indigo-500 hover:underline" target="_blank">Google検索</a> <a href="https://www.bing.com/search?q={{ rawurlencode($facility->name.' site:www.wam.go.jp/sfkohyoout/') }}"
-                       class="text-indigo-500 hover:underline" target="_blank">Bing検索</a></td>
+                       class="text-indigo-500 hover:underline" target="_blank">Google検索</a> <a
+                        href="https://www.bing.com/search?q={{ rawurlencode($facility->name.' site:www.wam.go.jp/sfkohyoout/') }}"
+                        class="text-indigo-500 hover:underline" target="_blank">Bing検索</a></td>
             </tr>
         </table>
     </div>
