@@ -50,7 +50,7 @@ $facilities = computed(function () {
                     {{ $company->area }}{{ $company->address }}
                     (<a href="https://www.google.com/maps/search/{{ rawurlencode($company->area.$company->address) }}"
                         target="_blank"
-                        class="text-indigo-500 hover:underline">Googleマップ</a>)</td>
+                        class="text-indigo-500 hover:underline" rel="nofollow">Googleマップ</a>)</td>
             </tr>
             <tr class="border border-indigo-500">
                 <th class="bg-indigo-300 dark:bg-indigo-700">電話番号</th>
