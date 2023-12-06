@@ -62,7 +62,7 @@ $facilities = computed(function () {
                 <th class="bg-indigo-300 dark:bg-indigo-700">URL</th>
                 <td class="p-1">@if(filled($company->url))
                         <a href="{{ $company->url }}" class="text-indigo-500 hover:underline"
-                           target="_blank">{{ Str::limit($company->url, 100) }}</a>
+                           target="_blank" rel="nofollow">{{ Str::limit($company->url, 100) }}</a>
                     @endif</td>
             </tr>
         </table>
