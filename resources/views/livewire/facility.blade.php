@@ -59,7 +59,7 @@ $area_facilities = computed(function () {
                     {{ $facility->area->address }}{{ $facility->address }}
                     (<a href="https://www.google.com/maps/search/{{ rawurlencode($facility->area->address.$facility->address) }}"
                         target="_blank"
-                        class="text-indigo-500 hover:underline">Googleマップ</a>)
+                        class="text-indigo-500 hover:underline" rel="nofollow">Googleマップ</a>)
                 </td>
             </tr>
             <tr class="border border-indigo-500">
@@ -84,16 +84,16 @@ $area_facilities = computed(function () {
                 <th class="bg-indigo-300 dark:bg-indigo-700">URL</th>
                 <td class="p-1">@if(filled($facility->url))
                         <a href="{{ $facility->url }}" class="text-indigo-500 hover:underline"
-                           target="_blank">{{ Str::limit($facility->url, 100) }}</a>
+                           target="_blank" rel="nofollow">{{ Str::limit($facility->url, 100) }}</a>
                     @endif</td>
             </tr>
             <tr class="border border-indigo-500">
                 <th class="bg-indigo-300 dark:bg-indigo-700">WAM</th>
                 <td class="p-1">
                     <a href="https://www.google.com/search?q={{ rawurlencode($facility->name.' site:www.wam.go.jp/sfkohyoout/') }}"
-                       class="text-indigo-500 hover:underline" target="_blank">Google検索</a> <a
+                       class="text-indigo-500 hover:underline" target="_blank" rel="nofollow">Google検索</a> <a
                         href="https://www.bing.com/search?q={{ rawurlencode($facility->name.' site:www.wam.go.jp/sfkohyoout/') }}"
-                        class="text-indigo-500 hover:underline" target="_blank">Bing検索</a></td>
+                        class="text-indigo-500 hover:underline" target="_blank" rel="nofollow">Bing検索</a></td>
             </tr>
         </table>
     </div>
