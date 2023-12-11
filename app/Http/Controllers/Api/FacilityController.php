@@ -18,9 +18,9 @@ class FacilityController extends Controller
      */
     public function __invoke(Request $request)
     {
-        $service = Service::where('name', $request->input('service'))->first();
-        $pref = Pref::where('name', $request->input('pref'))->first();
-        $area = Area::where('name', $request->input('area'))->first();
+        $service = Service::where('name', 'LIKE', '%'.$request->input('service').'%')->first();
+        $pref = Pref::where('name', 'LIKE', '%'.$request->input('pref').'%')->first();
+        $area = Area::where('name', 'LIKE', '%'.$request->input('area').'%')->first();
 
         $facilities = Facility::when(filled($service), function (Builder $query) use ($service) {
             $query->where('service_id', $service->id);
