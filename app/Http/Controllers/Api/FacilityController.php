@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\FacilityResource;
 use App\Models\Area;
 use App\Models\Facility;
 use App\Models\Pref;
@@ -21,7 +22,7 @@ class FacilityController extends Controller
         $pref = Pref::where('name', $request->input('pref'))->first();
         $area = Area::where('name', $request->input('area'))->first();
 
-        return Facility::when(filled($service), function (Builder $query) use ($service) {
+        $facilities = Facility::when(filled($service), function (Builder $query) use ($service) {
             $query->where('service_id', $service->id);
         })->when(filled($pref), function (Builder $query) use ($pref) {
             $query->where('pref_id', $pref->id);
@@ -31,5 +32,7 @@ class FacilityController extends Controller
             ->latest()
             ->simplePaginate()
             ->withQueryString();
+
+        return FacilityResource::collection($facilities);
     }
 }
