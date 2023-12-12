@@ -21,7 +21,7 @@ mount(function (Facility $facility) {
 
 title(fn () => $this->facility->name);
 
-$area_facilities = computed(function () {
+$facilities = computed(function () {
     return $this->facility->area
         ->facilities()
         ->where('service_id', $this->facility->service_id)
@@ -105,7 +105,7 @@ $area_facilities = computed(function () {
     </div>
 
     <div class="my-3">
-        {{ $this->area_facilities->links(data: ['scrollTo' => '#area']) }}
+        {{ $this->facilities->links(data: ['scrollTo' => '#area']) }}
     </div>
 
     <table class="table-auto w-full border-collapse border-2 border-indigo-500" id="area">
@@ -117,7 +117,7 @@ $area_facilities = computed(function () {
         </thead>
         <tbody>
 
-        @foreach($this->area_facilities as $facility)
+        @foreach($this->facilities as $facility)
             <tr class="border border-indigo-500 divide-x divide-solid divide-indigo-500"
                 wire:key="{{ $facility->id  }}">
                 <td class="p-1 font-bold"><a
@@ -133,6 +133,6 @@ $area_facilities = computed(function () {
     </table>
 
     <div class="my-3">
-        {{ $this->area_facilities->links(data: ['scrollTo' => '#area']) }}
+        {{ $this->facilities->links(data: ['scrollTo' => '#area']) }}
     </div>
 </div>
