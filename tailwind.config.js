@@ -1,5 +1,6 @@
 import defaultTheme from 'tailwindcss/defaultTheme';
 import forms from '@tailwindcss/forms';
+import typography from '@tailwindcss/typography';
 import colors from 'tailwindcss/colors';
 
 /** @type {import('tailwindcss').Config} */
@@ -18,8 +19,20 @@ export default {
             colors: {
                 indigo: colors.emerald
             },
+            typography: (theme) => ({
+                DEFAULT: {
+                    css: {
+                        a: {
+                            color: theme('colors.indigo.500'),
+                            '&:hover': {
+                                color: theme('colors.indigo.400'),
+                            },
+                        },
+                    },
+                },
+            }),
         },
     },
 
-    plugins: [forms],
+    plugins: [forms, typography],
 };

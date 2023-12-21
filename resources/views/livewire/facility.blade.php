@@ -98,6 +98,18 @@ $facilities = computed(function () {
         </table>
     </div>
 
+    @if(filled($facility->description))
+        <div class="p-3 border border-2 border-indigo-500 prose prose-indigo dark:prose-invert max-w-none">
+            {{ \App\Support\Markdown::escape($facility->description) }}
+        </div>
+    @endif
+
+    <livewire:facility-edit :$facility/>
+
+    @can('admin')
+        <livewire:facility-admin :$facility/>
+    @endcan
+
     <hr class="my-10 border border-indigo-500">
 
     <div class="my-3">
