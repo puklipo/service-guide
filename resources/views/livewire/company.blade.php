@@ -53,12 +53,6 @@ $facilities = computed(function () {
                         class="text-indigo-500 hover:underline" rel="nofollow">Googleマップ</a>)</td>
             </tr>
             <tr class="border border-indigo-500">
-                <th class="bg-indigo-300 dark:bg-indigo-700">電話番号</th>
-                <td class="p-1"><a href="tel:{{ $company->tel }}" class="hover:text-indigo-500 hover:underline"
-                                   title="電話番号が間違ってる場合は問い合わせフォームから連絡してください">{{ $company->tel }}</a>
-                </td>
-            </tr>
-            <tr class="border border-indigo-500">
                 <th class="bg-indigo-300 dark:bg-indigo-700">URL</th>
                 <td class="p-1">@if(filled($company->url))
                         <a href="{{ $company->url }}" class="text-indigo-500 hover:underline"
