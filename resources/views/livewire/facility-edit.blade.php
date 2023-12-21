@@ -29,7 +29,7 @@ $draft = function () {
     @else
         <div>
             <ul>
-                <li>事業所情報を自由記入で入力できます。</li>
+                <li>追加の事業所情報を自由記入で入力できます。</li>
                 <li>誰でも投稿可能ですが管理者が承認後に公開されます。</li>
             </ul>
             <form wire:submit="draft" class="mt-6 space-y-6">
