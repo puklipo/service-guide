@@ -37,8 +37,7 @@ $draft = function () {
                     <x-input-label for="description_draft" :value="__('事業所情報')"/>
                     <x-textarea wire:model.live="description_draft" id="description_draft" name="description_draft"
                                 type="text" class="mt-1 block w-full"
-                                rows="10"
-                                required/>
+                                rows="10"/>
                     <x-input-error class="mt-2" :messages="$errors->get('description_draft')"/>
                 </div>
 
