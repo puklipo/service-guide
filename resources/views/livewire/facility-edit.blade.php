@@ -16,7 +16,7 @@ mount(function (Facility $facility) {
 });
 
 $draft = function () {
-    $this->facility->forceFill(['description_draft' => $this->description_draft])->save();
+    $this->facility->forceFill(['description_draft' => trim($this->description_draft)])->save();
     $this->dispatch('description-updated');
 
     Notification::route('mail', config('mail.admin.to'))
