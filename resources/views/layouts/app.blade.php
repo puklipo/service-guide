@@ -13,6 +13,8 @@
 
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
+
+        @includeIf('layouts.ga')
     </head>
     <body class="font-sans antialiased relative">
         <div class="min-h-screen bg-white dark:bg-gray-900 text-black dark:text-white">
