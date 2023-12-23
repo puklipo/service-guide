@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "c62b5a661b89f12facf37359beefe1e9",
+    "content-hash": "c0f664d76b4dabd9ad61269220da26f1",
     "packages": [
         {
             "name": "aws/aws-crt-php",
@@ -7880,6 +7880,61 @@
             "time": "2023-12-08T13:03:43+00:00"
         },
         {
+            "name": "torann/json-ld",
+            "version": "0.0.19",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Torann/json-ld.git",
+                "reference": "45738178c8eeea28a30925826537e87c3020de5a"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Torann/json-ld/zipball/45738178c8eeea28a30925826537e87c3020de5a",
+                "reference": "45738178c8eeea28a30925826537e87c3020de5a",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.5"
+            },
+            "require-dev": {
+                "mockery/mockery": "^0.9.4",
+                "phpunit/phpunit": "~5.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "0.1-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "JsonLd\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-2-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Daniel Stainback",
+                    "email": "torann@gmail.com"
+                }
+            ],
+            "description": "Extremely simple JSON-LD markup generator.",
+            "keywords": [
+                "JSON-LD",
+                "generator",
+                "schema",
+                "structured-data"
+            ],
+            "support": {
+                "issues": "https://github.com/Torann/json-ld/issues",
+                "source": "https://github.com/Torann/json-ld/tree/0.0.19"
+            },
+            "time": "2020-03-10T17:25:19+00:00"
+        },
+        {
             "name": "vlucas/phpdotenv",
             "version": "v5.6.0",
             "source": {
@@ -12522,5 +12577,5 @@
         "php": "^8.1"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.6.0"
+    "plugin-api-version": "2.3.0"
 }

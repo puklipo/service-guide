@@ -17,7 +17,8 @@
         "maatwebsite/excel": "^3.1",
         "revolution/laravel-str-mixins": "^2.5",
         "puklipo/laravel-vapor-gzip": "^1.1",
-        "spatie/laravel-sitemap": "^6.2"
+        "spatie/laravel-sitemap": "^6.2",
+        "torann/json-ld": "^0.0.19"
     },
     "require-dev": {
         "barryvdh/laravel-ide-helper": "^2.13",
