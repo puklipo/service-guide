@@ -99,7 +99,7 @@ $facilities = computed(function () {
     </div>
 
     @if(filled($facility->description))
-        <div class="p-3 border border-2 border-indigo-500 prose prose-indigo dark:prose-invert max-w-none">
+        <div class="p-3 border border-2 border-indigo-500 prose prose-indigo dark:prose-invert max-w-none break-auto">
             {{ \App\Support\Markdown::escape($facility->description) }}
         </div>
     @endif
