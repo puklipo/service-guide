@@ -70,7 +70,7 @@
         </thead>
         <tbody>
 
-        @foreach($this->facilities as $facility)
+        @forelse($this->facilities as $facility)
             <tr class="border border-indigo-500 divide-x divide-solid divide-indigo-500"
                 wire:key="{{ $facility->id  }}">
                 <td class="p-1">{{ $facility->service->name }}</td>
@@ -83,14 +83,16 @@
                                    class="hover:text-indigo-500 hover:underline"
                                    wire:navigate>{{ $facility->company->name }}</a></td>
                 <td class="p-1">@if(filled($facility->url))
-                        <a href="{{ $facility->url }}" class="text-indigo-500 hover:underline" target="_blank" rel="nofollow">URL</a>
+                        <a href="{{ $facility->url }}" class="text-indigo-500 hover:underline" target="_blank"
+                           rel="nofollow">URL</a>
                     @endif</td>
                 <td class="p-1"><a
                         href="https://www.google.com/search?q={{ rawurlencode($facility->name.' site:www.wam.go.jp/sfkohyoout/') }}"
                         class="text-indigo-500 hover:underline" target="_blank" rel="nofollow">検索</a></td>
             </tr>
-
-        @endforeach
+        @empty
+            <div class="my-3 font-bold text-red-500">事業所は見つかりませんでした。条件を変更して検索してください。</div>
+        @endforelse
 
         </tbody>
 
