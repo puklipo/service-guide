@@ -7,7 +7,7 @@ use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 use JsonLd\Context;
-use JsonLd\ContextTypes\Place;
+use JsonLd\ContextTypes\LocalBusiness;
 
 class FacilityPlace extends Component
 {
@@ -24,9 +24,11 @@ class FacilityPlace extends Component
      */
     public function render(): View|Closure|string
     {
-        $context = Context::create(Place::class, [
+        $context = Context::create(LocalBusiness::class, [
             'name' => $this->facility->name,
             'address' => $this->facility->area->address.$this->facility->address,
+            //'telephone' => $this->facility->tel,
+            'url' => filled($this->facility->url) ? $this->facility->url : route('facility', $this->facility),
         ]);
 
         return view('components.json-ld.facility-place')->with(compact('context'));
