@@ -19,6 +19,7 @@
         @vite(['resources/css/app.css', 'resources/js/app.js'])
 
         @includeIf('layouts.ga')
+        @includeIf('layouts.ads')
     </head>
     <body class="font-sans antialiased relative">
         <div class="min-h-screen bg-white dark:bg-gray-900 text-black dark:text-white">
