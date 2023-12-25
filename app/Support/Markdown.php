@@ -15,7 +15,7 @@ class Markdown
         $config = array_merge([
             'html_input' => 'allow',
             'renderer' => [
-                'soft_break'      => "<br>\n",
+                'soft_break' => "<br>\n",
             ],
             'allow_unsafe_links' => false,
             'disallowed_raw_html' => [
@@ -34,7 +34,7 @@ class Markdown
         $config = array_merge([
             'html_input' => 'escape',
             'renderer' => [
-                'soft_break'      => "<br>\n",
+                'soft_break' => "<br>\n",
             ],
             'allow_unsafe_links' => false,
         ], $options);
