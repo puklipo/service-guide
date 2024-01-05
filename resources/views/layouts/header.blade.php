@@ -1,6 +1,7 @@
 <header class="py-3">
     <nav class="pb-3 flex flex-row gap-4 text-xs text-indigo-500">
         <div><a href="{{ route('contact') }}" class="hover:underline" wire:navigate>問い合わせ</a></div>
+        <div><a href="https://chat.openai.com/g/g-vup1uKU4w-zhang-hai-fu-zhi-sabisugaido" class="hover:underline" target="_blank">GPTs</a></div>
         <div><a href="{{ route('map') }}" class="hover:underline" wire:navigate>サイトマップ</a></div>
     </nav>
 
