@@ -38,11 +38,10 @@ class ContactNotification extends Notification implements ShouldQueue
             ->subject('【'.config('app.name').'】お問い合わせ')
             ->from(config('mail.from.address'), config('mail.from.name'))
             //->cc(config('mail.admin.to'))
-            ->text('notifications::email-text', [
-                'name' => trim($this->name),
-                'content' => trim($this->content),
-                'email' => trim($this->email),
-            ]);
+            ->greeting(__('名前：').$this->name)
+            ->line([$this->content])
+            ->line('メール：'.$this->email)
+            ->salutation(__('このメールに返信はできないので問い合わせへの対応は新規メールを送信してください。'));
     }
 
     /**
