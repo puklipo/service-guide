@@ -4,6 +4,7 @@ namespace App\Livewire\Forms;
 
 use App\Notifications\ContactNotification;
 use Illuminate\Support\Facades\Notification;
+use Illuminate\Validation\Rule;
 use Illuminate\Validation\ValidationException;
 use Livewire\Attributes\Validate;
 use Livewire\Form;
@@ -13,11 +14,20 @@ class ContactForm extends Form
     #[Validate(['required', 'string', 'max:255'])]
     public string $name;
 
-    #[Validate(['required', 'string', 'lowercase', 'email', 'max:255'])]
     public string $email;
 
     #[Validate(['required', 'string', 'max:4000'])]
     public string $content;
+
+    public function rules(): array
+    {
+        return [
+            'email' => [
+                'required', 'string', 'lowercase', 'email', 'max:255',
+                Rule::notIn(config('spam')),
+            ],
+        ];
+    }
 
     /**
      * @throws ValidationException
