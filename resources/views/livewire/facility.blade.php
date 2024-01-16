@@ -71,8 +71,7 @@ $facilities = computed(function () {
                 <td class="p-1">
                     <ruby>
                         <a href="{{ route('company', $facility->company) }}"
-                           class="hover:text-indigo-500 hover:underline"
-                           wire:navigate>{{ $facility->company->name }}</a>
+                           class="hover:text-indigo-500 hover:underline">{{ $facility->company->name }}</a>
                         <rp>(</rp>
                         <rt class="text-xs">{{ $facility->company->name_kana }}</rt>
                         <rp>)</rp>
@@ -135,11 +134,10 @@ $facilities = computed(function () {
             <tr class="border border-indigo-500 divide-x divide-solid divide-indigo-500"
                 wire:key="{{ $facility->id  }}">
                 <td class="p-1 font-bold"><a
-                        href="{{ route('facility', ['service' => $facility->service, 'facility' => $facility]) }}"
-                        class="text-indigo-500 hover:underline" wire:navigate>{{ $facility->name }}</a></td>
+                        href="{{ route('facility', $facility) }}"
+                        class="text-indigo-500 hover:underline">{{ $facility->name }}</a></td>
                 <td class="p-1"><a href="{{ route('company', $facility->company) }}"
-                                   class="hover:text-indigo-500 hover:underline"
-                                   wire:navigate>{{ $facility->company->name }}</a></td>
+                                   class="hover:text-indigo-500 hover:underline">{{ $facility->company->name }}</a></td>
             </tr>
         @endforeach
         </tbody>
