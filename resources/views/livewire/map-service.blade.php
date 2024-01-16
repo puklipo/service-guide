@@ -10,8 +10,7 @@ state(['pref', 'area']);
         <summary>サービスを表示</summary>
         @foreach(config('service') as $service_id => $service)
             <a href="/?pref={{ $pref }}&amp;area={{ $area }}&amp;service={{ $service_id }}"
-               class="text-sm hover:text-indigo-500 hover:underline" wire:key="{{ $service_id }}"
-               wire:navigate>{{ $service }}</a>
+               class="text-sm hover:text-indigo-500 hover:underline" wire:key="{{ $service_id }}">{{ $service }}</a>
         @endforeach
     </details>
 </div>
