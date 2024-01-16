@@ -27,13 +27,13 @@ $prefs = computed(function () {
     @foreach($this->prefs as $pref)
         <div wire:key="{{ $pref->id }}">
             <h2 class="text-3xl p-3 bg-indigo-300 dark:bg-indigo-700 border-2 border-indigo-500" id="{{ $pref->key }}">
-                <a href="/?pref={{ $pref->id }}" wire:navigate>{{ $pref->name }}</a>
+                <a href="/?pref={{ $pref->id }}">{{ $pref->name }}</a>
             </h2>
             <ul class="ml-6 list-disc">
                 @foreach($pref->areas as $area)
                     <li class="my-1" wire:key="{{ $area->id }}">
                             <a href="/?pref={{ $pref->id }}&amp;area={{ $area->id }}"
-                               class="text-indigo-500 underline" wire:navigate>{{ $area->name }}</a>
+                               class="text-indigo-500 underline">{{ $area->name }}</a>
                             <livewire:map-service :pref="$pref->id" :area="$area->id" lazy></livewire:map-service>
                     </li>
 
