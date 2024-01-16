@@ -88,7 +88,7 @@ $facilities = computed(function () {
                 <td class="p-1">{{ $facility->service->name }}</td>
                 <td class="p-1 font-bold"><a
                         href="{{ route('facility', $facility) }}"
-                        class="text-indigo-500 hover:underline" wire:navigate>{{ $facility->name }}</a></td>
+                        class="text-indigo-500 hover:underline">{{ $facility->name }}</a></td>
                 <td class="p-1">{{ $facility->area->address }}</td>
             </tr>
         @endforeach
