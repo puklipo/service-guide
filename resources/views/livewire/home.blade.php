@@ -76,12 +76,10 @@
                 <td class="p-1">{{ $facility->service->name }}</td>
                 <td class="p-1 font-bold"><a
                         href="{{ route('facility', $facility) }}"
-                        class="text-indigo-500 hover:underline"
-                        wire:navigate>{{ $facility->name }}</a></td>
+                        class="text-indigo-500 hover:underline">{{ $facility->name }}</a></td>
                 <td class="p-1">{{ $facility->area->address }}</td>
                 <td class="p-1"><a href="{{ route('company', $facility->company) }}"
-                                   class="hover:text-indigo-500 hover:underline"
-                                   wire:navigate>{{ $facility->company->name }}</a></td>
+                                   class="hover:text-indigo-500 hover:underline">{{ $facility->company->name }}</a></td>
                 <td class="p-1">@if(filled($facility->url))
                         <a href="{{ $facility->url }}" class="text-indigo-500 hover:underline" target="_blank"
                            rel="nofollow">URL</a>
