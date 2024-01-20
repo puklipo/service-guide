@@ -39,7 +39,7 @@ class DraftCreated extends Notification implements ShouldQueue
             ->subject('【'.config('app.name').'】事業所情報の下書き')
             ->line('事業所情報の下書きが投稿されました。')
             ->action('下書きを確認', route('facility', $this->facility))
-            ->line($this->facility->description_draft);
+            ->line([$this->facility->description_draft]);
     }
 
     /**
