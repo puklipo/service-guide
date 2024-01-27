@@ -73,11 +73,11 @@ $sendmail = function () {
             <tr class="border border-indigo-500">
                 <th class="bg-indigo-300 dark:bg-indigo-700">法人</th>
                 <td class="p-1"><a href="{{ route('company', 1290001091513) }}"
-                                   class="hover:text-indigo-500 hover:underline">株式会社PayForward</a></td>
+                                   class="text-indigo-500 hover:text-indigo-500 hover:underline">株式会社PayForward</a></td>
             </tr>
             <tr class="border border-indigo-500">
                 <th class="bg-indigo-300 dark:bg-indigo-700">住所</th>
-                <td class="p-1">福岡県福岡市博多区博多駅前3-3-12　第6ダイヨシビル2F</td>
+                <td class="p-1">福岡県福岡市博多区博多駅前3-3-12 第6ダイヨシビル2F</td>
             </tr>
         </table>
     </div>
