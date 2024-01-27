@@ -56,6 +56,11 @@ class Home extends Component
         return Pref::withCount(['facilities'])->orderBy('id')->get();
     }
 
+    public function updatedPref()
+    {
+        $this->area = '';
+    }
+
     #[Computed]
     public function areas()
     {

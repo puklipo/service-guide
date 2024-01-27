@@ -4,7 +4,7 @@
 
         <div>
             <form class="grid grid-cols-2 sm:grid-flow-col sm:grid-cols-auto gap-2">
-                <x-select name="pref" wire:model.live="pref" wire:change="$set('area', '')">
+                <x-select name="pref" wire:model.live="pref">
                     <option value="">都道府県</option>
                     <hr>
                     @foreach($this->prefs as $pre)
