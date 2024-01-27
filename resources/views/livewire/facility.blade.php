@@ -71,7 +71,7 @@ $facilities = computed(function () {
                 <td class="p-1">
                     <ruby>
                         <a href="{{ route('company', $facility->company) }}"
-                           class="hover:text-indigo-500 hover:underline">{{ $facility->company->name }}</a>
+                           class="text-indigo-500 hover:text-indigo-500 hover:underline">{{ $facility->company->name }}</a>
                         <rp>(</rp>
                         <rt class="text-xs">{{ $facility->company->name_kana }}</rt>
                         <rp>)</rp>
