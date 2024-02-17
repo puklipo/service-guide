@@ -2,7 +2,7 @@
 
 return [
     'description_default' => '
-w## 電話番号
+### 電話番号
 
 ### 問い合わせ方法
 
