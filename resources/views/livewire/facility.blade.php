@@ -109,8 +109,6 @@ $facilities = computed(function () {
         <livewire:facility-admin :$facility/>
     @endcan
 
-    <x-json-ld.facility-place :$facility/>
-
     <hr class="my-10 border border-indigo-500">
 
     <div class="my-3">
