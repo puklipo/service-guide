@@ -3,6 +3,7 @@
 namespace App\Livewire\Forms;
 
 use App\Notifications\ContactNotification;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\ValidationException;
@@ -21,10 +22,14 @@ class ContactForm extends Form
 
     public function rules(): array
     {
+        $spam = cache()->remember('spam', now()->addDay(), function () {
+            return Http::get('https://grouphome.guide/api/spam')->json();
+        });
+
         return [
             'email' => [
                 'required', 'string', 'lowercase', 'email', 'max:255',
-                Rule::notIn(config('spam')),
+                Rule::notIn($spam ?? config('spam')),
             ],
         ];
     }
