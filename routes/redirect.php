@@ -1,4 +1,5 @@
 <?php
+
 // 古いルートをリダイレクト
 
 use App\Models\Facility;
