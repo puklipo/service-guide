@@ -1,9 +1,9 @@
 <header class="py-3">
-    <nav class="pb-3 flex flex-row gap-4 text-xs text-indigo-500">
-        <div><a href="{{ route('home') }}" class="hover:underline">ホーム</a></div>
-        <div><a href="{{ route('contact') }}" class="hover:underline">問い合わせ</a></div>
-        <div><a href="https://chat.openai.com/g/g-vup1uKU4w-zhang-hai-fu-zhi-sabisugaido" class="hover:underline" target="_blank">GPTs</a></div>
-        <div><a href="{{ route('map') }}" class="hover:underline">サイトマップ</a></div>
+    <nav class="pb-3 flex flex-row gap-4 text-sm text-indigo-500 hover:*:underline">
+        <a href="{{ route('home') }}">ホーム</a>
+        <a href="{{ route('contact') }}">問い合わせ</a>
+        <a href="https://chat.openai.com/g/g-vup1uKU4w-zhang-hai-fu-zhi-sabisugaido" target="_blank">GPTs</a>
+        <a href="{{ route('map') }}">サイトマップ</a>
     </nav>
 
     <h1 class="text-3xl my-1">
