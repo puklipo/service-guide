@@ -26,9 +26,17 @@ class Company extends Model
         'url',
     ];
 
-    protected $casts = [
-        'tel' => Telephone::class,
-    ];
+    /**
+     * Get the attributes that should be cast.
+     *
+     * @return array<string, string>
+     */
+    protected function casts(): array
+    {
+        return [
+            'tel' => Telephone::class,
+        ];
+    }
 
     public function facilities(): HasMany
     {
