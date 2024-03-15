@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Casts\Telephone;
 use App\Support\IndexNow;
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -38,11 +37,11 @@ class Facility extends Model
     protected static function booted(): void
     {
         static::created(queueable(function (Facility $facility) {
-            info('IndexNow: '.IndexNow::submit(route('facility', $facility)));
+            IndexNow::submit(route('facility', $facility));
         }));
 
         static::updated(queueable(function (Facility $facility) {
-            info('IndexNow: '.IndexNow::submit(route('facility', $facility)));
+            IndexNow::submit(route('facility', $facility));
         }));
     }
 
