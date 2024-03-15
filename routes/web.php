@@ -2,8 +2,6 @@
 
 use App\Http\Controllers\SitemapController;
 use App\Livewire\Home;
-use App\Models\Facility;
-use App\Models\Service;
 use Illuminate\Support\Facades\Route;
 use Livewire\Volt\Volt;
 
@@ -23,19 +21,6 @@ Route::get('/', Home::class)->name('home');
 Volt::route('s/{facility}', 'facility')
     ->name('facility')
     ->whereUlid('facility');
-
-Route::get('s/{service}/{facility}', function ($service, Facility $facility) {
-    return to_route('facility', $facility, 308);
-})->whereNumber('service')
-    ->whereUlid('facility');
-
-Route::get('s/{service}', function (Service $service) {
-    return to_route('home', ['service' => $service]);
-})->whereNumber('service');
-
-Route::get('f/{facility:wam}', function (Facility $facility) {
-    return to_route('facility', $facility, 308);
-})->whereAlphaNumeric('facility');
 
 Volt::route('c/{company}', 'company')
     ->name('company')
@@ -57,3 +42,5 @@ Route::view('profile', 'profile')
     ->name('profile');
 
 require __DIR__.'/auth.php';
+
+require __DIR__.'/redirect.php';
