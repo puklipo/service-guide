@@ -62,16 +62,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.301.0",
+            "version": "3.301.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "a0173e793f244eeedd0a47d40437a3bb9d8f05b8"
+                "reference": "0a910d2b35e7087337cdf3569dc9b6ce232aafba"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/a0173e793f244eeedd0a47d40437a3bb9d8f05b8",
-                "reference": "a0173e793f244eeedd0a47d40437a3bb9d8f05b8",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/0a910d2b35e7087337cdf3569dc9b6ce232aafba",
+                "reference": "0a910d2b35e7087337cdf3569dc9b6ce232aafba",
                 "shasum": ""
             },
             "require": {
@@ -151,9 +151,9 @@
             "support": {
                 "forum": "https://forums.aws.amazon.com/forum.jspa?forumID=80",
                 "issues": "https://github.com/aws/aws-sdk-php/issues",
-                "source": "https://github.com/aws/aws-sdk-php/tree/3.301.0"
+                "source": "https://github.com/aws/aws-sdk-php/tree/3.301.1"
             },
-            "time": "2024-03-14T18:09:12+00:00"
+            "time": "2024-03-15T18:14:42+00:00"
         },
         {
             "name": "brick/math",
@@ -1388,16 +1388,16 @@
         },
         {
             "name": "laravel/framework",
-            "version": "v11.0.6",
+            "version": "v11.0.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/framework.git",
-                "reference": "5e2f7cd41a3ca048e2b164d2bfbfc4702993fe38"
+                "reference": "28eabe9dcdcb017a21ce226eda4538c5c8c93b1c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/framework/zipball/5e2f7cd41a3ca048e2b164d2bfbfc4702993fe38",
-                "reference": "5e2f7cd41a3ca048e2b164d2bfbfc4702993fe38",
+                "url": "https://api.github.com/repos/laravel/framework/zipball/28eabe9dcdcb017a21ce226eda4538c5c8c93b1c",
+                "reference": "28eabe9dcdcb017a21ce226eda4538c5c8c93b1c",
                 "shasum": ""
             },
             "require": {
@@ -1589,7 +1589,7 @@
                 "issues": "https://github.com/laravel/framework/issues",
                 "source": "https://github.com/laravel/framework"
             },
-            "time": "2024-03-14T14:27:59+00:00"
+            "time": "2024-03-15T23:17:58+00:00"
         },
         {
             "name": "laravel/prompts",
@@ -4220,16 +4220,16 @@
         },
         {
             "name": "psy/psysh",
-            "version": "v0.12.0",
+            "version": "v0.12.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/bobthecow/psysh.git",
-                "reference": "750bf031a48fd07c673dbe3f11f72362ea306d0d"
+                "reference": "39621c73e0754328252f032c6997b983afc50431"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/bobthecow/psysh/zipball/750bf031a48fd07c673dbe3f11f72362ea306d0d",
-                "reference": "750bf031a48fd07c673dbe3f11f72362ea306d0d",
+                "url": "https://api.github.com/repos/bobthecow/psysh/zipball/39621c73e0754328252f032c6997b983afc50431",
+                "reference": "39621c73e0754328252f032c6997b983afc50431",
                 "shasum": ""
             },
             "require": {
@@ -4293,9 +4293,9 @@
             ],
             "support": {
                 "issues": "https://github.com/bobthecow/psysh/issues",
-                "source": "https://github.com/bobthecow/psysh/tree/v0.12.0"
+                "source": "https://github.com/bobthecow/psysh/tree/v0.12.1"
             },
-            "time": "2023-12-20T15:28:09+00:00"
+            "time": "2024-03-15T03:22:57+00:00"
         },
         {
             "name": "puklipo/laravel-vapor-gzip",
@@ -8110,16 +8110,16 @@
         },
         {
             "name": "composer/class-map-generator",
-            "version": "1.1.0",
+            "version": "1.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/composer/class-map-generator.git",
-                "reference": "953cc4ea32e0c31f2185549c7d216d7921f03da9"
+                "reference": "8286a62d243312ed99b3eee20d5005c961adb311"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/composer/class-map-generator/zipball/953cc4ea32e0c31f2185549c7d216d7921f03da9",
-                "reference": "953cc4ea32e0c31f2185549c7d216d7921f03da9",
+                "url": "https://api.github.com/repos/composer/class-map-generator/zipball/8286a62d243312ed99b3eee20d5005c961adb311",
+                "reference": "8286a62d243312ed99b3eee20d5005c961adb311",
                 "shasum": ""
             },
             "require": {
@@ -8163,7 +8163,7 @@
             ],
             "support": {
                 "issues": "https://github.com/composer/class-map-generator/issues",
-                "source": "https://github.com/composer/class-map-generator/tree/1.1.0"
+                "source": "https://github.com/composer/class-map-generator/tree/1.1.1"
             },
             "funding": [
                 {
@@ -8179,7 +8179,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-06-30T13:58:57+00:00"
+            "time": "2024-03-15T12:53:41+00:00"
         },
         {
             "name": "composer/pcre",
@@ -8730,16 +8730,16 @@
         },
         {
             "name": "laravel-lang/actions",
-            "version": "1.5.2",
+            "version": "1.5.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Laravel-Lang/actions.git",
-                "reference": "7f41ee016c21feaefc90b7e7513976c66177bbce"
+                "reference": "bafb1e18286ff9e5bef0e1435928bc3e5cdbeeb5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Laravel-Lang/actions/zipball/7f41ee016c21feaefc90b7e7513976c66177bbce",
-                "reference": "7f41ee016c21feaefc90b7e7513976c66177bbce",
+                "url": "https://api.github.com/repos/Laravel-Lang/actions/zipball/bafb1e18286ff9e5bef0e1435928bc3e5cdbeeb5",
+                "reference": "bafb1e18286ff9e5bef0e1435928bc3e5cdbeeb5",
                 "shasum": ""
             },
             "require": {
@@ -8791,9 +8791,9 @@
             ],
             "support": {
                 "issues": "https://github.com/Laravel-Lang/actions/issues",
-                "source": "https://github.com/Laravel-Lang/actions/tree/1.5.2"
+                "source": "https://github.com/Laravel-Lang/actions/tree/1.5.3"
             },
-            "time": "2024-02-26T07:17:43+00:00"
+            "time": "2024-03-15T11:13:20+00:00"
         },
         {
             "name": "laravel-lang/attributes",
@@ -9067,16 +9067,16 @@
         },
         {
             "name": "laravel-lang/lang",
-            "version": "14.5.1",
+            "version": "14.5.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Laravel-Lang/lang.git",
-                "reference": "6f351074e472b71b65246b44e81e2cc386ec6575"
+                "reference": "612aab11735197f406fcd74c5833a121278bcd1d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Laravel-Lang/lang/zipball/6f351074e472b71b65246b44e81e2cc386ec6575",
-                "reference": "6f351074e472b71b65246b44e81e2cc386ec6575",
+                "url": "https://api.github.com/repos/Laravel-Lang/lang/zipball/612aab11735197f406fcd74c5833a121278bcd1d",
+                "reference": "612aab11735197f406fcd74c5833a121278bcd1d",
                 "shasum": ""
             },
             "require": {
@@ -9123,7 +9123,7 @@
                 "issues": "https://github.com/Laravel-Lang/lang/issues",
                 "source": "https://github.com/Laravel-Lang/lang"
             },
-            "time": "2024-03-14T08:34:50+00:00"
+            "time": "2024-03-15T08:27:35+00:00"
         },
         {
             "name": "laravel-lang/locale-list",
@@ -12040,5 +12040,5 @@
         "php": "^8.2"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.3.0"
+    "plugin-api-version": "2.6.0"
 }
