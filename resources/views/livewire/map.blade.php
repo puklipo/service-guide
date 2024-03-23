@@ -34,7 +34,6 @@ $prefs = computed(function () {
                     <li class="my-1" wire:key="{{ $area->id }}">
                             <a href="/?pref={{ $pref->id }}&amp;area={{ $area->id }}"
                                class="text-indigo-500 underline">{{ $area->name }}</a>
-                            <livewire:map-service :pref="$pref->id" :area="$area->id" lazy></livewire:map-service>
                     </li>
 
                 @endforeach
