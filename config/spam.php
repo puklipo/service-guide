@@ -2,9 +2,9 @@
 
 //迷惑メール
 return [
-    'hiroki_hamada@e.entrenet.jp',
-    'consulting@allegretto.co.jp',
-    'i.sales@intermind.jp',
-    'sakuraba-takeshi@propolife.co.jp',
-    'project.act@pitpa.jp',
+    '@e.entrenet.jp',
+    '@allegretto.co.jp',
+    '@intermind.jp',
+    '@propolife.co.jp',
+    '@pitpa.jp',
 ];
