@@ -26,10 +26,12 @@ class ContactForm extends Form
             return Http::get('https://grouphome.guide/api/spam')->json();
         });
 
+        $spam = collect($spam)->merge(config('spam'))->unique()->toArray();
+
         return [
             'email' => [
                 'required', 'string', 'lowercase', 'email', 'max:255',
-                Rule::notIn($spam ?? config('spam')),
+                Rule::notIn($spam),
             ],
         ];
     }
