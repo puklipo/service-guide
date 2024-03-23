@@ -19,8 +19,8 @@ class Spammer implements ValidationRule
         $spam = Http::get('https://grouphome.guide/api/spam')
             ->collect()
             ->merge(config('spam'))
-            ->unique()
-            ->map(fn ($mail) => Str::afterLast($mail, '@'));
+            ->map(fn ($mail) => Str::afterLast($mail, '@'))
+            ->unique();
 
         $domain = Str::afterLast($value, '@');
 
