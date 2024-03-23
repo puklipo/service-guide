@@ -22,11 +22,11 @@ class ContactForm extends Form
 
     public function rules(): array
     {
-        $spam = cache()->remember('spam', now()->addDay(), function () {
-            return Http::get('https://grouphome.guide/api/spam')->json();
-        });
-
-        $spam = collect($spam)->merge(config('spam'))->unique()->toArray();
+        $spam = Http::get('https://grouphome.guide/api/spam')
+            ->collect()
+            ->merge(config('spam'))
+            ->unique()
+            ->toArray();
 
         return [
             'email' => [
