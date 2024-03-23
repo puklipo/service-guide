@@ -3,9 +3,8 @@
 namespace App\Livewire\Forms;
 
 use App\Notifications\ContactNotification;
-use Illuminate\Support\Facades\Http;
+use App\Rules\Spammer;
 use Illuminate\Support\Facades\Notification;
-use Illuminate\Validation\Rule;
 use Illuminate\Validation\ValidationException;
 use Livewire\Attributes\Validate;
 use Livewire\Form;
@@ -22,16 +21,10 @@ class ContactForm extends Form
 
     public function rules(): array
     {
-        $spam = Http::get('https://grouphome.guide/api/spam')
-            ->collect()
-            ->merge(config('spam'))
-            ->unique()
-            ->toArray();
-
         return [
             'email' => [
                 'required', 'string', 'lowercase', 'email', 'max:255',
-                Rule::notIn($spam),
+                new Spammer(),
             ],
         ];
     }
