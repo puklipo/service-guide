@@ -16,6 +16,7 @@
         "livewire/volt": "^1.0",
         "maatwebsite/excel": "^3.1",
         "revolution/laravel-str-mixins": "^2.5",
+        "puklipo/laravel-vapor-gzip": "^1.3",
         "spatie/laravel-sitemap": "^7.2.0",
         "torann/json-ld": "^0.0.19"
     },
