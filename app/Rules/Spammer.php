@@ -16,16 +16,18 @@ class Spammer implements ValidationRule
      */
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
-        $spam = Http::get('https://grouphome.guide/api/spam')
+        Http::get('https://grouphome.guide/api/spam')
             ->collect()
             ->merge(config('spam'))
-            ->map(fn ($mail) => Str::afterLast($mail, '@'))
-            ->unique();
+            ->unique()
+            ->each(function ($mail) use ($value, $fail) {
+                if (Str::is($mail, $value)) {
+                    info('Spam: '.$value);
 
-        $domain = Str::afterLast($value, '@');
+                    $fail('');
 
-        if ($spam->contains($domain)) {
-            $fail('');
-        }
+                    return false;
+                }
+            });
     }
 }
