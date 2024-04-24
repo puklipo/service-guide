@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Random\RandomException;
 
 use function Illuminate\Events\queueable;
 
@@ -34,12 +35,15 @@ class Facility extends Model
         'service_id',
     ];
 
+    /**
+     * @throws RandomException
+     */
     protected static function booted(): void
     {
         if (app()->isProduction()) {
             static::created(queueable(function (Facility $facility) {
                 IndexNow::submit(route('facility', $facility));
-            }));
+            })->delay(now()->addMinutes(random_int(1, 10))));
 
             static::updated(queueable(function (Facility $facility) {
                 IndexNow::submit(route('facility', $facility));
