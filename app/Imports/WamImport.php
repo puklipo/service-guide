@@ -9,6 +9,7 @@ use App\Models\Facility;
 use App\Models\Pref;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\Middleware\WithoutOverlapping;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 use Maatwebsite\Excel\Concerns\Importable;
@@ -45,28 +46,30 @@ class WamImport implements OnEachRow, WithHeadingRow, WithChunkReading, SkipsEmp
 
     public function onRow(Row $row): void
     {
-        $pref = $this->pref($row);
+        DB::transaction(function () use ($row) {
+            $pref = $this->pref($row);
 
-        $area = $this->area($row, $pref);
+            $area = $this->area($row, $pref);
 
-        $company = $this->company($row);
+            $company = $this->company($row);
 
-        $data = [
-            'no' => $this->kana($row['事業所番号']),
-            'name' => $this->kana($row['事業所の名称']),
-            'name_kana' => $this->kana($row['事業所の名称_かな']),
-            'tel' => $this->kana($row['事業所電話番号']),
-            'address' => $this->kana($row['事業所住所（番地以降）']),
-            'url' => $row['事業所URL'] ?? '',
-            'pref_id' => $pref->id,
-            'area_id' => $area->id,
-            'service_id' => $this->service_id,
-        ];
+            $data = [
+                'no' => $this->kana($row['事業所番号']),
+                'name' => $this->kana($row['事業所の名称']),
+                'name_kana' => $this->kana($row['事業所の名称_かな']),
+                'tel' => $this->kana($row['事業所電話番号']),
+                'address' => $this->kana($row['事業所住所（番地以降）']),
+                'url' => $row['事業所URL'] ?? '',
+                'pref_id' => $pref->id,
+                'area_id' => $area->id,
+                'service_id' => $this->service_id,
+            ];
 
-        Facility::updateOrCreate([
-            'wam' => $row['NO（※システム内の固有の番号、連番）'],
-            'company_id' => $company->id,
-        ], $data);
+            Facility::updateOrCreate([
+                'wam' => $row['NO（※システム内の固有の番号、連番）'],
+                'company_id' => $company->id,
+            ], $data);
+        });
     }
 
     private function pref($row): Pref
