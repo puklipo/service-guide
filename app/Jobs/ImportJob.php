@@ -3,7 +3,6 @@
 namespace App\Jobs;
 
 use App\Imports\WamImport;
-use Illuminate\Bus\Batchable;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -12,7 +11,7 @@ use Illuminate\Queue\SerializesModels;
 
 class ImportJob implements ShouldQueue
 {
-    use Batchable, Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     /**
      * Create a new job instance.
@@ -29,22 +28,12 @@ class ImportJob implements ShouldQueue
      */
     public function handle(): void
     {
-        if ($this->batch()->cancelled()) {
-            // Determine if the batch has been cancelled...
-
-            return;
-        }
-
         $csv = resource_path('csv/csvdownload0'.$this->id.'.csv');
 
         if (! file_exists($csv)) {
             return;
         }
 
-        try {
-            app(WamImport::class, ['service_id' => $this->id])->import($csv);
-        } catch (\Exception $e) {
-            logger()->error($e->getMessage());
-        }
+        app(WamImport::class, ['service_id' => $this->id])->import($csv);
     }
 }
