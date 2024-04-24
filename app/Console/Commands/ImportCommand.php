@@ -42,24 +42,9 @@ class ImportCommand extends Command
                 return new ImportJob($id);
             });
 
-        $batch = Bus::batch($jobs)
-            ->before(function (Batch $batch) {
-                // The batch has been created but no jobs have been added...
-                info('before : '.$batch->createdAt);
-            })->progress(function (Batch $batch) {
-                // A single job has completed successfully...
-                info('progress : '.$batch->id);
-            })->then(function (Batch $batch) {
-                // All jobs completed successfully...
-                info('then : '.$batch->id);
-            })->catch(function (Batch $batch, Throwable $e) {
-                // First batch job failure detected...
-                info('catch : '.$e->getMessage());
-            })->finally(function (Batch $batch) {
-                // The batch has finished executing...
-                info('finally : '.$batch->finishedAt);
+        Bus::chain($jobs)
+            ->catch(function (Throwable $e) {
+                logger()->error($e->getMessage());
             })->dispatch();
-
-        $this->info($batch->id);
     }
 }
