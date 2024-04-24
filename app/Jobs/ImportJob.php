@@ -34,6 +34,8 @@ class ImportJob implements ShouldQueue
             return;
         }
 
+        info(config('service.'.$this->id));
+
         app(WamImport::class, ['service_id' => $this->id])->import($csv);
     }
 }

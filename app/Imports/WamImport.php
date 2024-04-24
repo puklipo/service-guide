@@ -7,8 +7,6 @@ use App\Models\Area;
 use App\Models\Company;
 use App\Models\Facility;
 use App\Models\Pref;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Queue\Middleware\WithoutOverlapping;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
@@ -22,7 +20,7 @@ use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\WithValidation;
 use Maatwebsite\Excel\Row;
 
-class WamImport implements OnEachRow, WithHeadingRow, WithChunkReading, SkipsEmptyRows, WithValidation, SkipsOnFailure, ShouldQueue
+class WamImport implements OnEachRow, WithHeadingRow, WithChunkReading, SkipsEmptyRows, WithValidation, SkipsOnFailure
 {
     use Importable;
     use WithKana;
@@ -30,7 +28,7 @@ class WamImport implements OnEachRow, WithHeadingRow, WithChunkReading, SkipsEmp
 
     public function __construct(private readonly int $service_id)
     {
-        info(config('service.'.$this->service_id));
+        //
     }
 
     public function rules(): array
@@ -110,10 +108,5 @@ class WamImport implements OnEachRow, WithHeadingRow, WithChunkReading, SkipsEmp
     public function chunkSize(): int
     {
         return 1000;
-    }
-
-    public function middleware(): array
-    {
-        return [(new WithoutOverlapping($this->service_id))->expireAfter(60)];
     }
 }
