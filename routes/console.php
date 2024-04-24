@@ -17,5 +17,3 @@ Artisan::command('sitemap', function () {
 
 Schedule::command(ImportCommand::class)->monthly();
 Schedule::command(DeleteCommand::class)->monthlyOn(2);
-
-Schedule::command('queue:prune-batches')->daily();
