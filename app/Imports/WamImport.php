@@ -8,6 +8,7 @@ use App\Models\Company;
 use App\Models\Facility;
 use App\Models\Pref;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Queue\Middleware\WithoutOverlapping;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 use Maatwebsite\Excel\Concerns\Importable;
@@ -106,5 +107,10 @@ class WamImport implements OnEachRow, WithHeadingRow, WithChunkReading, SkipsEmp
     public function chunkSize(): int
     {
         return 1000;
+    }
+
+    public function middleware(): array
+    {
+        return [new WithoutOverlapping($this->service_id)];
     }
 }
