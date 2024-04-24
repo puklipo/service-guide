@@ -69,7 +69,7 @@ class WamImport implements OnEachRow, WithHeadingRow, WithChunkReading, SkipsEmp
                 'wam' => $row['NO（※システム内の固有の番号、連番）'],
                 'company_id' => $company->id,
             ], $data);
-        });
+        }, attempts: 3);
     }
 
     private function pref($row): Pref
