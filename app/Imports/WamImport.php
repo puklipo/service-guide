@@ -111,6 +111,6 @@ class WamImport implements OnEachRow, WithHeadingRow, WithChunkReading, SkipsEmp
 
     public function middleware(): array
     {
-        return [new WithoutOverlapping($this->service_id)];
+        return [(new WithoutOverlapping($this->service_id))->expireAfter(60)];
     }
 }
