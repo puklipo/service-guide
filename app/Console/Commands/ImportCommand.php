@@ -39,7 +39,7 @@ class ImportCommand extends Command
             ->map(function ($name, $id) {
                 $this->info($name);
 
-                return new ImportJob($id);
+                return (new ImportJob($id))->delay(now()->addMinutes(random_int(1, 10)));
             });
 
         Bus::chain($jobs)
