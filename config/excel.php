@@ -325,7 +325,7 @@ return [
         | and the create file (file).
         |
         */
-        'local_path'          => storage_path('framework/cache/laravel-excel'),
+        'local_path' => isset($_ENV['LAMBDA_TASK_ROOT']) ? sys_get_temp_dir() : storage_path('framework/cache/laravel-excel'),
 
         /*
         |--------------------------------------------------------------------------
@@ -357,7 +357,7 @@ return [
         |
         */
         'remote_disk'         => 's3',
-        'remote_prefix'       => 'excel',
+        'remote_prefix'       => 'tmp/laravel-excel',
 
         /*
         |--------------------------------------------------------------------------
