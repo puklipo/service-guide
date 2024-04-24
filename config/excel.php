@@ -357,7 +357,7 @@ return [
         |
         */
         'remote_disk'         => 's3',
-        'remote_prefix'       => 'tmp/laravel-excel',
+        'remote_prefix'       => 'tmp/laravel-excel/',
 
         /*
         |--------------------------------------------------------------------------
