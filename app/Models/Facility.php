@@ -36,13 +36,15 @@ class Facility extends Model
 
     protected static function booted(): void
     {
-        static::created(queueable(function (Facility $facility) {
-            IndexNow::submit(route('facility', $facility));
-        }));
+        if (app()->isProduction()) {
+            static::created(queueable(function (Facility $facility) {
+                IndexNow::submit(route('facility', $facility));
+            }));
 
-        static::updated(queueable(function (Facility $facility) {
-            IndexNow::submit(route('facility', $facility));
-        }));
+            static::updated(queueable(function (Facility $facility) {
+                IndexNow::submit(route('facility', $facility));
+            }));
+        }
     }
 
     public function pref(): BelongsTo

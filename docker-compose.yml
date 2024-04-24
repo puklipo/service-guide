@@ -25,9 +25,15 @@ services:
             - mysql
             - redis
             - mailpit
+            - queue
     queue:
         image: sail-8.3/app
-        command: php artisan queue:listen
+        environment:
+            WWWUSER: '${WWWUSER}'
+            LARAVEL_SAIL: 1
+        volumes:
+            - '.:/var/www/html'
+        command: php artisan queue:listen --timeout=600
         networks:
             - sail
         depends_on:
