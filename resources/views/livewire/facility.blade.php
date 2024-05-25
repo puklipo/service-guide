@@ -19,7 +19,7 @@ mount(function (Facility $facility) {
     $this->facility = $facility;
 });
 
-title(fn () => $this->facility->name.' ('.$this->facility->service->name.') '. $this->facility->area->address);
+title(fn () => $this->facility->name.' ('.$this->facility->service->name.') '.' - '.$this->facility->area->address);
 
 $facilities = computed(function () {
     return $this->facility->area
@@ -95,8 +95,8 @@ $facilities = computed(function () {
                 <td class="p-1">
                     <a href="https://www.google.com/search?q={{ rawurlencode($facility->name.' site:www.wam.go.jp/sfkohyoout/') }}"
                        class="text-indigo-500 hover:underline" target="_blank" rel="nofollow">Google検索</a> <a
-                        href="https://www.bing.com/search?q={{ rawurlencode($facility->name.' site:www.wam.go.jp/sfkohyoout/') }}"
-                        class="text-indigo-500 hover:underline" target="_blank" rel="nofollow">Bing検索</a></td>
+                            href="https://www.bing.com/search?q={{ rawurlencode($facility->name.' site:www.wam.go.jp/sfkohyoout/') }}"
+                            class="text-indigo-500 hover:underline" target="_blank" rel="nofollow">Bing検索</a></td>
             </tr>
         </table>
     </div>
@@ -136,8 +136,8 @@ $facilities = computed(function () {
             <tr class="border border-indigo-500 divide-x divide-solid divide-indigo-500"
                 wire:key="{{ $facility->id  }}">
                 <td class="p-1 font-bold"><a
-                        href="{{ route('facility', $facility) }}"
-                        class="text-indigo-500 hover:underline">{{ $facility->name }}</a></td>
+                            href="{{ route('facility', $facility) }}"
+                            class="text-indigo-500 hover:underline">{{ $facility->name }}</a></td>
                 <td class="p-1"><a href="{{ route('company', $facility->company) }}"
                                    class="hover:text-indigo-500 hover:underline">{{ $facility->company->name }}</a></td>
             </tr>
