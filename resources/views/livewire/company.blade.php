@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Company;
+
 use function Livewire\Volt\computed;
 use function Livewire\Volt\layout;
 use function Livewire\Volt\mount;
@@ -18,7 +19,7 @@ mount(function (Company $company) {
     $this->company = $company;
 });
 
-title(fn () => $this->company->name);
+title(fn () => $this->company->name.' '.$this->company->area);
 
 $facilities = computed(function () {
     return $this->company->facilities()->simplePaginate(10)->withQueryString();
@@ -54,7 +55,8 @@ $facilities = computed(function () {
                     {{ $company->area }}{{ $company->address }}
                     (<a href="https://www.google.com/maps/search/{{ rawurlencode($company->area.$company->address) }}"
                         target="_blank"
-                        class="text-indigo-500 hover:underline" rel="nofollow">Googleマップ</a>)</td>
+                        class="text-indigo-500 hover:underline" rel="nofollow">Googleマップ</a>)
+                </td>
             </tr>
             <tr class="border border-indigo-500">
                 <th class="bg-indigo-300 dark:bg-indigo-700">URL</th>
@@ -91,8 +93,8 @@ $facilities = computed(function () {
                 wire:key="{{ $facility->id  }}">
                 <td class="p-1">{{ $facility->service->name }}</td>
                 <td class="p-1 font-bold"><a
-                        href="{{ route('facility', $facility) }}"
-                        class="text-indigo-500 hover:underline">{{ $facility->name }}</a></td>
+                            href="{{ route('facility', $facility) }}"
+                            class="text-indigo-500 hover:underline">{{ $facility->name }}</a></td>
                 <td class="p-1">{{ $facility->area->address }}</td>
             </tr>
         @endforeach
