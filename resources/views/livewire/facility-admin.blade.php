@@ -14,12 +14,12 @@ mount(function (Facility $facility) {
 $accept = function () {
     $this->authorize('admin');
     $this->facility->forceFill(['description' => $this->facility->description_draft])->save();
-    $this->redirect(route('facility', $this->facility), navigate: true);
+    $this->redirectRoute('facility', $this->facility, navigate: true);
 }
 ?>
 
-<div>
+<div class="mb-3">
     @if(filled($facility->description_draft))
-        <x-danger-button class="mt-2" wire:click="accept">下書きを承認して公開</x-danger-button>
+        <x-danger-button wire:click="accept">下書きを承認して公開</x-danger-button>
     @endif
 </div>

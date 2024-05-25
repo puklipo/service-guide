@@ -23,7 +23,7 @@ $draft = function () {
         ->notify(new DraftCreated($this->facility));
 }
 ?>
-<div class="py-3">
+<div class="my-3">
     @unless($show_draft)
         <x-secondary-button wire:click="$toggle('show_draft')">事業所情報を編集</x-secondary-button>
     @else

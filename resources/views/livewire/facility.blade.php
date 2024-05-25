@@ -34,6 +34,10 @@ $facilities = computed(function () {
     <div>
         @include('layouts.header')
 
+        @can('admin')
+            <livewire:index-now :url="route('facility', $facility)"/>
+        @endcan
+
         <div>事業所情報</div>
 
         <h2 class="my-3 pt-6 pb-3 px-3 text-4xl bg-indigo-300 dark:bg-indigo-700 border-2 border-indigo-500">

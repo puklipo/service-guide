@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Pref;
+
 use function Livewire\Volt\computed;
 use function Livewire\Volt\layout;
 use function Livewire\Volt\title;
@@ -32,8 +33,8 @@ $prefs = computed(function () {
             <ul class="ml-6 list-disc">
                 @foreach($pref->areas as $area)
                     <li class="my-1" wire:key="{{ $area->id }}">
-                            <a href="/?pref={{ $pref->id }}&amp;area={{ $area->id }}"
-                               class="text-indigo-500 underline">{{ $area->name }}</a>
+                        <a href="/?pref={{ $pref->id }}&amp;area={{ $area->id }}"
+                           class="text-indigo-500 underline">{{ $area->name }}</a>
                     </li>
 
                 @endforeach
