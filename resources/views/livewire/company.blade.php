@@ -19,7 +19,7 @@ mount(function (Company $company) {
     $this->company = $company;
 });
 
-title(fn () => $this->company->name.' '.$this->company->area);
+title(fn () => $this->company->name.' - '.$this->company->area);
 
 $facilities = computed(function () {
     return $this->company->facilities()->simplePaginate(10)->withQueryString();
