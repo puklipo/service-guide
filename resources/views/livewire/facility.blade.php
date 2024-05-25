@@ -19,7 +19,7 @@ mount(function (Facility $facility) {
     $this->facility = $facility;
 });
 
-title(fn () => $this->facility->name.' ('.$this->facility->service->name.')');
+title(fn () => $this->facility->name.' ('.$this->facility->service->name.') '. $this->facility->area->address);
 
 $facilities = computed(function () {
     return $this->facility->area
