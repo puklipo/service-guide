@@ -17,7 +17,7 @@ layout('layouts.app');
 state('facility');
 
 mount(function (Request $request, Facility $facility) {
-    if (filled($request->query('service'))) {
+    if ($request->has('service')) {
         return to_route('facility', $facility, 308);
     }
 
