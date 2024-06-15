@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Facility;
+use Illuminate\Http\Request;
 
 use function Livewire\Volt\computed;
 use function Livewire\Volt\layout;
@@ -15,7 +16,11 @@ layout('layouts.app');
 
 state('facility');
 
-mount(function (Facility $facility) {
+mount(function (Request $request, Facility $facility) {
+    if (filled($request->query('service'))) {
+        return to_route('facility', $facility, 308);
+    }
+
     $this->facility = $facility;
 });
 
