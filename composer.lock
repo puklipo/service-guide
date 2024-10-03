@@ -62,16 +62,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.322.9",
+            "version": "3.322.10",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "0bd7513a7dd9b5330cb92575da99d9057f79b39c"
+                "reference": "0adb58bc7989068b489d320970951163847b520b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/0bd7513a7dd9b5330cb92575da99d9057f79b39c",
-                "reference": "0bd7513a7dd9b5330cb92575da99d9057f79b39c",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/0adb58bc7989068b489d320970951163847b520b",
+                "reference": "0adb58bc7989068b489d320970951163847b520b",
                 "shasum": ""
             },
             "require": {
@@ -154,9 +154,9 @@
             "support": {
                 "forum": "https://forums.aws.amazon.com/forum.jspa?forumID=80",
                 "issues": "https://github.com/aws/aws-sdk-php/issues",
-                "source": "https://github.com/aws/aws-sdk-php/tree/3.322.9"
+                "source": "https://github.com/aws/aws-sdk-php/tree/3.322.10"
             },
-            "time": "2024-10-01T18:23:10+00:00"
+            "time": "2024-10-02T18:14:16+00:00"
         },
         {
             "name": "brick/math",
@@ -8676,16 +8676,16 @@
         },
         {
             "name": "laravel-lang/attributes",
-            "version": "2.10.10",
+            "version": "2.11.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Laravel-Lang/attributes.git",
-                "reference": "96726ba7726cbc2a7d2aa91e60faeb71bac174db"
+                "reference": "b60817d0361ec2fe29f100f76cc9bd0c13a36ec9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Laravel-Lang/attributes/zipball/96726ba7726cbc2a7d2aa91e60faeb71bac174db",
-                "reference": "96726ba7726cbc2a7d2aa91e60faeb71bac174db",
+                "url": "https://api.github.com/repos/Laravel-Lang/attributes/zipball/b60817d0361ec2fe29f100f76cc9bd0c13a36ec9",
+                "reference": "b60817d0361ec2fe29f100f76cc9bd0c13a36ec9",
                 "shasum": ""
             },
             "require": {
@@ -8739,9 +8739,9 @@
             ],
             "support": {
                 "issues": "https://github.com/Laravel-Lang/attributes/issues",
-                "source": "https://github.com/Laravel-Lang/attributes/tree/2.10.10"
+                "source": "https://github.com/Laravel-Lang/attributes/tree/2.11.1"
             },
-            "time": "2024-09-30T19:54:59+00:00"
+            "time": "2024-10-02T14:07:29+00:00"
         },
         {
             "name": "laravel-lang/common",
@@ -9022,16 +9022,16 @@
         },
         {
             "name": "laravel-lang/lang",
-            "version": "15.7.5",
+            "version": "15.8.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Laravel-Lang/lang.git",
-                "reference": "108986615e7f47fbb39f6bf8fe36d302f72afee4"
+                "reference": "361a2b1bbf8078811e4cf2ea52c4e132d6a6f162"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Laravel-Lang/lang/zipball/108986615e7f47fbb39f6bf8fe36d302f72afee4",
-                "reference": "108986615e7f47fbb39f6bf8fe36d302f72afee4",
+                "url": "https://api.github.com/repos/Laravel-Lang/lang/zipball/361a2b1bbf8078811e4cf2ea52c4e132d6a6f162",
+                "reference": "361a2b1bbf8078811e4cf2ea52c4e132d6a6f162",
                 "shasum": ""
             },
             "require": {
@@ -9081,7 +9081,7 @@
                 "issues": "https://github.com/Laravel-Lang/lang/issues",
                 "source": "https://github.com/Laravel-Lang/lang"
             },
-            "time": "2024-09-24T17:12:47+00:00"
+            "time": "2024-10-02T14:08:06+00:00"
         },
         {
             "name": "laravel-lang/locale-list",
@@ -11858,12 +11858,12 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {},
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
         "php": "^8.2"
     },
-    "platform-dev": [],
+    "platform-dev": {},
     "plugin-api-version": "2.6.0"
 }
