@@ -63,7 +63,7 @@ $sendmail = function () {
         @endif
     </div>
 
-    <hr class="my-10 border border-primary">
+    <div class="my-10 divider divider-primary"></div>
 
     <div class="my-20">
         <h2 class="text-3xl my-6">運営者情報</h2>

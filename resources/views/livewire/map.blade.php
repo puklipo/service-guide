@@ -25,21 +25,46 @@ $prefs = computed(function () {
         自治体一覧。ページ内を検索してください。
     </div>
 
-    @foreach($this->prefs as $pref)
-        <div class="text-xl" wire:key="{{ $pref->id }}">
-            <h2 class="text-3xl p-3 bg-primary/50 dark:bg-primary/90 border-2 border-primary" id="{{ $pref->key }}">
-                <a href="/?pref={{ $pref->id }}">{{ $pref->name }}</a>
-            </h2>
-            <ul class="ml-6 list-disc">
-                @foreach($pref->areas as $area)
-                    <li class="my-1" wire:key="{{ $area->id }}">
-                        <a href="/?pref={{ $pref->id }}&amp;area={{ $area->id }}"
-                           class="link link-primary link-animated">{{ $area->name }}</a>
-                    </li>
+    <div id="scrollspy-scrollable-parent">
+        <div class="grid grid-cols-5">
+            <div class="col-span-2 sm:col-span-1 vertical-scrollbar max-h-96">
+                <ul class="text-sm leading-6"
+                    data-scrollspy="#scrollspy"
+                    data-scrollspy-scrollable-parent="#scrollspy-scrollable-parent">
 
-                @endforeach
-            </ul>
+                    @foreach($this->prefs as $pref)
+                        <li class="hover:bg-base-200/50">
+                            <a href="#{{ $pref->key }}"
+                               class="text-base-content/80 hover:text-base-content/90 scrollspy-active:text-primary-content scrollspy-active:bg-primary block rounded-t-md p-2 py-1.5 font-medium">
+                                {{ $pref->name }}
+                            </a>
+                        </li>
+                    @endforeach
+                </ul>
+            </div>
+
+            <div class="col-span-3 sm:col-span-4 vertical-scrollbar max-h-96">
+                <div id="scrollspy" class="space-y-4 pe-1">
+                    @foreach($this->prefs as $pref)
+                        <div wire:key="{{ $pref->id }}" id="{{ $pref->key }}">
+                            <h2 class="text-3xl p-3 mb-3 bg-primary text-primary-content">
+                                <a href="/?pref={{ $pref->id }}">{{ $pref->name }}</a>
+                            </h2>
+                            <ul class="ml-6 list-disc list-inside">
+                                @foreach($pref->areas as $area)
+                                    <li class="mb-2" wire:key="{{ $area->id }}">
+                                        <a href="/?pref={{ $pref->id }}&amp;area={{ $area->id }}"
+                                           class="link link-primary link-animated">{{ $area->name }}</a>
+                                    </li>
+
+                                @endforeach
+                            </ul>
+                        </div>
+
+                    @endforeach
+
+                </div>
+            </div>
         </div>
-
-    @endforeach
+    </div>
 </div>
