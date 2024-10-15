@@ -33,9 +33,11 @@ $facilities = computed(function () {
             <livewire:index-now :url="route('company', $company)"/>
         @endcan
 
-        <div>法人情報</div>
+        <div>
+            <span class="badge badge-soft badge-info">法人情報</span>
+        </div>
 
-        <h2 class="my-3 pt-6 pb-3 px-3 text-4xl bg-primary/50 dark:bg-primary/90 border-2 border-primary">
+        <h2 class="my-3 pt-6 pb-3 px-3 text-4xl text-primary">
             <ruby>
                 {{ $company->name }}
                 <rp>(</rp>
@@ -44,33 +46,33 @@ $facilities = computed(function () {
             </ruby>
         </h2>
 
-        <table class="table-auto w-full border-collapse border-2 border-primary">
-            <tr class="border border-primary">
-                <th class="bg-primary/50 dark:bg-primary/90">法人番号</th>
-                <td class="p-1">{{ $company->id }}</td>
-            </tr>
-            <tr class="border border-primary">
-                <th class="bg-primary/50 dark:bg-primary/90">住所</th>
-                <td class="p-1">
-                    {{ $company->area }}{{ $company->address }}
-                    (<a href="https://www.google.com/maps/search/{{ rawurlencode($company->area.$company->address) }}"
-                        target="_blank"
-                        class="link link-primary link-animated" rel="nofollow">Googleマップ</a>)
-                </td>
-            </tr>
-            <tr class="border border-primary">
-                <th class="bg-primary/50 dark:bg-primary/90">URL</th>
-                <td class="p-1">@if(filled($company->url))
-                        <a href="{{ $company->url }}" class="link link-primary link-animated"
-                           target="_blank" rel="nofollow">{{ Str::limit($company->url, 100) }}</a>
-                    @endif</td>
-            </tr>
-        </table>
+        <div class="border-base-300 w-full border">
+            <table class="table">
+                <tr>
+                    <th class="text-base-content bg-base-200">法人番号</th>
+                    <td>{{ $company->id }}</td>
+                </tr>
+                <tr>
+                    <th class="text-base-content bg-base-200">住所</th>
+                    <td>
+                        {{ $company->area }}{{ $company->address }}
+                        (<a href="https://www.google.com/maps/search/{{ rawurlencode($company->area.$company->address) }}"
+                            target="_blank"
+                            class="link link-primary link-animated" rel="nofollow">Googleマップ</a>)
+                    </td>
+                </tr>
+                <tr>
+                    <th class="text-base-content bg-base-200">URL</th>
+                    <td>@if(filled($company->url))
+                            <a href="{{ $company->url }}" class="link link-primary link-animated"
+                               target="_blank" rel="nofollow">{{ Str::limit($company->url, 100) }}</a>
+                        @endif</td>
+                </tr>
+            </table>
+        </div>
     </div>
 
-    <hr class="my-10 border border-primary">
-
-    <div class="my-3 text-lg">
+    <div class="mt-9 divider divider-start text-md">
         {{ $company->name }}の事業所
     </div>
 
@@ -78,11 +80,11 @@ $facilities = computed(function () {
         {{ $this->facilities->links(data: ['scrollTo' => '#list']) }}
     </div>
 
-    <div class="border-base-content/25 w-full rounded-lg border">
+    <div class="border-base-300 w-full border">
         <div class="overflow-x-auto">
-            <table class="table table-md rounded" id="list">
+            <table class="table table-md" id="list">
                 <thead>
-                <tr>
+                <tr class="*:text-base-content *:bg-base-200">
                     <th>サービス</th>
                     <th>事業所名</th>
                     <th>自治体</th>
@@ -96,7 +98,7 @@ $facilities = computed(function () {
                         <td><a
                                 href="{{ route('facility', $facility) }}"
                                 class="font-bold link link-primary link-animated">{{ $facility->name }}</a></td>
-                        <td>{{ $facility->area->address }}</td>
+                        <td class="break-auto">{{ $facility->area->address }}</td>
                     </tr>
                 @endforeach
                 </tbody>

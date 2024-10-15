@@ -57,47 +57,47 @@
         {{ $this->facilities->links() }}
     </div>
 
-    <div class="border-base-content/25 w-full rounded-lg border">
+    <div class="border-base-300 w-full border">
         <div class="overflow-x-auto">
-        <table class="table table-md rounded">
-            <thead>
-            <tr>
-                <th>サービス</th>
-                <th>事業所名</th>
-                <th>自治体</th>
-                <th>運営法人</th>
-                <th>URL</th>
-                <th>WAM</th>
-            </tr>
-            </thead>
-            <tbody>
-
-            @forelse($this->facilities as $facility)
-                <tr class="hover" wire:key="{{ $facility->id  }}">
-                    <td>{{ $facility->service->name }}</td>
-                    <td><a
-                            href="{{ route('facility', $facility) }}"
-                            class="link link-primary link-animated">{{ $facility->name }}</a></td>
-                    <td>{{ $facility->area->address }}</td>
-                    <td><a href="{{ route('company', $facility->company) }}"
-                                       class="link link-primary link-animated">{{ $facility->company->name }}</a></td>
-                    <td>@if(filled($facility->url))
-                            <a href="{{ $facility->url }}" class="link link-primary link-animated" target="_blank"
-                               rel="nofollow">URL</a>
-                        @endif</td>
-                    <td><a
-                            href="https://www.google.com/search?q={{ rawurlencode($facility->name.' site:www.wam.go.jp/sfkohyoout/') }}"
-                            class="link link-primary link-animated" target="_blank" rel="nofollow">検索</a></td>
+            <table class="table table-md">
+                <thead>
+                <tr class="*:text-base-content *:bg-base-200">
+                    <th>サービス</th>
+                    <th>事業所名</th>
+                    <th>自治体</th>
+                    <th>運営法人</th>
+                    <th>URL</th>
+                    <th>WAM</th>
                 </tr>
-            @empty
-                <div class="my-3 font-bold text-error">事業所は見つかりませんでした。条件を変更して検索してください。
-                </div>
-            @endforelse
+                </thead>
+                <tbody>
 
-            </tbody>
+                @forelse($this->facilities as $facility)
+                    <tr class="hover" wire:key="{{ $facility->id  }}">
+                        <td>{{ $facility->service->name }}</td>
+                        <td><a
+                                href="{{ route('facility', $facility) }}"
+                                class="link link-primary link-animated">{{ $facility->name }}</a></td>
+                        <td>{{ $facility->area->address }}</td>
+                        <td><a href="{{ route('company', $facility->company) }}"
+                               class="link link-primary link-animated">{{ $facility->company->name }}</a></td>
+                        <td>@if(filled($facility->url))
+                                <a href="{{ $facility->url }}" class="link link-primary link-animated" target="_blank"
+                                   rel="nofollow">URL</a>
+                            @endif</td>
+                        <td><a
+                                href="https://www.google.com/search?q={{ rawurlencode($facility->name.' site:www.wam.go.jp/sfkohyoout/') }}"
+                                class="link link-primary link-animated" target="_blank" rel="nofollow">検索</a></td>
+                    </tr>
+                @empty
+                    <div class="my-3 font-bold text-error">事業所は見つかりませんでした。条件を変更して検索してください。
+                    </div>
+                @endforelse
 
-        </table>
-    </div>
+                </tbody>
+
+            </table>
+        </div>
     </div>
 
     <div class="my-3">

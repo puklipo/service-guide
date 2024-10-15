@@ -35,7 +35,8 @@ $sendmail = function () {
             <form wire:submit="sendmail" class="mt-6 space-y-6">
                 <div>
                     <x-input-label for="name" :value="__('名前')"/>
-                    <x-text-input wire:model="form.name" id="name" name="name" type="text" class="mt-1 block w-full" required
+                    <x-text-input wire:model="form.name" id="name" name="name" type="text" class="mt-1 block w-full"
+                                  required
                                   autocomplete="name"/>
                     <x-input-error class="mt-2" :messages="$errors->get('form.name')"/>
                 </div>
@@ -49,7 +50,8 @@ $sendmail = function () {
 
                 <div>
                     <x-input-label for="content" :value="__('メッセージ')"/>
-                    <x-textarea wire:model="form.content" id="content" name="content" type="text" class="mt-1 block w-full"
+                    <x-textarea wire:model="form.content" id="content" name="content" type="text"
+                                class="mt-1 block w-full"
                                 required/>
                     <x-input-error class="mt-2" :messages="$errors->get('form.content')"/>
                 </div>
@@ -65,20 +67,23 @@ $sendmail = function () {
 
     <div class="my-20">
         <h2 class="text-3xl my-6">運営者情報</h2>
-        <table class="table-auto w-full border-collapse border-2 border-primary">
-            <tr class="border border-primary">
-                <th class="bg-primary/50 dark:bg-primary/90">B型事業所</th>
-                <td class="p-1">ポップカルチャースタジオ未来図</td>
-            </tr>
-            <tr class="border border-primary">
-                <th class="bg-primary/50 dark:bg-primary/90">法人</th>
-                <td class="p-1"><a href="{{ route('company', 1290001091513) }}"
-                                   class="link link-primary link-animated">株式会社PayForward</a></td>
-            </tr>
-            <tr class="border border-primary">
-                <th class="bg-primary/50 dark:bg-primary/90">住所</th>
-                <td class="p-1">福岡県福岡市博多区博多駅前3-3-12 第6ダイヨシビル2F</td>
-            </tr>
-        </table>
+
+        <div class="border-base-300 w-full border">
+            <table class="table">
+                <tr>
+                    <th class="text-base-content bg-base-200">B型事業所</th>
+                    <td>ポップカルチャースタジオ未来図</td>
+                </tr>
+                <tr>
+                    <th class="text-base-content bg-base-200">法人</th>
+                    <td><a href="{{ route('company', 1290001091513) }}"
+                           class="link link-primary link-animated">株式会社PayForward</a></td>
+                </tr>
+                <tr>
+                    <th class="text-base-content bg-base-200">住所</th>
+                    <td>福岡県福岡市博多区博多駅前3-3-12 第6ダイヨシビル2F</td>
+                </tr>
+            </table>
+        </div>
     </div>
 </div>

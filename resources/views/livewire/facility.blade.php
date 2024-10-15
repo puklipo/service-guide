@@ -43,9 +43,11 @@ $facilities = computed(function () {
             <livewire:index-now :url="route('facility', $facility)"/>
         @endcan
 
-        <div>事業所情報</div>
+        <div>
+            <span class="badge badge-soft badge-accent">事業所情報</span>
+        </div>
 
-        <h2 class="my-3 pt-6 pb-3 px-3 text-4xl bg-primary/50 dark:bg-primary/90 border-2 border-primary">
+        <h2 class="my-3 pt-6 pb-3 px-3 text-4xl text-primary">
             <ruby>
                 {{ $facility->name ?? '' }}
                 <rp>(</rp>
@@ -54,60 +56,63 @@ $facilities = computed(function () {
             </ruby>
         </h2>
 
-        <table class="table-auto w-full border-collapse border-2 border-primary">
-            <tr class="border border-primary">
-                <th class="bg-primary/50 dark:bg-primary/90">サービス</th>
-                <td class="p-1">{{ $facility->service->name }}@if($facility->service->id === 33)
-                        (<a href="https://grouphome.guide/home/{{ $facility->no }}"
-                            class="link link-primary link-animated" target="_blank">グループホームガイドで調べる</a>)
-                    @endif</td>
-            </tr>
-            <tr class="border border-primary">
-                <th class="bg-primary/50 dark:bg-primary/90">住所</th>
-                <td class="p-1">
-                    {{ $facility->area->address }}{{ $facility->address }}
-                    (<a href="https://www.google.com/maps/search/{{ rawurlencode($facility->area->address.$facility->address) }}"
-                        target="_blank"
-                        class="link link-primary link-animated" rel="nofollow">Googleマップ</a>)
-                </td>
-            </tr>
-            <tr class="border border-primary">
-                <th class="bg-primary/50 dark:bg-primary/90">事業所番号</th>
-                <td class="p-1">{{ $facility->no }}</td>
-            </tr>
-            <tr class="border border-primary">
-                <th class="bg-primary/50 dark:bg-primary/90">運営法人</th>
-                <td class="p-1">
-                    <ruby>
-                        <a href="{{ route('company', $facility->company) }}"
-                           class="link link-primary link-animated">{{ $facility->company->name }}</a>
-                        <rp>(</rp>
-                        <rt class="text-xs">{{ $facility->company->name_kana }}</rt>
-                        <rp>)</rp>
-                    </ruby>
-                    <div class="text-sm">{{ $facility->company->area }}{{ $facility->company->address }}</div>
-                </td>
-            </tr>
-            <tr class="border border-primary">
-                <th class="bg-primary/50 dark:bg-primary/90">URL</th>
-                <td class="p-1">@if(filled($facility->url))
-                        <a href="{{ $facility->url }}" class="link link-primary link-animated"
-                           target="_blank" rel="nofollow">{{ Str::limit($facility->url, 100) }}</a>
-                    @endif</td>
-            </tr>
-            <tr class="border border-primary">
-                <th class="bg-primary/50 dark:bg-primary/90">WAM</th>
-                <td class="p-1">
-                    <a href="https://www.google.com/search?q={{ rawurlencode($facility->name.' site:www.wam.go.jp/sfkohyoout/') }}"
-                       class="link link-primary link-animated" target="_blank" rel="nofollow">Google検索</a> <a
-                        href="https://www.bing.com/search?q={{ rawurlencode($facility->name.' site:www.wam.go.jp/sfkohyoout/') }}"
-                        class="link link-primary link-animated" target="_blank" rel="nofollow">Bing検索</a></td>
-            </tr>
-        </table>
+        <div class="border-base-300 w-full border">
+            <table class="table">
+                <tr>
+                    <th class="text-base-content bg-base-200">サービス</th>
+                    <td>{{ $facility->service->name }}@if($facility->service->id === 33)
+                            (<a href="https://grouphome.guide/home/{{ $facility->no }}"
+                                class="link link-primary link-animated" target="_blank">グループホームガイドで調べる</a>
+                            )
+                        @endif</td>
+                </tr>
+                <tr>
+                    <th class="text-base-content bg-base-200">住所</th>
+                    <td>
+                        {{ $facility->area->address }}{{ $facility->address }}
+                        (<a href="https://www.google.com/maps/search/{{ rawurlencode($facility->area->address.$facility->address) }}"
+                            target="_blank"
+                            class="link link-primary link-animated" rel="nofollow">Googleマップ</a>)
+                    </td>
+                </tr>
+                <tr>
+                    <th class="text-base-content bg-base-200">事業所番号</th>
+                    <td>{{ $facility->no }}</td>
+                </tr>
+                <tr>
+                    <th class="text-base-content bg-base-200">運営法人</th>
+                    <td>
+                        <ruby>
+                            <a href="{{ route('company', $facility->company) }}"
+                               class="link link-primary link-animated">{{ $facility->company->name }}</a>
+                            <rp>(</rp>
+                            <rt class="text-xs">{{ $facility->company->name_kana }}</rt>
+                            <rp>)</rp>
+                        </ruby>
+                        <div class="text-sm">{{ $facility->company->area }}{{ $facility->company->address }}</div>
+                    </td>
+                </tr>
+                <tr>
+                    <th class="text-base-content bg-base-200">URL</th>
+                    <td>@if(filled($facility->url))
+                            <a href="{{ $facility->url }}" class="link link-primary link-animated"
+                               target="_blank" rel="nofollow">{{ Str::limit($facility->url, 100) }}</a>
+                        @endif</td>
+                </tr>
+                <tr>
+                    <th class="text-base-content bg-base-200">WAM</th>
+                    <td>
+                        <a href="https://www.google.com/search?q={{ rawurlencode($facility->name.' site:www.wam.go.jp/sfkohyoout/') }}"
+                           class="link link-primary link-animated" target="_blank" rel="nofollow">Google検索</a> <a
+                            href="https://www.bing.com/search?q={{ rawurlencode($facility->name.' site:www.wam.go.jp/sfkohyoout/') }}"
+                            class="link link-primary link-animated" target="_blank" rel="nofollow">Bing検索</a></td>
+                </tr>
+            </table>
+        </div>
     </div>
 
     @if(filled($facility->description))
-        <div class="p-3 border border-2 border-primary prose prose-indigo dark:prose-invert max-w-none break-auto">
+        <div class="p-3 border border-base-300 prose prose-indigo dark:prose-invert max-w-none break-auto">
             {{ \App\Support\Markdown::escape($facility->description) }}
         </div>
     @endif
@@ -118,9 +123,7 @@ $facilities = computed(function () {
         <livewire:facility-admin :$facility/>
     @endcan
 
-    <hr class="my-10 border border-primary">
-
-    <div class="my-3">
+    <div class="mt-9 divider divider-start text-md">
         {{ $facility->area->address  ?? '' }}の{{ $facility->service->name  ?? '' }}
     </div>
 
@@ -128,11 +131,11 @@ $facilities = computed(function () {
         {{ $this->facilities->links(data: ['scrollTo' => '#area']) }}
     </div>
 
-    <div class="border-base-content/25 w-full rounded-lg border">
+    <div class="border-base-300 w-full border">
         <div class="overflow-x-auto">
-            <table class="table table-md rounded" id="area">
+            <table class="table table-md" id="area">
                 <thead>
-                <tr>
+                <tr class="*:text-base-content *:bg-base-200">
                     <th>事業所名</th>
                     <th>運営法人</th>
                 </tr>

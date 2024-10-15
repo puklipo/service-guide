@@ -26,7 +26,7 @@
         </li>
     </ul>
 
-    <div class="text-sm my-2 p-3 border-base-content/25 bg-neutral-content border rounded-lg">
+    <div class="text-sm my-2 p-3 border-base-300 bg-base-200 border rounded-lg">
         <a href="https://www.wam.go.jp/sfkohyoout/" class="link link-primary link-animated" target="_blank">WAM NET</a>のオープンデータを基にした障害福祉サービスの検索サイトです。自治体ごとの事業所の一覧を表示するまでを目的にしているので各事業所の詳細は公式サイトやWAMを検索してください。事業所の情報を追加することも可能です。共同生活援助は専用の<a
             href="https://grouphome.guide/" class="link link-primary link-animated"
             target="_blank">障害者グループホームガイド</a>もあります。

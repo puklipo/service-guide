@@ -42,8 +42,8 @@ $draft = function () {
                 </div>
 
                 @if(filled($description_draft))
-                    <div class="border border-2 border-primary prose prose-indigo dark:prose-invert max-w-none">
-                        <h3 class="px-3 bg-primary/50 dark:bg-primary/90">プレビュー</h3>
+                    <div class="border border-base-300 prose prose-indigo dark:prose-invert max-w-none">
+                        <h3 class="px-3 bg-base-200">プレビュー</h3>
                         <div class="px-3">
                             {{ \App\Support\Markdown::escape($description_draft) }}
                         </div>
