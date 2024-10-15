@@ -9,6 +9,7 @@ export default {
         './vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php',
         './storage/framework/views/*.php',
         './resources/views/**/*.blade.php',
+        './node_modules/flyonui/dist/js/*.js'
     ],
 
     theme: {
@@ -17,7 +18,7 @@ export default {
                 sans: ['"M PLUS 2"', ...defaultTheme.fontFamily.sans],
             },
             colors: {
-                indigo: colors.emerald
+                blue: colors.indigo,
             },
             typography: (theme) => ({
                 DEFAULT: {
@@ -34,5 +35,21 @@ export default {
         },
     },
 
-    plugins: [forms, typography],
+    flyonui: {
+        themes: [
+            {
+                light: {
+                    ...require("flyonui/src/theming/themes")["light"],
+                    primary: colors.indigo["500"],
+                }
+            }
+        ]
+    },
+
+    plugins: [
+        forms,
+        typography,
+        require("flyonui"),
+        require("flyonui/plugin")
+    ],
 };

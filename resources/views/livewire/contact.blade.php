@@ -18,7 +18,7 @@ $sendmail = function () {
     $this->form->submit();
 }
 ?>
-<div class="text-xl mx-1 sm:mx-10">
+<div class="mx-1 sm:mx-10">
     @include('layouts.header')
 
     <h2 class="text-4xl my-6">問い合わせ</h2>
@@ -61,22 +61,22 @@ $sendmail = function () {
         @endif
     </div>
 
-    <hr class="my-10 border border-indigo-500">
+    <hr class="my-10 border border-primary">
 
     <div class="my-20">
         <h2 class="text-3xl my-6">運営者情報</h2>
-        <table class="table-auto w-full border-collapse border-2 border-indigo-500">
+        <table class="table-auto w-full border-collapse border-2 border-primary">
             <tr class="border border-indigo-500">
-                <th class="bg-indigo-300 dark:bg-indigo-700">B型事業所</th>
+                <th class="bg-primary/50 dark:bg-primary/90">B型事業所</th>
                 <td class="p-1">ポップカルチャースタジオ未来図</td>
             </tr>
-            <tr class="border border-indigo-500">
-                <th class="bg-indigo-300 dark:bg-indigo-700">法人</th>
+            <tr class="border border-primary">
+                <th class="bg-primary/50 dark:bg-primary/90">法人</th>
                 <td class="p-1"><a href="{{ route('company', 1290001091513) }}"
                                    class="text-indigo-500 hover:text-indigo-500 hover:underline">株式会社PayForward</a></td>
             </tr>
-            <tr class="border border-indigo-500">
-                <th class="bg-indigo-300 dark:bg-indigo-700">住所</th>
+            <tr class="border border-primary">
+                <th class="bg-primary/50 dark:bg-primary/90">住所</th>
                 <td class="p-1">福岡県福岡市博多区博多駅前3-3-12 第6ダイヨシビル2F</td>
             </tr>
         </table>

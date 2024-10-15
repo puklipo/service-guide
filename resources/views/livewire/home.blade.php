@@ -57,9 +57,9 @@
         {{ $this->facilities->links() }}
     </div>
 
-    <table class="table-auto w-full border-collapse border-2 border-indigo-500">
+    <table class="table-auto w-full border-collapse border-2 border-primary">
         <thead class="sticky top-0">
-        <tr class="bg-indigo-300 dark:bg-indigo-700 border-b-2 border-indigo-500 divide-x-2 divide-solid divide-indigo-500">
+        <tr class="bg-primary/50 dark:bg-primary/90 border-b-2 border-primary divide-x-2 divide-solid divide-primary">
             <th>サービス</th>
             <th>事業所名</th>
             <th>自治体</th>
@@ -71,25 +71,25 @@
         <tbody>
 
         @forelse($this->facilities as $facility)
-            <tr class="border border-indigo-500 divide-x divide-solid divide-indigo-500"
+            <tr class="border border-primary divide-x divide-solid divide-primary"
                 wire:key="{{ $facility->id  }}">
                 <td class="p-1">{{ $facility->service->name }}</td>
                 <td class="p-1 font-bold"><a
                         href="{{ route('facility', $facility) }}"
-                        class="text-indigo-500 hover:underline">{{ $facility->name }}</a></td>
+                        class="link link-primary link-animated">{{ $facility->name }}</a></td>
                 <td class="p-1">{{ $facility->area->address }}</td>
                 <td class="p-1"><a href="{{ route('company', $facility->company) }}"
-                                   class="hover:text-indigo-500 hover:underline">{{ $facility->company->name }}</a></td>
+                                   class="link link-primary link-animated">{{ $facility->company->name }}</a></td>
                 <td class="p-1">@if(filled($facility->url))
-                        <a href="{{ $facility->url }}" class="text-indigo-500 hover:underline" target="_blank"
+                        <a href="{{ $facility->url }}" class="link link-primary link-animated" target="_blank"
                            rel="nofollow">URL</a>
                     @endif</td>
                 <td class="p-1"><a
                         href="https://www.google.com/search?q={{ rawurlencode($facility->name.' site:www.wam.go.jp/sfkohyoout/') }}"
-                        class="text-indigo-500 hover:underline" target="_blank" rel="nofollow">検索</a></td>
+                        class="link link-primary link-animated" target="_blank" rel="nofollow">検索</a></td>
             </tr>
         @empty
-            <div class="my-3 font-bold text-red-500">事業所は見つかりませんでした。条件を変更して検索してください。</div>
+            <div class="my-3 font-bold text-error">事業所は見つかりませんでした。条件を変更して検索してください。</div>
         @endforelse
 
         </tbody>

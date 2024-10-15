@@ -45,7 +45,7 @@ $facilities = computed(function () {
 
         <div>事業所情報</div>
 
-        <h2 class="my-3 pt-6 pb-3 px-3 text-4xl bg-indigo-300 dark:bg-indigo-700 border-2 border-indigo-500">
+        <h2 class="my-3 pt-6 pb-3 px-3 text-4xl bg-primary/50 dark:bg-primary/90 border-2 border-primary">
             <ruby>
                 {{ $facility->name ?? '' }}
                 <rp>(</rp>
@@ -54,33 +54,33 @@ $facilities = computed(function () {
             </ruby>
         </h2>
 
-        <table class="table-auto w-full border-collapse border-2 border-indigo-500">
-            <tr class="border border-indigo-500">
-                <th class="bg-indigo-300 dark:bg-indigo-700">サービス</th>
+        <table class="table-auto w-full border-collapse border-2 border-primary">
+            <tr class="border border-primary">
+                <th class="bg-primary/50 dark:bg-primary/90">サービス</th>
                 <td class="p-1">{{ $facility->service->name }}@if($facility->service->id === 33)
                         (<a href="https://grouphome.guide/home/{{ $facility->no }}"
-                            class="text-indigo-500 hover:underline" target="_blank">グループホームガイドで調べる</a>)
+                            class="link link-primary link-animated" target="_blank">グループホームガイドで調べる</a>)
                     @endif</td>
             </tr>
-            <tr class="border border-indigo-500">
-                <th class="bg-indigo-300 dark:bg-indigo-700">住所</th>
+            <tr class="border border-primary">
+                <th class="bg-primary/50 dark:bg-primary/90">住所</th>
                 <td class="p-1">
                     {{ $facility->area->address }}{{ $facility->address }}
                     (<a href="https://www.google.com/maps/search/{{ rawurlencode($facility->area->address.$facility->address) }}"
                         target="_blank"
-                        class="text-indigo-500 hover:underline" rel="nofollow">Googleマップ</a>)
+                        class="link link-primary link-animated" rel="nofollow">Googleマップ</a>)
                 </td>
             </tr>
-            <tr class="border border-indigo-500">
-                <th class="bg-indigo-300 dark:bg-indigo-700">事業所番号</th>
+            <tr class="border border-primary">
+                <th class="bg-primary/50 dark:bg-primary/90">事業所番号</th>
                 <td class="p-1">{{ $facility->no }}</td>
             </tr>
-            <tr class="border border-indigo-500">
-                <th class="bg-indigo-300 dark:bg-indigo-700">運営法人</th>
+            <tr class="border border-primary">
+                <th class="bg-primary/50 dark:bg-primary/90">運営法人</th>
                 <td class="p-1">
                     <ruby>
                         <a href="{{ route('company', $facility->company) }}"
-                           class="text-indigo-500 hover:text-indigo-500 hover:underline">{{ $facility->company->name }}</a>
+                           class="link link-primary link-animated">{{ $facility->company->name }}</a>
                         <rp>(</rp>
                         <rt class="text-xs">{{ $facility->company->name_kana }}</rt>
                         <rp>)</rp>
@@ -88,26 +88,26 @@ $facilities = computed(function () {
                     <div class="text-sm">{{ $facility->company->area }}{{ $facility->company->address }}</div>
                 </td>
             </tr>
-            <tr class="border border-indigo-500">
-                <th class="bg-indigo-300 dark:bg-indigo-700">URL</th>
+            <tr class="border border-primary">
+                <th class="bg-primary/50 dark:bg-primary/90">URL</th>
                 <td class="p-1">@if(filled($facility->url))
-                        <a href="{{ $facility->url }}" class="text-indigo-500 hover:underline"
+                        <a href="{{ $facility->url }}" class="link link-primary link-animated"
                            target="_blank" rel="nofollow">{{ Str::limit($facility->url, 100) }}</a>
                     @endif</td>
             </tr>
-            <tr class="border border-indigo-500">
-                <th class="bg-indigo-300 dark:bg-indigo-700">WAM</th>
+            <tr class="border border-primary">
+                <th class="bg-primary/50 dark:bg-primary/90">WAM</th>
                 <td class="p-1">
                     <a href="https://www.google.com/search?q={{ rawurlencode($facility->name.' site:www.wam.go.jp/sfkohyoout/') }}"
-                       class="text-indigo-500 hover:underline" target="_blank" rel="nofollow">Google検索</a> <a
+                       class="link link-primary link-animated" target="_blank" rel="nofollow">Google検索</a> <a
                             href="https://www.bing.com/search?q={{ rawurlencode($facility->name.' site:www.wam.go.jp/sfkohyoout/') }}"
-                            class="text-indigo-500 hover:underline" target="_blank" rel="nofollow">Bing検索</a></td>
+                            class="link link-primary link-animated" target="_blank" rel="nofollow">Bing検索</a></td>
             </tr>
         </table>
     </div>
 
     @if(filled($facility->description))
-        <div class="p-3 border border-2 border-indigo-500 prose prose-indigo dark:prose-invert max-w-none break-auto">
+        <div class="p-3 border border-2 border-primary prose prose-indigo dark:prose-invert max-w-none break-auto">
             {{ \App\Support\Markdown::escape($facility->description) }}
         </div>
     @endif
@@ -118,7 +118,7 @@ $facilities = computed(function () {
         <livewire:facility-admin :$facility/>
     @endcan
 
-    <hr class="my-10 border border-indigo-500">
+    <hr class="my-10 border border-primary">
 
     <div class="my-3">
         {{ $facility->area->address  ?? '' }}の{{ $facility->service->name  ?? '' }}
@@ -128,9 +128,9 @@ $facilities = computed(function () {
         {{ $this->facilities->links(data: ['scrollTo' => '#area']) }}
     </div>
 
-    <table class="table-auto w-full border-collapse border-2 border-indigo-500" id="area">
+    <table class="table-auto w-full border-collapse border-2 border-primary" id="area">
         <thead>
-        <tr class="bg-indigo-300 dark:bg-indigo-700 border-b-2 border-indigo-500 divide-x-2 divide-solid divide-indigo-500">
+        <tr class="bg-primary/50 dark:bg-primary/90 border-b-2 border-primary divide-x-2 divide-solid divide-primary">
             <th>事業所名</th>
             <th>運営法人</th>
         </tr>
@@ -138,13 +138,13 @@ $facilities = computed(function () {
         <tbody>
 
         @foreach($this->facilities as $facility)
-            <tr class="border border-indigo-500 divide-x divide-solid divide-indigo-500"
-                wire:key="{{ $facility->id  }}">
+            <tr class="border border-primary divide-x divide-solid divide-primary"
+                wire:key="{{ $facility->id }}">
                 <td class="p-1 font-bold"><a
                             href="{{ route('facility', $facility) }}"
-                            class="text-indigo-500 hover:underline">{{ $facility->name }}</a></td>
+                            class="link link-primary link-animated">{{ $facility->name }}</a></td>
                 <td class="p-1"><a href="{{ route('company', $facility->company) }}"
-                                   class="hover:text-indigo-500 hover:underline">{{ $facility->company->name }}</a></td>
+                                   class="link link-primary link-animated">{{ $facility->company->name }}</a></td>
             </tr>
         @endforeach
         </tbody>
