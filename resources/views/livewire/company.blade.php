@@ -78,29 +78,32 @@ $facilities = computed(function () {
         {{ $this->facilities->links(data: ['scrollTo' => '#list']) }}
     </div>
 
-    <table class="table-auto w-full border-collapse border-2 border-primary" id="list">
-        <thead>
-        <tr class="bg-primary/50 dark:bg-primary/90 border-b-2 border-primary divide-x-2 divide-solid divide-primary">
-            <th>サービス</th>
-            <th>事業所名</th>
-            <th>自治体</th>
-        </tr>
-        </thead>
-        <tbody>
+    <div class="border-base-content/25 w-full rounded-lg border">
+        <div class="overflow-x-auto">
+            <table class="table table-md rounded" id="list">
+                <thead>
+                <tr>
+                    <th>サービス</th>
+                    <th>事業所名</th>
+                    <th>自治体</th>
+                </tr>
+                </thead>
+                <tbody>
 
-        @foreach($this->facilities as $facility)
-            <tr class="border border-primary divide-x divide-solid divide-primary"
-                wire:key="{{ $facility->id  }}">
-                <td class="p-1">{{ $facility->service->name }}</td>
-                <td class="p-1 font-bold"><a
-                            href="{{ route('facility', $facility) }}"
-                            class="link link-primary link-animated">{{ $facility->name }}</a></td>
-                <td class="p-1">{{ $facility->area->address }}</td>
-            </tr>
-        @endforeach
-        </tbody>
+                @foreach($this->facilities as $facility)
+                    <tr wire:key="{{ $facility->id  }}">
+                        <td>{{ $facility->service->name }}</td>
+                        <td><a
+                                href="{{ route('facility', $facility) }}"
+                                class="font-bold link link-primary link-animated">{{ $facility->name }}</a></td>
+                        <td>{{ $facility->area->address }}</td>
+                    </tr>
+                @endforeach
+                </tbody>
 
-    </table>
+            </table>
+        </div>
+    </div>
 
     <div class="my-3">
         {{ $this->facilities->links(data: ['scrollTo' => '#list']) }}

@@ -100,8 +100,8 @@ $facilities = computed(function () {
                 <td class="p-1">
                     <a href="https://www.google.com/search?q={{ rawurlencode($facility->name.' site:www.wam.go.jp/sfkohyoout/') }}"
                        class="link link-primary link-animated" target="_blank" rel="nofollow">Google検索</a> <a
-                            href="https://www.bing.com/search?q={{ rawurlencode($facility->name.' site:www.wam.go.jp/sfkohyoout/') }}"
-                            class="link link-primary link-animated" target="_blank" rel="nofollow">Bing検索</a></td>
+                        href="https://www.bing.com/search?q={{ rawurlencode($facility->name.' site:www.wam.go.jp/sfkohyoout/') }}"
+                        class="link link-primary link-animated" target="_blank" rel="nofollow">Bing検索</a></td>
             </tr>
         </table>
     </div>
@@ -128,28 +128,31 @@ $facilities = computed(function () {
         {{ $this->facilities->links(data: ['scrollTo' => '#area']) }}
     </div>
 
-    <table class="table-auto w-full border-collapse border-2 border-primary" id="area">
-        <thead>
-        <tr class="bg-primary/50 dark:bg-primary/90 border-b-2 border-primary divide-x-2 divide-solid divide-primary">
-            <th>事業所名</th>
-            <th>運営法人</th>
-        </tr>
-        </thead>
-        <tbody>
+    <div class="border-base-content/25 w-full rounded-lg border">
+        <div class="overflow-x-auto">
+            <table class="table table-md rounded" id="area">
+                <thead>
+                <tr>
+                    <th>事業所名</th>
+                    <th>運営法人</th>
+                </tr>
+                </thead>
+                <tbody>
 
-        @foreach($this->facilities as $facility)
-            <tr class="border border-primary divide-x divide-solid divide-primary"
-                wire:key="{{ $facility->id }}">
-                <td class="p-1 font-bold"><a
-                            href="{{ route('facility', $facility) }}"
-                            class="link link-primary link-animated">{{ $facility->name }}</a></td>
-                <td class="p-1"><a href="{{ route('company', $facility->company) }}"
-                                   class="link link-primary link-animated">{{ $facility->company->name }}</a></td>
-            </tr>
-        @endforeach
-        </tbody>
+                @foreach($this->facilities as $facility)
+                    <tr wire:key="{{ $facility->id }}">
+                        <td><a
+                                href="{{ route('facility', $facility) }}"
+                                class="font-bold link link-primary link-animated">{{ $facility->name }}</a></td>
+                        <td><a href="{{ route('company', $facility->company) }}"
+                               class="link link-primary link-animated">{{ $facility->company->name }}</a></td>
+                    </tr>
+                @endforeach
+                </tbody>
 
-    </table>
+            </table>
+        </div>
+    </div>
 
     <div class="my-3">
         {{ $this->facilities->links(data: ['scrollTo' => '#area']) }}

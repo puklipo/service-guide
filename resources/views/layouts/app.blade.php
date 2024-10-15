@@ -22,14 +22,14 @@
         @includeIf('layouts.ads')
     </head>
     <body class="font-sans antialiased relative">
-        <div class="min-h-screen bg-white dark:bg-gray-900 text-black dark:text-white">
+        <div class="min-h-screen bg-base-100 text-base-content">
             @auth
             <livewire:layout.navigation />
             @endauth
 
             <!-- Page Heading -->
             @if (isset($header))
-                <header class="bg-white dark:bg-gray-800 shadow">
+                <header class="bg-base-100 shadow">
                     <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
                         {{ $header }}
                     </div>

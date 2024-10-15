@@ -41,6 +41,11 @@ export default {
                 light: {
                     ...require("flyonui/src/theming/themes")["light"],
                     primary: colors.indigo["500"],
+                },
+                dark: {
+                    ...require("flyonui/src/theming/themes")["dark"],
+                    primary: colors.indigo["500"],
+                    'base-100': '#000',
                 }
             }
         ]
