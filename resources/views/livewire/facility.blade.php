@@ -56,7 +56,7 @@ $facilities = computed(function () {
             </ruby>
         </h2>
 
-        <div class="border-base-300 w-full border">
+        <div class="border-base-300 w-full overflow-x-auto border">
             <table class="table">
                 <tr>
                     <th class="text-base-content bg-base-200">サービス</th>
