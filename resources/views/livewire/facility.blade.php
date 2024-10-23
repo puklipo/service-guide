@@ -107,7 +107,9 @@ $facilities = computed(function () {
                 <tr>
                     <th class="text-base-content bg-base-200">基本情報更新日</th>
                     <td>
-                        {{ config('wam.last_updated') }}時点のデータを表示しています。データは半年ごとに更新されるので最新の情報はWAMのページを検索して確認してください。
+                        <div class="text-xs text-pretty">
+                            {{ config('wam.last_updated') }}時点のデータを表示しています。最新の情報はWAMのページを検索して確認してください。
+                        </div>
                     </td>
                 </tr>
             </table>

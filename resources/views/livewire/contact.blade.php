@@ -81,7 +81,7 @@ $sendmail = function () {
                 </tr>
                 <tr>
                     <th class="text-base-content bg-base-200">住所</th>
-                    <td>福岡県福岡市博多区博多駅前3-3-12 第6ダイヨシビル2F</td>
+                    <td class="text-pretty">福岡県福岡市博多区博多駅前3-3-12 第6ダイヨシビル2F</td>
                 </tr>
             </table>
         </div>
