@@ -55,10 +55,7 @@ $facilities = computed(function () {
                 <tr>
                     <th class="text-base-content bg-base-200">住所</th>
                     <td>
-                        {{ $company->area }}{{ $company->address }}
-                        (<a href="https://www.google.com/maps/search/{{ rawurlencode($company->area.$company->address) }}"
-                            target="_blank"
-                            class="link link-primary link-animated" rel="nofollow">Googleマップ</a>)
+                        {{ $company->area }}
                     </td>
                 </tr>
                 <tr>
@@ -67,6 +64,12 @@ $facilities = computed(function () {
                             <a href="{{ $company->url }}" class="link link-primary link-animated"
                                target="_blank" rel="nofollow">{{ Str::limit($company->url, 100) }}</a>
                         @endif</td>
+                </tr>
+                <tr>
+                    <th class="text-base-content bg-base-200">基本情報更新日</th>
+                    <td>
+                        {{ config('wam.last_updated') }}時点のデータを表示しています。データは半年ごとに更新されるので最新の情報はWAMのページを検索して確認してください。
+                    </td>
                 </tr>
             </table>
         </div>

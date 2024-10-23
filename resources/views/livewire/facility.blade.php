@@ -69,10 +69,7 @@ $facilities = computed(function () {
                 <tr>
                     <th class="text-base-content bg-base-200">住所</th>
                     <td>
-                        {{ $facility->area->address }}{{ $facility->address }}
-                        (<a href="https://www.google.com/maps/search/{{ rawurlencode($facility->area->address.$facility->address) }}"
-                            target="_blank"
-                            class="link link-primary link-animated" rel="nofollow">Googleマップ</a>)
+                        {{ $facility->area->address }}
                     </td>
                 </tr>
                 <tr>
@@ -89,7 +86,7 @@ $facilities = computed(function () {
                             <rt class="text-xs">{{ $facility->company->name_kana }}</rt>
                             <rp>)</rp>
                         </ruby>
-                        <div class="text-sm">{{ $facility->company->area }}{{ $facility->company->address }}</div>
+                        <div class="text-sm">{{ $facility->company->area }}</div>
                     </td>
                 </tr>
                 <tr>
@@ -106,6 +103,12 @@ $facilities = computed(function () {
                            class="link link-primary link-animated" target="_blank" rel="nofollow">Google検索</a> <a
                             href="https://www.bing.com/search?q={{ rawurlencode($facility->name.' site:www.wam.go.jp/sfkohyoout/') }}"
                             class="link link-primary link-animated" target="_blank" rel="nofollow">Bing検索</a></td>
+                </tr>
+                <tr>
+                    <th class="text-base-content bg-base-200">基本情報更新日</th>
+                    <td>
+                        {{ config('wam.last_updated') }}時点のデータを表示しています。データは半年ごとに更新されるので最新の情報はWAMのページを検索して確認してください。
+                    </td>
                 </tr>
             </table>
         </div>
