@@ -47,6 +47,7 @@ class WamImport implements OnEachRow, WithHeadingRow, WithChunkReading, SkipsEmp
 
         if (empty($pref) || $pref->doesntExist()) {
             info('import', $row->toArray());
+
             return;
         }
 
