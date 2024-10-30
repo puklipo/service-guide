@@ -45,6 +45,11 @@ class WamImport implements OnEachRow, WithHeadingRow, WithChunkReading, SkipsEmp
     {
         $pref = $this->pref($row);
 
+        if (empty($pref) || $pref->doesntExist()) {
+            info('import', $row->toArray());
+            return;
+        }
+
         $area = $this->area($row, $pref);
 
         $company = $this->company($row);
@@ -67,7 +72,7 @@ class WamImport implements OnEachRow, WithHeadingRow, WithChunkReading, SkipsEmp
         ], $data);
     }
 
-    private function pref($row): Pref
+    private function pref($row): ?Pref
     {
         $area_code = $row['都道府県コード又は市区町村コード'];
 
