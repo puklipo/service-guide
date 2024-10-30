@@ -2,6 +2,8 @@
 
 return [
     'description_default' => '
+### 住所
+
 ### 電話番号
 
 ### 問い合わせ方法
