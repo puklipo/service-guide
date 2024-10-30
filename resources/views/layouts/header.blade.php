@@ -10,13 +10,15 @@
                 ホーム
             </a>
         </li>
-        <li>
-            <a href="{{ route('contact') }}" aria-label="問い合わせ"
-               class="{{ request()->routeIs('contact') ? 'active' : '' }}">
-                <span class="icon-[tabler--mail] size-5"></span>
-                問い合わせ
-            </a>
-        </li>
+        @if(Route::has('contact'))
+            <li>
+                <a href="{{ route('contact') }}" aria-label="問い合わせ"
+                   class="{{ request()->routeIs('contact') ? 'active' : '' }}">
+                    <span class="icon-[tabler--mail] size-5"></span>
+                    問い合わせ
+                </a>
+            </li>
+        @endif
         <li>
             <a href="{{ route('map') }}" aria-label="サイトマップ"
                class="{{ request()->routeIs('map') ? 'active' : '' }}">

@@ -40,8 +40,6 @@
             <main>
                 {{ $slot }}
             </main>
-
-            @include('layouts.footer')
         </div>
 
     <x-back-to-top/>
