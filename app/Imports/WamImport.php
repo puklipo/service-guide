@@ -36,7 +36,7 @@ class WamImport implements OnEachRow, WithHeadingRow, WithChunkReading, SkipsEmp
             '事業所番号' => ['required', 'numeric', 'between:100000000,4800000000', Rule::notIn(config('deleted'))],
             '事業所の名称' => 'required',
             'NO（※システム内の固有の番号、連番）' => 'required',
-            '都道府県コード又は市区町村コード' => 'required',
+            '都道府県コード又は市区町村コード' => ['required', 'size:5'],
             '法人番号' => ['required', 'digits:13', 'numeric', 'doesnt_start_with:0'],
         ];
     }
