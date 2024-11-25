@@ -1,3 +1,5 @@
-FROM laravelphp/vapor:php84
+ARG VERSION=php83
+
+FROM laravelphp/vapor:${VERSION}
 
 COPY . /var/task

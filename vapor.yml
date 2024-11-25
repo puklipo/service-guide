@@ -5,6 +5,8 @@ environments:
         memory: 1024
         cli-memory: 512
         runtime: docker
+        docker-build-args:
+          VERSION: php83
         warm: 5
         domain: service.grouphome.guide
         database: grouphome
@@ -23,6 +25,8 @@ environments:
         memory: 1024
         cli-memory: 512
         runtime: docker
+        docker-build-args:
+          VERSION: php83
         database: grouphome
         storage: pcs-service-guide-staging
         scheduler: false
