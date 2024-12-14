@@ -1,4 +1,4 @@
-ARG VERSION=php83
+ARG VERSION=php84
 
 FROM laravelphp/vapor:${VERSION}
 
