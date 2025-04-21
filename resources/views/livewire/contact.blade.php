@@ -68,7 +68,7 @@ $sendmail = function () {
     <div class="my-20">
         <h2 class="text-3xl my-6">運営者情報</h2>
 
-        <div class="border-base-300 w-full border">
+        <div class="border-base-300 w-full border border-gray-200">
             <table class="table">
                 <tr>
                     <th class="text-base-content bg-base-200">B型事業所</th>

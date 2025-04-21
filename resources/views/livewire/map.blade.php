@@ -25,17 +25,17 @@ $prefs = computed(function () {
         自治体一覧。ページ内を検索してください。
     </div>
 
-    <div id="scrollspy-scrollable-parent">
+    <div id="scrollspy-scrollable-parent" class=" overflow-y-auto max-h-96">
         <div class="grid grid-cols-5">
-            <div class="col-span-2 sm:col-span-1 vertical-scrollbar max-h-96">
-                <ul class="text-sm leading-6"
+            <div class="col-span-2 sm:col-span-1">
+                <ul class="sticky top-0 text-sm leading-6 overflow-y-auto max-h-96"
                     data-scrollspy="#scrollspy"
                     data-scrollspy-scrollable-parent="#scrollspy-scrollable-parent">
 
                     @foreach($this->prefs as $pref)
                         <li class="hover:bg-base-200/50">
                             <a href="#{{ $pref->key }}"
-                               class="text-base-content/80 hover:text-base-content/90 scrollspy-active:text-primary-content scrollspy-active:bg-primary block rounded-t-md p-2 py-1.5 font-medium">
+                               class="text-base-content/80 hover:text-base-content/90 scrollspy-active:text-primary scrollspy-active:bg-primary-content block p-2 py-1.5 font-medium">
                                 {{ $pref->name }}
                             </a>
                         </li>
@@ -43,7 +43,7 @@ $prefs = computed(function () {
                 </ul>
             </div>
 
-            <div class="col-span-3 sm:col-span-4 vertical-scrollbar max-h-96">
+            <div class="col-span-3 sm:col-span-4">
                 <div id="scrollspy" class="space-y-4 pe-1">
                     @foreach($this->prefs as $pref)
                         <div wire:key="{{ $pref->id }}" id="{{ $pref->key }}">

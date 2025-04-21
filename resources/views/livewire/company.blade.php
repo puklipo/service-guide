@@ -46,7 +46,7 @@ $facilities = computed(function () {
             </ruby>
         </h2>
 
-        <div class="border-base-300 w-full overflow-x-auto border">
+        <div class="border-base-300 w-full overflow-x-auto border border-gray-200">
             <table class="table">
                 <tr>
                     <th class="text-base-content bg-base-200">法人番号</th>
@@ -85,7 +85,7 @@ $facilities = computed(function () {
         {{ $this->facilities->links(data: ['scrollTo' => '#list']) }}
     </div>
 
-    <div class="border-base-300 w-full border">
+    <div class="border-base-300 w-full border border-gray-200">
         <div class="overflow-x-auto">
             <table class="table table-md" id="list">
                 <thead>

@@ -57,7 +57,7 @@
         {{ $this->facilities->links() }}
     </div>
 
-    <div class="border-base-300 w-full border">
+    <div class="border-base-300 w-full border border-gray-200">
         <div class="overflow-x-auto">
             <table class="table table-md">
                 <thead>
