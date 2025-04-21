@@ -6,14 +6,16 @@
         "build": "vite build"
     },
     "devDependencies": {
+        "@iconify-json/tabler": "^1.2.17",
+        "@iconify/tailwind4": "^1.0.6",
         "@tailwindcss/forms": "^0.5.2",
+        "@tailwindcss/vite": "^4.1.4",
         "@tailwindcss/typography": "^0.5.10",
-        "autoprefixer": "^10.4.2",
         "axios": "^1.6.1",
-        "flyonui": "^1.1.0",
+        "flyonui": "^2.1.0",
         "laravel-vite-plugin": "^1.1.0",
         "postcss": "^8.4.6",
-        "tailwindcss": "^3.1.0",
+        "tailwindcss": "^4.1.4",
         "vite": "^6.0.0"
     }
 }
