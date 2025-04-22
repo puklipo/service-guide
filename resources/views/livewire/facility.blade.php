@@ -44,7 +44,7 @@ $facilities = computed(function () {
         @endcan
 
         <div>
-            <span class="badge badge-soft badge-secondary">事業所情報</span>
+            <span class="badge badge-soft badge-info">事業所情報</span>
         </div>
 
         <h2 class="my-3 pt-6 pb-3 px-3 text-4xl text-primary">
@@ -117,7 +117,7 @@ $facilities = computed(function () {
     </div>
 
     @if(filled($facility->description))
-        <div class="p-3 border border-base-300 prose prose-indigo dark:prose-invert max-w-none break-auto">
+        <div class="p-3 border border-gray-200 prose prose-indigo dark:prose-invert max-w-none break-auto">
             {{ \App\Support\Markdown::escape($facility->description) }}
         </div>
     @endif
