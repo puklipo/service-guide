@@ -44,7 +44,7 @@ $facilities = computed(function () {
         @endcan
 
         <div>
-            <span class="badge badge-soft badge-accent">事業所情報</span>
+            <span class="badge badge-soft badge-secondary">事業所情報</span>
         </div>
 
         <h2 class="my-3 pt-6 pb-3 px-3 text-4xl text-primary">

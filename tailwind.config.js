@@ -16,21 +16,6 @@ export default {
             fontFamily: {
                 sans: ['"M PLUS 2"', ...defaultTheme.fontFamily.sans],
             },
-            colors: {
-                blue: colors.indigo,
-            },
-            typography: (theme) => ({
-                DEFAULT: {
-                    css: {
-                        a: {
-                            color: theme('colors.indigo.500'),
-                            '&:hover': {
-                                color: theme('colors.indigo.400'),
-                            },
-                        },
-                    },
-                },
-            }),
         },
     },
 
