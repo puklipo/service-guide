@@ -3,46 +3,57 @@
         @include('layouts.header')
 
         <div>
-            <form class="grid grid-cols-2 sm:grid-flow-col sm:grid-cols-auto gap-2">
-                <x-select name="pref" wire:model.live="pref">
-                    <option value="">都道府県</option>
-                    <hr>
-                    @foreach($this->prefs as $pre)
-                        <option value="{{ $pre->id }}">{{ $pre->name }} ({{ $pre->facilities_count }})</option>
-                        @if(in_array($pre->id, [1, 7, 14, 23, 30, 35, 39]))
-                            <hr>
-                        @endif
-                    @endforeach
-                </x-select>
-
-                <x-select name="area" wire:model.live="area" :disabled="blank($pref)">
-                    <option value="">自治体</option>
-                    @if(filled($this->areas))
+            <form class="grid grid-cols-2 sm:grid-flow-col sm:grid-cols-auto gap-3">
+                <div class="select-floating">
+                    <x-select name="pref" wire:model.live="pref" id="pref">
+                        <option value="">すべて</option>
                         <hr>
-                        @foreach($this->areas as $area)
-                            <option value="{{ $area->id }}">{{ $area->name }} ({{ $area->facilities_count }})</option>
+                        @foreach($this->prefs as $pre)
+                            <option value="{{ $pre->id }}">{{ $pre->name }} ({{ $pre->facilities_count }})</option>
+                            @if(in_array($pre->id, [1, 7, 14, 23, 30, 35, 39]))
+                                <hr>
+                            @endif
                         @endforeach
-                    @endif
-                </x-select>
+                    </x-select>
+                    <label class="select-floating-label" for="pref">都道府県</label>
+                </div>
 
-                <x-select name="service" wire:model.live="service">
-                    <option value="">サービス</option>
-                    <hr>
-                    @foreach($this->services as $service)
-                        <option value="{{ $service->id }}" wire:key="{{ $service->id }}">{{ $service->name }}
-                            ({{ $service->facilities_count }})
-                        </option>
-                    @endforeach
-                </x-select>
+                <div class="select-floating">
+                    <x-select name="area" wire:model.live="area" id="area" :disabled="blank($pref)">
+                        <option value="">すべて</option>
+                        @if(filled($this->areas))
+                            <hr>
+                            @foreach($this->areas as $area)
+                                <option value="{{ $area->id }}">{{ $area->name }} ({{ $area->facilities_count }})
+                                </option>
+                            @endforeach
+                        @endif
+                    </x-select>
+                    <label class="select-floating-label" for="area">自治体</label>
+                </div>
 
-                <x-select name="limit" wire:model.live="limit">
-                    <option value="" disabled>表示件数</option>
-                    <hr>
-                    <option value="50">50</option>
-                    <option value="100" selected>100</option>
-                    <option value="500">500</option>
-                    <option value="1000">1000</option>
-                </x-select>
+                <div class="select-floating">
+                    <x-select name="service" wire:model.live="service" id="service">
+                        <option value="">すべて</option>
+                        <hr>
+                        @foreach($this->services as $service)
+                            <option value="{{ $service->id }}" wire:key="{{ $service->id }}">{{ $service->name }}
+                                ({{ $service->facilities_count }})
+                            </option>
+                        @endforeach
+                    </x-select>
+                    <label class="select-floating-label" for="service">サービス</label>
+                </div>
+
+                <div class="select-floating">
+                    <x-select name="limit" wire:model.live="limit" id="limit">
+                        <option value="50">50</option>
+                        <option value="100" selected>100</option>
+                        <option value="500">500</option>
+                        <option value="1000">1000</option>
+                    </x-select>
+                    <label class="select-floating-label" for="limit">表示件数</label>
+                </div>
             </form>
         </div>
     </div>
