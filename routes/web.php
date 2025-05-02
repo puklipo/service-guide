@@ -15,8 +15,6 @@ Volt::route('c/{company}', 'company')
     ->name('company')
     ->whereNumber('company');
 
-//Volt::route('contact', 'contact')->name('contact');
-
 Volt::route('map', 'map')->name('map');
 
 Route::get('sitemap.xml', SitemapController::class)->name('sitemap');
