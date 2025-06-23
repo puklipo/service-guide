@@ -11,12 +11,11 @@ class ServiceTest extends TestCase
 {
     use RefreshDatabase;
 
+    protected $seed = true;
+
     public function test_service_can_be_created(): void
     {
-        $service = Service::factory()->create([
-            'id' => 11,
-            'name' => '居宅介護',
-        ]);
+        $service = Service::find(11); // 居宅介護
 
         $this->assertDatabaseHas('services', [
             'id' => 11,
@@ -36,7 +35,7 @@ class ServiceTest extends TestCase
 
     public function test_service_has_many_facilities(): void
     {
-        $service = Service::factory()->create();
+        $service = Service::find(11); // 居宅介護
         $facility1 = Facility::factory()->create(['service_id' => $service->id]);
         $facility2 = Facility::factory()->create(['service_id' => $service->id]);
 
@@ -47,7 +46,7 @@ class ServiceTest extends TestCase
 
     public function test_service_factory_creates_valid_service(): void
     {
-        $service = Service::factory()->create();
+        $service = Service::find(11); // Use existing seeded service
 
         $this->assertNotNull($service->id);
         $this->assertNotNull($service->name);

@@ -31,10 +31,14 @@ class FacilityFactory extends Factory
             'tel' => $this->faker->optional()->phoneNumber(),
             'url' => $this->faker->optional()->url(),
             'no' => $this->faker->optional()->numerify('###'),
-            'pref_id' => Pref::factory(),
+            'pref_id' => function () {
+                return Pref::inRandomOrder()->first()?->id ?? Pref::factory()->create()->id;
+            },
             'area_id' => Area::factory(),
             'company_id' => Company::factory(),
-            'service_id' => Service::factory(),
+            'service_id' => function () {
+                return Service::inRandomOrder()->first()?->id ?? Service::factory()->create()->id;
+            },
             'created_at' => now(),
             'updated_at' => now(),
         ];

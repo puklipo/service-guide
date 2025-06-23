@@ -14,6 +14,8 @@ class FacilityControllerTest extends TestCase
 {
     use RefreshDatabase;
 
+    protected $seed = true;
+
     public function test_api_returns_all_facilities_without_filters(): void
     {
         Facility::factory()->count(5)->create();
@@ -41,8 +43,8 @@ class FacilityControllerTest extends TestCase
 
     public function test_api_filters_facilities_by_service_name(): void
     {
-        $service1 = Service::factory()->create(['name' => '居宅介護']);
-        $service2 = Service::factory()->create(['name' => '重度訪問介護']);
+        $service1 = Service::find(11); // 居宅介護
+        $service2 = Service::find(12); // 重度訪問介護
 
         Facility::factory()->count(3)->create(['service_id' => $service1->id]);
         Facility::factory()->count(2)->create(['service_id' => $service2->id]);
@@ -60,8 +62,8 @@ class FacilityControllerTest extends TestCase
 
     public function test_api_filters_facilities_by_pref_name(): void
     {
-        $pref1 = Pref::factory()->create(['name' => '東京都']);
-        $pref2 = Pref::factory()->create(['name' => '大阪府']);
+        $pref1 = Pref::where('key', 'tokyo')->first(); // 東京都
+        $pref2 = Pref::where('key', 'osaka')->first(); // 大阪府
 
         Facility::factory()->count(3)->create(['pref_id' => $pref1->id]);
         Facility::factory()->count(2)->create(['pref_id' => $pref2->id]);
@@ -98,9 +100,9 @@ class FacilityControllerTest extends TestCase
 
     public function test_api_combines_multiple_filters(): void
     {
-        $pref = Pref::factory()->create(['name' => '東京都']);
+        $pref = Pref::where('key', 'tokyo')->first(); // 東京都
         $area = Area::factory()->create(['name' => '渋谷区', 'pref_id' => $pref->id]);
-        $service = Service::factory()->create(['name' => '居宅介護']);
+        $service = Service::find(11); // 居宅介護
 
         // Facilities that match all criteria
         Facility::factory()->count(2)->create([
@@ -121,14 +123,14 @@ class FacilityControllerTest extends TestCase
 
     public function test_api_returns_correct_facility_resource_structure(): void
     {
-        $pref = Pref::factory()->create(['name' => '東京都']);
+        $pref = Pref::where('key', 'tokyo')->first(); // 東京都
         $area = Area::factory()->create([
             'name' => '渋谷区',
             'address' => '東京都渋谷区',
             'pref_id' => $pref->id,
         ]);
         $company = Company::factory()->create(['name' => '株式会社テスト']);
-        $service = Service::factory()->create(['name' => '居宅介護']);
+        $service = Service::find(11); // 居宅介護
 
         $facility = Facility::factory()->create([
             'name' => 'テスト施設',
@@ -191,8 +193,8 @@ class FacilityControllerTest extends TestCase
 
     public function test_api_handles_partial_matches_with_like_operator(): void
     {
-        $service = Service::factory()->create(['name' => '居宅介護サービス']);
-        $pref = Pref::factory()->create(['name' => '東京都']);
+        $service = Service::find(11); // 居宅介護 (will match partial '居宅介護')
+        $pref = Pref::where('key', 'tokyo')->first(); // 東京都
         $area = Area::factory()->create(['name' => '渋谷区']);
 
         Facility::factory()->create(['service_id' => $service->id]);
@@ -239,7 +241,7 @@ class FacilityControllerTest extends TestCase
 
     public function test_api_maintains_query_string_in_pagination(): void
     {
-        $service = Service::factory()->create(['name' => '居宅介護']);
+        $service = Service::find(11); // 居宅介護
         Facility::factory()->count(20)->create(['service_id' => $service->id]);
 
         $response = $this->getJson('/api/facilities?service=居宅介護');

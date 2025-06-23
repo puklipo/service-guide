@@ -15,6 +15,8 @@ class HomeTest extends TestCase
 {
     use RefreshDatabase;
 
+    protected $seed = true;
+
     public function test_home_component_can_render(): void
     {
         Livewire::test(Home::class)
@@ -35,8 +37,8 @@ class HomeTest extends TestCase
 
     public function test_facilities_can_be_filtered_by_service(): void
     {
-        $service1 = Service::factory()->create(['id' => 11]);
-        $service2 = Service::factory()->create(['id' => 12]);
+        $service1 = Service::find(11); // 居宅介護
+        $service2 = Service::find(12); // 重度訪問介護
 
         Facility::factory()->count(3)->create(['service_id' => $service1->id]);
         Facility::factory()->count(2)->create(['service_id' => $service2->id]);
@@ -54,8 +56,8 @@ class HomeTest extends TestCase
 
     public function test_facilities_can_be_filtered_by_pref(): void
     {
-        $pref1 = Pref::factory()->create();
-        $pref2 = Pref::factory()->create();
+        $pref1 = Pref::where('key', 'tokyo')->first(); // 東京都
+        $pref2 = Pref::where('key', 'osaka')->first(); // 大阪府
 
         Facility::factory()->count(3)->create(['pref_id' => $pref1->id]);
         Facility::factory()->count(2)->create(['pref_id' => $pref2->id]);
@@ -92,7 +94,7 @@ class HomeTest extends TestCase
 
     public function test_prefs_computed_property_returns_prefs_with_facility_count(): void
     {
-        $pref = Pref::factory()->create();
+        $pref = Pref::where('key', 'tokyo')->first(); // 東京都
         Facility::factory()->count(3)->create(['pref_id' => $pref->id]);
 
         Livewire::test(Home::class)
@@ -111,7 +113,7 @@ class HomeTest extends TestCase
 
     public function test_areas_computed_property_returns_areas_for_selected_pref(): void
     {
-        $pref = Pref::factory()->create();
+        $pref = Pref::where('key', 'tokyo')->first(); // 東京都
         $area1 = Area::factory()->create(['pref_id' => $pref->id]);
         $area2 = Area::factory()->create(['pref_id' => $pref->id]);
 
@@ -130,9 +132,9 @@ class HomeTest extends TestCase
 
     public function test_services_computed_property_returns_services_with_facilities(): void
     {
-        $service1 = Service::factory()->create();
-        $service2 = Service::factory()->create();
-        $service3 = Service::factory()->create(); // Service with no facilities
+        $service1 = Service::find(11); // 居宅介護
+        $service2 = Service::find(12); // 重度訪問介護
+        $service3 = Service::find(13); // 行動援護 (Service with no facilities)
 
         Facility::factory()->count(5)->create(['service_id' => $service1->id]);
         Facility::factory()->count(3)->create(['service_id' => $service2->id]);
@@ -147,7 +149,7 @@ class HomeTest extends TestCase
 
     public function test_updated_pref_clears_area_selection(): void
     {
-        $pref = Pref::factory()->create();
+        $pref = Pref::where('key', 'tokyo')->first(); // 東京都
         $area = Area::factory()->create(['pref_id' => $pref->id]);
 
         Livewire::test(Home::class)
@@ -159,9 +161,9 @@ class HomeTest extends TestCase
 
     public function test_url_parameters_are_bound_correctly(): void
     {
-        $pref = Pref::factory()->create();
+        $pref = Pref::where('key', 'tokyo')->first(); // 東京都
         $area = Area::factory()->create();
-        $service = Service::factory()->create();
+        $service = Service::find(11); // 居宅介護
 
         Livewire::test(Home::class)
             ->set('pref', $pref->id)
@@ -189,9 +191,9 @@ class HomeTest extends TestCase
 
     public function test_title_generation_with_filters(): void
     {
-        $pref = Pref::factory()->create(['name' => '東京都']);
+        $pref = Pref::where('key', 'tokyo')->first(); // 東京都
         $area = Area::factory()->create(['name' => '渋谷区']);
-        $service = Service::factory()->create(['name' => '居宅介護']);
+        $service = Service::find(11); // 居宅介護
 
         $component = Livewire::test(Home::class)
             ->set('pref', $pref->id)
@@ -218,9 +220,9 @@ class HomeTest extends TestCase
 
     public function test_combined_filters_work_together(): void
     {
-        $pref = Pref::factory()->create();
+        $pref = Pref::where('key', 'tokyo')->first(); // 東京都
         $area = Area::factory()->create(['pref_id' => $pref->id]);
-        $service = Service::factory()->create();
+        $service = Service::find(11); // 居宅介護
 
         // Facilities that match all criteria
         Facility::factory()->count(2)->create([

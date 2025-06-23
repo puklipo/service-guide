@@ -20,7 +20,6 @@ class ServiceFactory extends Factory
     public function definition(): array
     {
         return [
-            'id' => $this->faker->numberBetween(1, 33),
             'name' => $this->faker->words(3, true).'サービス',
             'created_at' => now(),
             'updated_at' => now(),

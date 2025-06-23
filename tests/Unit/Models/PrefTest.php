@@ -12,11 +12,11 @@ class PrefTest extends TestCase
 {
     use RefreshDatabase;
 
+    protected $seed = true;
+
     public function test_pref_can_be_created(): void
     {
-        $pref = Pref::factory()->create([
-            'name' => '東京都',
-        ]);
+        $pref = Pref::where('key', 'tokyo')->first();
 
         $this->assertDatabaseHas('prefs', [
             'name' => '東京都',
@@ -27,7 +27,7 @@ class PrefTest extends TestCase
 
     public function test_pref_has_many_facilities(): void
     {
-        $pref = Pref::factory()->create();
+        $pref = Pref::where('key', 'tokyo')->first();
         $facility1 = Facility::factory()->create(['pref_id' => $pref->id]);
         $facility2 = Facility::factory()->create(['pref_id' => $pref->id]);
 
@@ -38,7 +38,7 @@ class PrefTest extends TestCase
 
     public function test_pref_has_many_areas(): void
     {
-        $pref = Pref::factory()->create();
+        $pref = Pref::where('key', 'tokyo')->first();
         $area1 = Area::factory()->create(['pref_id' => $pref->id]);
         $area2 = Area::factory()->create(['pref_id' => $pref->id]);
 

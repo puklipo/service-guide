@@ -22,7 +22,7 @@ class CompanyFactory extends Factory
         return [
             'id' => $this->faker->unique()->numerify('##########'),
             'name' => $this->faker->company(),
-            'name_kana' => $this->faker->optional()->name(),
+            'name_kana' => $this->faker->optional()->company(), // Using company name as kana placeholder
             'area' => $this->faker->optional()->city(),
             'address' => $this->faker->address(),
             'tel' => $this->faker->optional()->phoneNumber(),

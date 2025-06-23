@@ -16,12 +16,14 @@ class FacilityTest extends TestCase
 {
     use RefreshDatabase;
 
+    protected $seed = true;
+
     public function test_facility_can_be_created(): void
     {
-        $pref = Pref::factory()->create();
+        $pref = Pref::where('key', 'tokyo')->first();
         $area = Area::factory()->create(['pref_id' => $pref->id]);
         $company = Company::factory()->create();
-        $service = Service::factory()->create();
+        $service = Service::find(11);
 
         $facility = Facility::factory()->create([
             'wam' => '1234567890',
@@ -56,11 +58,11 @@ class FacilityTest extends TestCase
 
     public function test_facility_belongs_to_pref(): void
     {
-        $pref = Pref::factory()->create(['name' => '東京都']);
+        $pref = Pref::where('key', 'tokyo')->first(); // 東京都
         $facility = Facility::factory()->create(['pref_id' => $pref->id]);
 
         $this->assertEquals($pref->id, $facility->pref->id);
-        $this->assertEquals('東京都', $facility->pref->name);
+        $this->assertEquals($pref->name, $facility->pref->name);
     }
 
     public function test_facility_belongs_to_area(): void
@@ -83,11 +85,11 @@ class FacilityTest extends TestCase
 
     public function test_facility_belongs_to_service(): void
     {
-        $service = Service::factory()->create(['name' => '居宅介護']);
+        $service = Service::find(11); // 居宅介護
         $facility = Facility::factory()->create(['service_id' => $service->id]);
 
         $this->assertEquals($service->id, $facility->service->id);
-        $this->assertEquals('居宅介護', $facility->service->name);
+        $this->assertEquals($service->name, $facility->service->name);
     }
 
     public function test_facility_fillable_attributes(): void
