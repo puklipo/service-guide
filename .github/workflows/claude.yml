@@ -27,6 +27,27 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Setup PHP, with composer and extensions
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.4'
+          extensions: mbstring
+          coverage: xdebug
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: 'npm'
+
+      - name: Install Composer dependencies
+        run: composer install
+
+      - name: env
+        run: |
+          cp .env.example .env
+          php artisan key:generate
+
       - name: Generate GitHub App token
         id: app-token
         uses: actions/create-github-app-token@v2
@@ -47,3 +68,10 @@ jobs:
           github_token: ${{ steps.app-token.outputs.token }}
           use_bedrock: "true"
           model: "us.anthropic.claude-sonnet-4-20250514-v1:0"
+          allowed_tools: |
+            Bash(php:*)
+            Bash(composer:*)
+            Bash(npm:*)
+            Bash(vendor/bin/phpunit:*)
+            Bash(vendor/bin/pint:*)
+
