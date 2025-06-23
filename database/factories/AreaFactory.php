@@ -23,7 +23,7 @@ class AreaFactory extends Factory
         return [
             'name' => $this->faker->city(),
             'address' => $this->faker->address(),
-            'pref_id' => Pref::factory(),
+            'pref_id' => Pref::inRandomOrder()->first()->id,
             'created_at' => now(),
             'updated_at' => now(),
         ];

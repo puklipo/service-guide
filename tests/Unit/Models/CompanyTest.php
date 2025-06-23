@@ -11,6 +11,8 @@ class CompanyTest extends TestCase
 {
     use RefreshDatabase;
 
+    protected $seed = true;
+
     public function test_company_can_be_created(): void
     {
         $company = Company::factory()->create([

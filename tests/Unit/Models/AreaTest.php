@@ -12,9 +12,11 @@ class AreaTest extends TestCase
 {
     use RefreshDatabase;
 
+    protected $seed = true;
+
     public function test_area_can_be_created(): void
     {
-        $pref = Pref::factory()->create();
+        $pref = Pref::where('key', 'tokyo')->first();
         $area = Area::factory()->create([
             'name' => '渋谷区',
             'address' => '東京都渋谷区',
@@ -33,7 +35,7 @@ class AreaTest extends TestCase
 
     public function test_area_belongs_to_pref(): void
     {
-        $pref = Pref::factory()->create(['name' => '東京都']);
+        $pref = Pref::where('key', 'tokyo')->first();
         $area = Area::factory()->create(['pref_id' => $pref->id]);
 
         $this->assertEquals($pref->id, $area->pref->id);

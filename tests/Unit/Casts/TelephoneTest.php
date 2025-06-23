@@ -11,6 +11,8 @@ class TelephoneTest extends TestCase
 {
     use RefreshDatabase;
 
+    protected $seed = true;
+
     public function test_telephone_cast_returns_original_value_when_no_patch_exists(): void
     {
         $company = Company::factory()->create([
