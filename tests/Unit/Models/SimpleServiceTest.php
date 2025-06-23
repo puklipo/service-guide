@@ -1,0 +1,35 @@
+<?php
+
+namespace Tests\Unit\Models;
+
+use App\Models\Service;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
+
+class SimpleServiceTest extends TestCase
+{
+    use RefreshDatabase;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        // Explicitly configure database for testing
+        config(['database.default' => 'sqlite']);
+        config(['database.connections.sqlite.database' => ':memory:']);
+    }
+
+    public function test_service_uses_non_incrementing_id(): void
+    {
+        $service = new Service;
+
+        $this->assertFalse($service->incrementing);
+    }
+
+    public function test_service_can_be_instantiated(): void
+    {
+        $service = new Service;
+
+        $this->assertInstanceOf(Service::class, $service);
+    }
+}
