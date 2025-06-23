@@ -61,7 +61,12 @@
             "./vendor/bin/sail up -d",
             "./vendor/bin/sail art ide-helper:models -M"
         ],
-        "sail:down": "./vendor/bin/sail down"
+        "sail:down": "./vendor/bin/sail down",
+        "test": [
+            "@php artisan config:clear --ansi",
+            "@php artisan test"
+        ],
+        "lint": "vendor/bin/pint"
     },
     "extra": {
         "laravel": {
