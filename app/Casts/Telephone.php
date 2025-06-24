@@ -13,9 +13,15 @@ class Telephone implements CastsAttributes
      *
      * @param  array<string, mixed>  $attributes
      */
-    public function get(Model $model, string $key, mixed $value, array $attributes): mixed
+    public function get(Model $model, string $key, mixed $value, array $attributes): ?string
     {
-        return Arr::get(config('patch'), $model->id.'.tel', $value);
+        $patch = config('patch', []);
+        if (!is_array($patch)) {
+            return $value;
+        }
+        
+        $patchedValue = Arr::get($patch, $model->id.'.tel', $value);
+        return is_string($patchedValue) ? $patchedValue : $value;
     }
 
     /**
@@ -23,8 +29,17 @@ class Telephone implements CastsAttributes
      *
      * @param  array<string, mixed>  $attributes
      */
-    public function set(Model $model, string $key, mixed $value, array $attributes): mixed
+    public function set(Model $model, string $key, mixed $value, array $attributes): ?string
     {
-        return $value;
+        if (is_null($value)) {
+            return null;
+        }
+        if (is_string($value)) {
+            return $value;
+        }
+        if (is_numeric($value)) {
+            return (string) $value;
+        }
+        return null;
     }
 }

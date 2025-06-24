@@ -118,7 +118,7 @@ class FacilityTest extends TestCase
         $facility = new Facility;
 
         $expectedWith = ['service', 'area', 'company'];
-        $this->assertEquals($expectedWith, $facility->getWith());
+        $this->assertEquals($expectedWith, $facility->with);
     }
 
     public function test_facility_queues_index_now_on_creation_in_production(): void
@@ -128,7 +128,7 @@ class FacilityTest extends TestCase
 
         Facility::factory()->create();
 
-        Queue::assertPushed(function ($job) {
+        Queue::assertPushed(function (object $job) {
             return str_contains(get_class($job), 'CallQueuedClosure');
         });
     }

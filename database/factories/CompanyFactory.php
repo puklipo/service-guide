@@ -25,7 +25,7 @@ class CompanyFactory extends Factory
             'name_kana' => 'あいうえお',  // Fixed hiragana for name_kana
             'area' => $this->faker->city(),
             'address' => $this->faker->address(),
-            'tel' => $this->faker->phoneNumber(),
+            'tel' => $this->faker->optional()->phoneNumber(),
             'url' => $this->faker->url(),
             'created_at' => now(),
             'updated_at' => now(),

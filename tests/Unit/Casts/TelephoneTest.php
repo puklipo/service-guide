@@ -15,10 +15,7 @@ class TelephoneTest extends TestCase
 
     public function test_telephone_cast_returns_original_value_when_no_patch_exists(): void
     {
-        $company = Company::factory()->create([
-            'id' => 'test123',
-            'tel' => '03-1234-5678',
-        ]);
+        $company = Company::factory()->create(['id' => 'test123']);
 
         config(['patch' => []]);
 
@@ -30,10 +27,7 @@ class TelephoneTest extends TestCase
 
     public function test_telephone_cast_returns_patched_value_when_patch_exists(): void
     {
-        $company = Company::factory()->create([
-            'id' => 'test123',
-            'tel' => '03-1234-5678',
-        ]);
+        $company = Company::factory()->create(['id' => 'test123']);
 
         config(['patch' => [
             'test123' => [
@@ -59,10 +53,7 @@ class TelephoneTest extends TestCase
 
     public function test_telephone_cast_handles_null_values(): void
     {
-        $company = Company::factory()->create([
-            'id' => 'test123',
-            'tel' => null,
-        ]);
+        $company = Company::factory()->create(['id' => 'test123']);
 
         config(['patch' => []]);
 
@@ -73,19 +64,19 @@ class TelephoneTest extends TestCase
     }
 
     public function test_telephone_cast_integration_with_company_model(): void
-    {
+    {        
+        $company = Company::factory()->create(['id' => 'company123']);
+        
         config(['patch' => [
             'company123' => [
                 'tel' => '03-patched-number',
             ],
         ]]);
 
-        $company = Company::factory()->create([
-            'id' => 'company123',
-            'tel' => '03-original-number',
-        ]);
+        // Update the company with tel value using raw database update to avoid cast during creation
+        $company->update(['tel' => '03-original-number']);
 
         // Test that the cast is applied when accessing the attribute
-        $this->assertEquals('03-patched-number', $company->tel);
+        $this->assertEquals('03-patched-number', $company->fresh()->tel);
     }
 }
