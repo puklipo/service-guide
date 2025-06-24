@@ -8,6 +8,9 @@
 - Vapor
 
 ## 開発
+
+最近のLaravelに従い開発時のデータベースはSQLite。
+
 ```bash
 git clone 
 cd ./service-guide/
@@ -22,13 +25,13 @@ npm run build
 php artisan migrate
 php artisan db:seed
 
-// Start local development server with queue worker and vite server
+// ローカルサーバーとキューワーカーとViteを同時に起動
 composer run dev
 
-// Be sure to start the queue worker with `composer run dev` before running the `wam:import` command
+// 必ずキューワーカー起動後に`wam:import`コマンドを実行
 php artisan wam:import
 
-// If it takes too long, import individually
+// ただし時間がかかりすぎるので個別にインポートしたほうがいい
 php artisan wam:import 11
 ```
 
