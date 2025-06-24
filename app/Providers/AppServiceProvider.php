@@ -27,6 +27,6 @@ class AppServiceProvider extends ServiceProvider
 
         Model::shouldBeStrict(! $this->app->isProduction());
 
-        Gate::define('admin', fn (User $user) => 1);
+        Gate::define('admin', fn (User $user) => $user->id === config('user.admin'));
     }
 }
