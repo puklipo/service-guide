@@ -1,0 +1,14 @@
+# 最新データに基づく記事
+
+このディレクトリには、最新のCSVデータから生成された6つの記事が保存されます。
+
+## 記事一覧
+
+1. `01-market-overview.md` - 市場概況分析
+2. `02-regional-analysis.md` - 地域別市場分析  
+3. `03-service-trends.md` - サービス動向分析
+4. `04-business-models.md` - 事業モデル分析
+5. `05-capacity-analysis.md` - 定員・利用率分析
+6. `06-growth-opportunities.md` - 成長機会分析
+
+CSVデータ更新後、これらの記事が自動的に更新されます。
