@@ -24,21 +24,30 @@ npm install
 cp .env.example .env
 php artisan key:generate
 
-# Start development environment
-./vendor/bin/sail up -d
-./vendor/bin/sail artisan migrate
-./vendor/bin/sail artisan db:seed
-./vendor/bin/sail artisan wam:import
+# Database setup (uses SQLite by default)
+php artisan migrate
+php artisan db:seed
 
-# Frontend development
-npm run dev        # Start Vite dev server
+# Frontend build
 npm run build      # Build for production
+npm run dev        # Start Vite dev server (for development)
+
+# Start development servers
+composer run dev   # Starts local server + queue worker + Vite simultaneously
+# Or individually:
+php artisan serve  # Local server only
+php artisan queue:work # Queue worker
+
+# Data import (run after starting queue worker)
+php artisan wam:import                # Import all services
+php artisan wam:import 11             # Import specific service (居宅介護)
+# Note: Use QUEUE_CONNECTION=sync in .env if import times out
 ```
 
 ### Testing
 ```bash
 # Run all tests
-./vendor/bin/sail artisan test
+php artisan test
 # Or with vendor/bin/phpunit
 vendor/bin/phpunit
 
