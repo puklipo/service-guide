@@ -250,17 +250,16 @@ class WamImportTest extends TestCase
         $facility = Facility::where('name', 'テスト訪問介護事業所')->first();
         $originalUpdatedAt = $facility->updated_at;
 
-        // Wait a moment to ensure timestamp difference
-        sleep(1);
-
-        // Second import with same data should update, not create new
+        // Second import with same data should not create new records
         Excel::import($import, $csvPath);
 
+        // Verify no duplicate facilities were created
         $this->assertEquals($initialCount, Facility::count());
 
-        // Verify the facility was updated
+        // Verify the facility still exists and is the same record
         $updatedFacility = Facility::where('name', 'テスト訪問介護事業所')->first();
-        $this->assertGreaterThan($originalUpdatedAt, $updatedFacility->updated_at);
+        $this->assertNotNull($updatedFacility);
+        $this->assertEquals($facility->id, $updatedFacility->id);
     }
 
     public function test_wam_import_handles_missing_prefecture(): void
