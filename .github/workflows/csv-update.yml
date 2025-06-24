@@ -36,7 +36,7 @@ jobs:
         run: php artisan csv:update
         
       - name: Create Pull Request
-        uses: peter-evans/create-pull-request@v5
+        uses: peter-evans/create-pull-request@v7
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           commit-message: 'feat: update CSV files from WAM'
@@ -58,4 +58,3 @@ jobs:
             🤖 Generated with [Claude Code](https://claude.ai/code)
           branch: update-csv-files
           delete-branch: true
-          reviewers: puklipo
