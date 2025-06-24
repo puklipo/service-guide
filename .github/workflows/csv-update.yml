@@ -1,0 +1,61 @@
+name: CSV Update
+
+on:
+  workflow_dispatch:
+    inputs:
+      force_update:
+        description: 'Force update even if no changes detected'
+        required: false
+        default: false
+        type: boolean
+
+jobs:
+  update-csv:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          extensions: mbstring, xml, ctype, iconv, intl, pdo_sqlite, zip
+          tools: composer
+          
+      - name: Install dependencies
+        run: composer install --no-dev --optimize-autoloader
+        
+      - name: Create environment file
+        run: |
+          cp .env.example .env
+          php artisan key:generate
+          
+      - name: Update CSV files
+        run: php artisan csv:update
+        
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v5
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: 'feat: update CSV files from WAM'
+          title: 'Update CSV files from WAM'
+          body: |
+            ## CSV Files Update
+            
+            This PR updates the CSV files from the WAM (Welfare and Medical Service Agency) website.
+            
+            ### Changes
+            - Updated CSV files in `resources/csv/`
+            - Updated `hash.txt` with new file hashes
+            
+            ### Source
+            - Data source: https://www.wam.go.jp/content/wamnet/pcpub/top/sfkopendata/
+            
+            ---
+            
+            🤖 Generated with [Claude Code](https://claude.ai/code)
+          branch: update-csv-files
+          delete-branch: true
+          reviewers: puklipo
