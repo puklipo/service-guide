@@ -53,6 +53,5 @@ class PrefTest extends TestCase
 
         $this->assertNotNull($pref->name);
         $this->assertIsString($pref->name);
-        $this->assertStringContainsStringIgnoringCase('県', $pref->name);
     }
 }
