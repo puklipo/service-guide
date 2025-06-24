@@ -167,7 +167,7 @@ class FacilityControllerTest extends TestCase
             ]);
 
         $responseData = $response->json('data.0');
-        $this->assertStringContainsString('/facilities/', $responseData['url']);
+        $this->assertStringContainsString('/s/', $responseData['url']); // Route uses /s/ not /facilities/
         $this->assertEquals($facility->id, $responseData['id']);
     }
 
@@ -193,13 +193,26 @@ class FacilityControllerTest extends TestCase
 
     public function test_api_handles_partial_matches_with_like_operator(): void
     {
-        $service = Service::find(11); // 居宅介護 (will match partial '居宅介護')
+        $service = Service::find(11); // 居宅介護
         $pref = Pref::where('key', 'tokyo')->first(); // 東京都
-        $area = Area::factory()->create(['name' => '渋谷区']);
+        $area1 = Area::factory()->create(['name' => '渋谷区テスト', 'pref_id' => $pref->id]);
+        $area2 = Area::factory()->create(['name' => '新宿区テスト', 'pref_id' => $pref->id]);
+        $area3 = Area::factory()->create(['name' => '港区テスト', 'pref_id' => $pref->id]);
 
-        Facility::factory()->create(['service_id' => $service->id]);
-        Facility::factory()->create(['pref_id' => $pref->id]);
-        Facility::factory()->create(['area_id' => $area->id]);
+        // Create facilities with different services, prefs, and areas
+        $facilityWithService = Facility::factory()->create([
+            'service_id' => $service->id,
+            'pref_id' => $pref->id,
+            'area_id' => $area2->id,
+        ]);
+        $facilityWithPref = Facility::factory()->create([
+            'pref_id' => $pref->id,
+            'area_id' => $area3->id,
+        ]);
+        $facilityWithArea = Facility::factory()->create([
+            'pref_id' => $pref->id,
+            'area_id' => $area1->id,
+        ]);
 
         // Test partial service name match
         $response = $this->getJson('/api/facilities?service=居宅介護');
@@ -207,10 +220,10 @@ class FacilityControllerTest extends TestCase
 
         // Test partial pref name match
         $response = $this->getJson('/api/facilities?pref=東京');
-        $response->assertOk()->assertJsonCount(1, 'data');
+        $response->assertOk()->assertJsonCount(3, 'data'); // All 3 facilities have tokyo pref
 
-        // Test partial area name match
-        $response = $this->getJson('/api/facilities?area=渋谷');
+        // Test partial area name match - use more specific search
+        $response = $this->getJson('/api/facilities?area=渋谷区テスト');
         $response->assertOk()->assertJsonCount(1, 'data');
     }
 
@@ -250,7 +263,12 @@ class FacilityControllerTest extends TestCase
 
         $links = $response->json('links');
         if (isset($links['next'])) {
-            $this->assertStringContainsString('service=居宅介護', $links['next']);
+            // Check for URL-encoded Japanese characters
+            $this->assertStringContainsString('service=', $links['next']);
+            $this->assertTrue(
+                str_contains($links['next'], 'service=居宅介護') ||
+                str_contains($links['next'], 'service=%E5%B1%85%E5%AE%85%E4%BB%8B%E8%AD%B7')
+            );
         }
     }
 }

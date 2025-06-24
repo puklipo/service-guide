@@ -16,18 +16,18 @@ class CompanyTest extends TestCase
     public function test_company_can_be_created(): void
     {
         $company = Company::factory()->create([
-            'id' => '1234567890',
+            'id' => 1234567890,
             'name' => '株式会社テスト',
             'name_kana' => 'カブシキガイシャテスト',
         ]);
 
         $this->assertDatabaseHas('companies', [
-            'id' => '1234567890',
+            'id' => 1234567890,
             'name' => '株式会社テスト',
             'name_kana' => 'カブシキガイシャテスト',
         ]);
 
-        $this->assertEquals('1234567890', $company->id);
+        $this->assertEquals(1234567890, $company->id);
         $this->assertEquals('株式会社テスト', $company->name);
     }
 
@@ -84,7 +84,7 @@ class CompanyTest extends TestCase
         $this->assertNotNull($company->id);
         $this->assertNotNull($company->name);
         $this->assertNotNull($company->address);
-        $this->assertIsString($company->id);
+        $this->assertIsInt($company->id); // Company ID is unsignedBigInteger, so should be integer
         $this->assertIsString($company->name);
         $this->assertIsString($company->address);
     }

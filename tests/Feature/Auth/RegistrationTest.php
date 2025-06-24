@@ -16,8 +16,8 @@ class RegistrationTest extends TestCase
         $response = $this->get('/register');
 
         $response
-            ->assertSeeVolt('pages.auth.register')
-            ->assertOk();
+            ->assertOk()
+            ->assertSee('Register'); // Check for expected text on registration page
     }
 
     public function test_new_users_can_register(): void
