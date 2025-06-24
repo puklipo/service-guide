@@ -26,15 +26,15 @@ class FacilityFactory extends Factory
         return [
             'wam' => $this->faker->unique()->numerify('##########'),
             'name' => $this->faker->company().'施設',
-            'name_kana' => $this->faker->optional()->name(),
+            'name_kana' => 'あいうえお',  // Fixed hiragana for name_kana
             'address' => $this->faker->address(),
-            'tel' => $this->faker->optional()->phoneNumber(),
-            'url' => $this->faker->optional()->url(),
-            'no' => $this->faker->optional()->numerify('###'),
-            'pref_id' => Pref::inRandomOrder()->first()->id,
-            'area_id' => Area::factory(),
-            'company_id' => Company::factory(),
-            'service_id' => Service::inRandomOrder()->first()->id,
+            'tel' => $this->faker->phoneNumber(),
+            'url' => $this->faker->url(),
+            'no' => $this->faker->numerify('###'),
+            'pref_id' => Pref::inRandomOrder()->first()?->id ?? Pref::factory()->create()->id,
+            'area_id' => Area::inRandomOrder()->first()?->id ?? Area::factory()->create()->id,
+            'company_id' => Company::inRandomOrder()->first()?->id ?? Company::factory()->create()->id,
+            'service_id' => Service::inRandomOrder()->first()?->id ?? Service::factory()->create()->id,
             'created_at' => now(),
             'updated_at' => now(),
         ];
