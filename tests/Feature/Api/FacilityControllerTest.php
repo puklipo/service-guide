@@ -104,6 +104,11 @@ class FacilityControllerTest extends TestCase
         $area = Area::factory()->create(['name' => '渋谷区', 'pref_id' => $pref->id]);
         $service = Service::find(11); // 居宅介護
 
+        // Get different services and areas to ensure no conflicts
+        $otherService = Service::where('id', '!=', $service->id)->first();
+        $otherArea = Area::factory()->create(['name' => '違う区', 'pref_id' => $pref->id]);
+        $otherPref = Pref::where('key', '!=', 'tokyo')->first();
+
         // Facilities that match all criteria
         Facility::factory()->count(2)->create([
             'pref_id' => $pref->id,
@@ -111,9 +116,17 @@ class FacilityControllerTest extends TestCase
             'service_id' => $service->id,
         ]);
 
-        // Facilities that don't match all criteria
-        Facility::factory()->count(3)->create(['pref_id' => $pref->id]);
-        Facility::factory()->count(1)->create(['service_id' => $service->id]);
+        // Facilities that don't match all criteria - be explicit about what they have
+        Facility::factory()->count(3)->create([
+            'pref_id' => $pref->id,
+            'area_id' => $otherArea->id,  // Different area
+            'service_id' => $otherService->id,  // Different service
+        ]);
+        Facility::factory()->count(1)->create([
+            'pref_id' => $otherPref->id,  // Different pref
+            'area_id' => $otherArea->id,  // Different area
+            'service_id' => $service->id,
+        ]);
 
         $response = $this->getJson('/api/facilities?pref=東京&area=渋谷&service=居宅介護');
 
@@ -195,21 +208,30 @@ class FacilityControllerTest extends TestCase
     {
         $service = Service::find(11); // 居宅介護
         $pref = Pref::where('key', 'tokyo')->first(); // 東京都
-        $area1 = Area::factory()->create(['name' => '渋谷区テスト', 'pref_id' => $pref->id]);
-        $area2 = Area::factory()->create(['name' => '新宿区テスト', 'pref_id' => $pref->id]);
-        $area3 = Area::factory()->create(['name' => '港区テスト', 'pref_id' => $pref->id]);
+        
+        // Use more unique area names to avoid conflicts with faker-generated data
+        $uniquePrefix = 'TEST_' . uniqid();
+        $area1 = Area::factory()->create(['name' => $uniquePrefix . '渋谷区テスト', 'pref_id' => $pref->id]);
+        $area2 = Area::factory()->create(['name' => $uniquePrefix . '新宿区テスト', 'pref_id' => $pref->id]);
+        $area3 = Area::factory()->create(['name' => $uniquePrefix . '港区テスト', 'pref_id' => $pref->id]);
 
         // Create facilities with different services, prefs, and areas
+        // Ensure non-service facilities use different services to avoid conflicts
+        $otherService1 = Service::where('id', '!=', $service->id)->first();
+        $otherService2 = Service::where('id', '!=', $service->id)->skip(1)->first();
+        
         $facilityWithService = Facility::factory()->create([
             'service_id' => $service->id,
             'pref_id' => $pref->id,
             'area_id' => $area2->id,
         ]);
         $facilityWithPref = Facility::factory()->create([
+            'service_id' => $otherService1->id,
             'pref_id' => $pref->id,
             'area_id' => $area3->id,
         ]);
         $facilityWithArea = Facility::factory()->create([
+            'service_id' => $otherService2->id,
             'pref_id' => $pref->id,
             'area_id' => $area1->id,
         ]);
@@ -222,8 +244,8 @@ class FacilityControllerTest extends TestCase
         $response = $this->getJson('/api/facilities?pref=東京');
         $response->assertOk()->assertJsonCount(3, 'data'); // All 3 facilities have tokyo pref
 
-        // Test partial area name match - use more specific search
-        $response = $this->getJson('/api/facilities?area=渋谷区テスト');
+        // Test partial area name match - use the unique area name
+        $response = $this->getJson('/api/facilities?area=' . urlencode($uniquePrefix . '渋谷区テスト'));
         $response->assertOk()->assertJsonCount(1, 'data');
     }
 
