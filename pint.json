@@ -2,5 +2,8 @@
     "preset": "laravel",
     "rules": {
         "no_unused_imports": false
-    }
+    },
+    "exclude": [
+        "lang"
+    ]
 }

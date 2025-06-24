@@ -27,6 +27,7 @@ class ImportCommand extends Command
 
     /**
      * Execute the console command.
+     *
      * @throws Throwable
      */
     public function handle(): void

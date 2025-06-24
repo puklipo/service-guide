@@ -117,7 +117,7 @@ class AdminRestrictionsTest extends TestCase
             ->get('/');
 
         $response->assertOk();
-        
+
         // In production, non-admin users should see ads
         // Check for ads script in response content
         $content = $response->getContent();
@@ -138,7 +138,7 @@ class AdminRestrictionsTest extends TestCase
         $response = $this->get('/');
 
         $response->assertOk();
-        
+
         // In production, guest users should see ads
         // Check for ads script in response content
         $content = $response->getContent();
@@ -154,7 +154,7 @@ class AdminRestrictionsTest extends TestCase
     {
         // Create admin user (ID = 1)
         $adminUser = User::factory()->create(['id' => 1]);
-        
+
         // Create non-admin user (ID != 1)
         $nonAdminUser = User::factory()->create(['id' => 2]);
 

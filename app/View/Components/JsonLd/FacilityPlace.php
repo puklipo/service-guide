@@ -27,7 +27,7 @@ class FacilityPlace extends Component
         $context = Context::create(LocalBusiness::class, [
             'name' => $this->facility->name,
             'address' => $this->facility->area->address.$this->facility->address,
-            //'telephone' => $this->facility->tel,
+            // 'telephone' => $this->facility->tel,
             'url' => filled($this->facility->url) ? $this->facility->url : route('facility', $this->facility),
         ]);
 

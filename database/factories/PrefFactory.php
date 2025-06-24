@@ -35,7 +35,7 @@ class PrefFactory extends Factory
         ];
 
         $name = $this->faker->randomElement(array_keys($prefMap));
-        
+
         return [
             'key' => $prefMap[$name],
             'name' => $name,

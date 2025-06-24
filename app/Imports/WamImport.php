@@ -19,11 +19,11 @@ use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\WithValidation;
 use Maatwebsite\Excel\Row;
 
-class WamImport implements OnEachRow, WithHeadingRow, WithChunkReading, SkipsEmptyRows, WithValidation, SkipsOnFailure
+class WamImport implements OnEachRow, SkipsEmptyRows, SkipsOnFailure, WithChunkReading, WithHeadingRow, WithValidation
 {
     use Importable;
-    use WithKana;
     use SkipsFailures;
+    use WithKana;
 
     public function __construct(private readonly int $service_id)
     {
@@ -75,7 +75,7 @@ class WamImport implements OnEachRow, WithHeadingRow, WithChunkReading, SkipsEmp
     {
         $area_code = $row['都道府県コード又は市区町村コード'];
 
-        //都道府県コード(01-47)+3桁の市区町村コードの形式。最初の2文字から都道府県コードを得る。
+        // 都道府県コード(01-47)+3桁の市区町村コードの形式。最初の2文字から都道府県コードを得る。
         $pref_id = (int) Str::take(string: $area_code, limit: 2);
 
         return Pref::find($pref_id);

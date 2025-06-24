@@ -37,7 +37,7 @@ class ContactNotification extends Notification implements ShouldQueue
         return (new MailMessage)
             ->subject('【'.config('app.name').'】お問い合わせ')
             ->from(config('mail.from.address'), config('mail.from.name'))
-            //->cc(config('mail.admin.to'))
+            // ->cc(config('mail.admin.to'))
             ->greeting(__('名前：').$this->name)
             ->line([$this->content])
             ->line('メール：'.$this->email)

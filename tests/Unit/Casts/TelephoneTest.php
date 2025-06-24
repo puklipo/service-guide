@@ -64,9 +64,9 @@ class TelephoneTest extends TestCase
     }
 
     public function test_telephone_cast_integration_with_company_model(): void
-    {        
+    {
         $company = Company::factory()->create(['id' => 1234567893]);
-        
+
         config(['patch' => [
             1234567893 => [
                 'tel' => '03-patched-number',

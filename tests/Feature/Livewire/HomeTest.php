@@ -31,7 +31,7 @@ class HomeTest extends TestCase
 
         $component = Livewire::test(Home::class)
             ->assertOk();
-            
+
         $facilities = $component->get('facilities');
         $this->assertCount(5, $facilities->items());
     }
@@ -100,7 +100,7 @@ class HomeTest extends TestCase
 
         $component = Livewire::test(Home::class)
             ->assertOk();
-            
+
         $prefs = $component->get('prefs');
         $tokyoPref = $prefs->firstWhere('id', $pref->id);
         $this->assertEquals(3, $tokyoPref->facilities_count);
@@ -110,7 +110,7 @@ class HomeTest extends TestCase
     {
         $component = Livewire::test(Home::class)
             ->assertOk();
-            
+
         $areas = $component->get('areas');
         $this->assertCount(0, $areas);
     }
@@ -127,7 +127,7 @@ class HomeTest extends TestCase
 
         $component = Livewire::test(Home::class)
             ->set('pref', $pref->id);
-            
+
         $areas = $component->get('areas');
         $this->assertCount(2, $areas);
         $this->assertEquals($area1->id, $areas[0]->id); // Should be first due to higher facility count
@@ -146,7 +146,7 @@ class HomeTest extends TestCase
 
         $component = Livewire::test(Home::class)
             ->assertOk();
-            
+
         $services = $component->get('services');
         $this->assertCount(2, $services); // Only services with facilities
         $this->assertEquals($service1->id, $services[0]->id); // Should be first due to higher facility count
@@ -187,11 +187,11 @@ class HomeTest extends TestCase
         Livewire::test(Home::class)
             ->set('pref', 'invalid')
             ->assertHasErrors('pref')
-            ->set('area', 'invalid')  
+            ->set('area', 'invalid')
             ->assertHasErrors('area')
             ->set('service', 'invalid')
             ->assertHasErrors('service');
-            
+
         // Limit validation is handled by PHP type system (int property)
         // so setting invalid string values will throw TypeError as expected
     }
@@ -211,7 +211,7 @@ class HomeTest extends TestCase
             ->assertSet('pref', $pref->id)
             ->assertSet('area', $area->id)
             ->assertSet('service', $service->id);
-            
+
         // Verify the component can render without errors
         $this->assertNotNull($component->instance());
     }
@@ -222,7 +222,7 @@ class HomeTest extends TestCase
 
         $component = Livewire::test(Home::class)
             ->set('limit', 50);
-            
+
         $facilities = $component->get('facilities');
         $this->assertCount(50, $facilities->items());
     }
@@ -232,7 +232,7 @@ class HomeTest extends TestCase
         $pref = Pref::where('key', 'tokyo')->first(); // 東京都
         $area = Area::factory()->create(['pref_id' => $pref->id]);
         $service = Service::find(11); // 居宅介護
-        
+
         $otherPref = Pref::where('key', 'osaka')->first(); // 大阪府
         $otherService = Service::find(12); // 重度訪問介護
         $otherArea = Area::factory()->create(['pref_id' => $otherPref->id]);
@@ -247,15 +247,15 @@ class HomeTest extends TestCase
         // Facilities that don't match all criteria (different pref/area/service)
         Facility::factory()->count(3)->create([
             'pref_id' => $otherPref->id,
-            'area_id' => $otherArea->id, 
-            'service_id' => $otherService->id
+            'area_id' => $otherArea->id,
+            'service_id' => $otherService->id,
         ]);
 
         $component = Livewire::test(Home::class)
             ->set('pref', $pref->id)
             ->set('area', $area->id)
             ->set('service', $service->id);
-            
+
         $facilities = $component->get('facilities');
         $this->assertCount(2, $facilities->items());
     }
