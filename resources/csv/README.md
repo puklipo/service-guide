@@ -14,5 +14,5 @@ php artisan wam:import
 ## CSVのデータが間違ってる場合
 `config/patch.php`と`app/Casts/Telephone.php`などを使って表示時に正しいデータに置き換える。
 
-## hash.csv
+## hash.txt
 自動更新用にファイルのハッシュを記録。
