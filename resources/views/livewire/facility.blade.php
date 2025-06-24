@@ -47,6 +47,8 @@ $facilities = computed(function () {
             <span class="badge badge-soft badge-info">事業所情報</span>
         </div>
 
+        <x-json-ld.facility-place :facility="$facility"/>
+
         <h2 class="my-3 pt-6 pb-3 px-3 text-4xl text-primary">
             <ruby>
                 {{ $facility->name ?? '' }}
