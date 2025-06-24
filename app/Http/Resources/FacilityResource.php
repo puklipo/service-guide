@@ -17,11 +17,11 @@ class FacilityResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'address' => $this->area->address.$this->address,
-            'service' => $this->service->name,
+            'address' => ($this->area ? $this->area->address : '').$this->address,
+            'service' => $this->service ? $this->service->name : 'Unknown Service',
             'tel' => $this->tel,
             'url' => route('facility', $this),
-            'company' => $this->company->name,
+            'company' => $this->company ? $this->company->name : 'Unknown Company',
         ];
     }
 }

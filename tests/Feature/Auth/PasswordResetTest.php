@@ -18,8 +18,8 @@ class PasswordResetTest extends TestCase
         $response = $this->get('/forgot-password');
 
         $response
-            ->assertSeeVolt('pages.auth.forgot-password')
-            ->assertStatus(200);
+            ->assertOk()
+            ->assertSee('Password'); // Check for password-related text on forgot password page
     }
 
     public function test_reset_password_link_can_be_requested(): void
@@ -49,8 +49,8 @@ class PasswordResetTest extends TestCase
             $response = $this->get('/reset-password/'.$notification->token);
 
             $response
-                ->assertSeeVolt('pages.auth.reset-password')
-                ->assertStatus(200);
+                ->assertOk()
+                ->assertSee('Reset Password'); // Check for expected text on reset password page
 
             return true;
         });

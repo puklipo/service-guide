@@ -18,16 +18,35 @@ class FacilityController extends Controller
      */
     public function __invoke(Request $request)
     {
-        $service = Service::where('name', 'LIKE', '%'.$request->input('service').'%')->first();
-        $pref = Pref::where('name', 'LIKE', '%'.$request->input('pref').'%')->first();
-        $area = Area::where('name', 'LIKE', '%'.$request->input('area').'%')->first();
+        $serviceFilter = $request->input('service');
+        $prefFilter = $request->input('pref');
+        $areaFilter = $request->input('area');
 
-        $facilities = Facility::when(filled($service), function (Builder $query) use ($service) {
-            $query->where('service_id', $service->id);
-        })->when(filled($pref), function (Builder $query) use ($pref) {
-            $query->where('pref_id', $pref->id);
-        })->when(filled($area), function (Builder $query) use ($area) {
-            $query->where('area_id', $area->id);
+        $service = $serviceFilter ? Service::where('name', 'LIKE', '%'.$serviceFilter.'%')->first() : null;
+        $pref = $prefFilter ? Pref::where('name', 'LIKE', '%'.$prefFilter.'%')->first() : null;
+        $area = $areaFilter ? Area::where('name', 'LIKE', '%'.$areaFilter.'%')->first() : null;
+
+        $facilities = Facility::when($serviceFilter, function (Builder $query) use ($service) {
+            if ($service) {
+                $query->where('service_id', $service->id);
+            } else {
+                // If service filter is provided but no service found, return empty results
+                $query->where('id', -1);
+            }
+        })->when($prefFilter, function (Builder $query) use ($pref) {
+            if ($pref) {
+                $query->where('pref_id', $pref->id);
+            } else {
+                // If pref filter is provided but no pref found, return empty results
+                $query->where('id', -1);
+            }
+        })->when($areaFilter, function (Builder $query) use ($area) {
+            if ($area) {
+                $query->where('area_id', $area->id);
+            } else {
+                // If area filter is provided but no area found, return empty results
+                $query->where('id', -1);
+            }
         })
             ->latest()
             ->simplePaginate()

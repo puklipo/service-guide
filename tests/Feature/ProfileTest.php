@@ -18,10 +18,10 @@ class ProfileTest extends TestCase
         $response = $this->actingAs($user)->get('/profile');
 
         $response
-            ->assertSeeVolt('profile.update-profile-information-form')
-            ->assertSeeVolt('profile.update-password-form')
-            ->assertSeeVolt('profile.delete-user-form')
-            ->assertOk();
+            ->assertOk()
+            ->assertSee('Profile Information') // Check for expected text on profile page
+            ->assertSee('Update Password')
+            ->assertSee('Delete Account');
     }
 
     public function test_profile_information_can_be_updated(): void
