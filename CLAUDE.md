@@ -105,6 +105,9 @@ php artisan sitemap:generate
 ### Configuration
 - `config/service.php`: Service type definitions (important for data import)
 - `config/facility.php`, `config/pref.php`: Domain-specific configurations
+- `config/spam.php`: Spam email configuration for validation
+- `config/patch.php`: Telephone number patches for companies
+- `config/user.php`: User role configuration (admin user ID)
 - `resources/csv/`: CSV data files for facility import
 
 ### Key Components
@@ -112,6 +115,10 @@ php artisan sitemap:generate
 - `app/Console/Commands/ImportCommand.php`: Data import orchestration
 - `app/Jobs/ImportJob.php`: Individual CSV file processing
 - `app/Support/IndexNow.php`: Search engine index submission
+- `app/Http/Controllers/Api/FacilityController.php`: API endpoint for facility search
+- `app/Http/Resources/FacilityResource.php`: API resource transformation
+- `app/Rules/Spammer.php`: Custom validation rule for spam detection
+- `app/Casts/Telephone.php`: Custom cast for telephone number patching
 
 ### Views & Assets
 - `resources/views/livewire/`: Livewire component templates
@@ -124,6 +131,13 @@ php artisan sitemap:generate
 - Facilities use ULID primary keys for better performance and security
 - Heavy use of Eloquent relationships with eager loading (`$with` property)
 - Search functionality uses computed properties in Livewire for reactive filtering
+- Custom casts (Telephone) allow runtime data patching without database changes
+
+### Security & Administration
+- Role-based access control with admin gate (user ID = 1)
+- Admin-only components for facility management and IndexNow operations
+- Spam detection with external API integration and configurable patterns
+- Environment-based feature toggling (ads, IndexNow, etc.)
 
 ### SEO & Performance
 - Structured data (JSON-LD) for facility pages
@@ -142,7 +156,42 @@ php artisan sitemap:generate
 
 ## Testing Strategy
 
-- Feature tests cover authentication flows and key user journeys
-- Unit tests for individual components
-- Tests use SQLite in-memory database for speed
-- Test configuration in `phpunit.xml`
+### Test Structure
+- **Feature tests**: API endpoints, Livewire components, authentication flows, and admin restrictions
+- **Unit tests**: Individual models, casts, validation rules, and utility classes
+- Tests use SQLite in-memory database for speed with `RefreshDatabase` trait
+- Comprehensive test coverage with database seeding (`protected $seed = true`)
+
+### Key Test Areas
+
+#### API Testing (`tests/Feature/Api/`)
+- **FacilityController**: Comprehensive API endpoint testing with filtering, pagination, and JSON structure validation
+- Tests cover service/prefecture/area filtering, combined filters, and partial matches
+- Validates API resource structure and pagination metadata
+
+#### Livewire Component Testing (`tests/Feature/Livewire/`)
+- **Home component**: Tests computed properties, real-time filtering, and URL parameter binding
+- Validates search functionality, pagination limits, and filter combinations
+- Tests component rendering and data flow
+
+#### Model Testing (`tests/Unit/Models/`)
+- **Facility**: ULID usage, relationships, fillable attributes, eager loading, and IndexNow integration
+- **Area, Company, Service, Pref**: Relationship testing and model behavior
+- Tests factory creation and model validation
+
+#### Custom Components Testing
+- **Casts** (`tests/Unit/Casts/TelephoneTest.php`): Tests custom telephone cast with config patches
+- **Rules** (`tests/Unit/Rules/SpammerTest.php`): Spam validation with API integration and wildcard patterns
+- **Admin Restrictions** (`tests/Feature/AdminRestrictionsTest.php`): Role-based access control and admin-only features
+
+### Testing Patterns
+- Uses Laravel HTTP testing methods (`getJson`, `assertJsonStructure`, etc.)
+- Livewire testing with `Livewire::test()` for component interactions
+- Mock external APIs with `Http::fake()` for reliable testing
+- Log testing with `Log::spy()` for verification
+- Gate testing for authorization (admin vs non-admin users)
+
+### Data Factories
+- All models have corresponding factories with realistic Japanese data
+- Factories create related models automatically for relationship testing
+- Seeded data includes prefectures, services, and areas for consistent testing
