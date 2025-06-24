@@ -6,13 +6,10 @@
 
 開発環境
 ```bash
-sail art wam:import
+php artisan wam:import
 ```
 
 本番環境ではVaporのプロジェクトページのCommandsから実行。
-```bash
-php artisan wam:import
-```
 
 ## CSVのデータが間違ってる場合
 `config/patch.php`と`app/Casts/Telephone.php`などを使って表示時に正しいデータに置き換える。
