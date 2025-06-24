@@ -15,7 +15,7 @@ class TelephoneTest extends TestCase
 
     public function test_telephone_cast_returns_original_value_when_no_patch_exists(): void
     {
-        $company = Company::factory()->create(['id' => 'test123']);
+        $company = Company::factory()->create(['id' => 1234567890]);
 
         config(['patch' => []]);
 
@@ -27,10 +27,10 @@ class TelephoneTest extends TestCase
 
     public function test_telephone_cast_returns_patched_value_when_patch_exists(): void
     {
-        $company = Company::factory()->create(['id' => 'test123']);
+        $company = Company::factory()->create(['id' => 1234567891]);
 
         config(['patch' => [
-            'test123' => [
+            1234567891 => [
                 'tel' => '03-9999-0000',
             ],
         ]]);
@@ -53,7 +53,7 @@ class TelephoneTest extends TestCase
 
     public function test_telephone_cast_handles_null_values(): void
     {
-        $company = Company::factory()->create(['id' => 'test123']);
+        $company = Company::factory()->create(['id' => 1234567892]);
 
         config(['patch' => []]);
 
@@ -65,10 +65,10 @@ class TelephoneTest extends TestCase
 
     public function test_telephone_cast_integration_with_company_model(): void
     {        
-        $company = Company::factory()->create(['id' => 'company123']);
+        $company = Company::factory()->create(['id' => 1234567893]);
         
         config(['patch' => [
-            'company123' => [
+            1234567893 => [
                 'tel' => '03-patched-number',
             ],
         ]]);

@@ -31,15 +31,31 @@ class Telephone implements CastsAttributes
      */
     public function set(Model $model, string $key, mixed $value, array $attributes): ?string
     {
+        // Handle null values explicitly
         if (is_null($value)) {
             return null;
         }
+        
+        // Handle string values (most common case)
         if (is_string($value)) {
-            return $value;
+            return trim($value) === '' ? null : $value;
         }
+        
+        // Handle numeric values (convert to string)
         if (is_numeric($value)) {
             return (string) $value;
         }
-        return null;
+        
+        // Handle arrays/objects by converting to string or returning null
+        if (is_array($value) || is_object($value)) {
+            return null;
+        }
+        
+        // For any other type, try to cast to string safely
+        try {
+            return (string) $value;
+        } catch (\Throwable) {
+            return null;
+        }
     }
 }

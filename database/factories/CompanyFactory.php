@@ -20,12 +20,12 @@ class CompanyFactory extends Factory
     public function definition(): array
     {
         return [
-            'id' => $this->faker->unique()->numerify('##########'),
+            'id' => $this->faker->unique()->numberBetween(1000000000, 9999999999), // Generate numeric ID for unsignedBigInteger
             'name' => $this->faker->company(),
             'name_kana' => 'あいうえお',  // Fixed hiragana for name_kana
             'area' => $this->faker->city(),
             'address' => $this->faker->address(),
-            'tel' => $this->faker->optional()->phoneNumber(),
+            'tel' => $this->faker->numerify('0##-####-####'), // Remove optional() since tel is NOT NULL
             'url' => $this->faker->url(),
             'created_at' => now(),
             'updated_at' => now(),
