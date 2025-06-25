@@ -221,7 +221,7 @@ class CsvUpdateCommand extends Command
     {
         try {
             $configPath = config_path('wam.php');
-            $configContent = "<?php\n\nreturn [\n\n    'current' => '{$newPeriod}',\n];\n";
+            $configContent = "<?php\n\nreturn [\n    'current' => '{$newPeriod}',\n];\n";
 
             if (file_put_contents($configPath, $configContent) === false) {
                 throw new \RuntimeException("Failed to write to config file: {$configPath}");
