@@ -36,7 +36,7 @@ class ImportCommand extends Command
             ->when($this->argument('service'), function (Collection $collection) {
                 return $collection->filter(fn (string $value, int $key) => $key === (int) $this->argument('service'));
             })
-            ->filter(fn ($name, $id) => file_exists(resource_path('csv/csvdownload0'.$id.'.csv')))
+            ->filter(fn ($name, $id) => file_exists(resource_path('csv/'.config('wam.current').'/csvdownload0'.$id.'.csv')))
             ->map(function ($name, $id) {
                 $this->info($name);
 
