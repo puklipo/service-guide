@@ -103,12 +103,12 @@ resources/articles/
 
 **基本的な使用方法:**
 ```bash
-# 基本実行（data-summary.jsonを生成）
-php scripts/analyze-csv-data.php resources/csv/202203
+# 基本実行（data-summary.jsonを記事ディレクトリに生成）
+php scripts/analyze-csv-data.php resources/csv/202203 resources/articles/202203/data-summary.json
 
 # 過去データとの比較分析付き
 php scripts/analyze-csv-data.php resources/csv/202203 \
-    resources/csv/202203/data-summary.json \
+    resources/articles/202203/data-summary.json \
     resources/articles/202111/data-summary.json
 
 # カスタム出力ファイル指定
@@ -185,8 +185,9 @@ php scripts/analyze-csv-data.php resources/csv/202203 custom-output.json
 3. **差分計算**: 事業所数、定員数、市場シェアの変化を算出
 4. **トレンド分析**: 成長率、地域変化、サービス動向を分析
 
-#### 元CSVデータについて
-- **保存方針**: 記事作成後、元CSVデータは削除して容量を節約
+#### データ保存方針について
+- **data-summary.json**: 記事ディレクトリ（resources/articles/YYYYMM/）に保存
+- **元CSVデータ**: 記事作成後は削除して容量を節約
 - **再入手方法**: 必要時はWAMから再ダウンロード可能
 - **データ要求**: 元データが必要な場合は、以下を参照してユーザーに要求
   - WAM公式サイト: https://www.wam.go.jp/content/wamnet/pcpub/top/sfkopendata/
