@@ -26,7 +26,7 @@ class ImportJob implements ShouldQueue
      */
     public function handle(): void
     {
-        $csv = resource_path('csv/csvdownload0'.$this->id.'.csv');
+        $csv = resource_path('csv/'.config('wam.current').'/csvdownload0'.$this->id.'.csv');
 
         if (! file_exists($csv)) {
             return;
