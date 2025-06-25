@@ -137,10 +137,13 @@ function analyzeCSVData($csvPath, $serviceConfig)
                 $serviceType = trim($data[11]); // サービス種別
                 $capacity = isset($data[28]) && $data[28] !== '' ? intval($data[28]) : 0;
 
-                // サービス種別でコードを特定
+                // サービス種別でコードを特定（全角半角の正規化を含む）
                 $serviceCode = null;
+                $normalizedServiceType = mb_convert_kana($serviceType, 'asKV'); // 全角英数→半角、全角カナ→半角、全角記号→半角
+                
                 foreach ($serviceConfig as $code => $name) {
-                    if ($name === $serviceType) {
+                    $normalizedConfigName = mb_convert_kana($name, 'asKV');
+                    if ($normalizedConfigName === $normalizedServiceType) {
                         $serviceCode = $code;
                         break;
                     }
