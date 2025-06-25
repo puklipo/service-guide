@@ -163,6 +163,9 @@ php artisan sitemap:generate
 - Import operations are queued for better performance
 - Queue worker runs in separate Docker container
 
+### Article System
+- For detailed information about the article feature, refer to `@resources/articles/README.md`
+
 ## Testing Strategy
 
 ### Test Structure
