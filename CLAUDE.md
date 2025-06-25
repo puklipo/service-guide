@@ -40,7 +40,7 @@ php artisan queue:work # Queue worker
 
 # Data import (run after starting queue worker)
 php artisan wam:import                # Import all services
-php artisan wam:import 11             # Import specific service (居宅介護)
+php artisan wam:import 14             # Import specific service
 # Note: Use QUEUE_CONNECTION=sync in .env if import times out
 ```
 
@@ -69,7 +69,7 @@ php artisan ide-helper:models -M
 ```bash
 # Import facility data from CSV files
 php artisan wam:import                # Import all services
-php artisan wam:import 11             # Import specific service (居宅介護)
+php artisan wam:import 14             # Import specific service
 
 # Generate sitemap
 php artisan sitemap:generate
