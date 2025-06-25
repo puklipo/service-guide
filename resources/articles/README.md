@@ -112,63 +112,95 @@ resources/articles/
 
 記事作成を効率化するため、CSVデータ分析スクリプトを用意しています：
 
-#### scripts/analyze-csv-data.php
+#### scripts/generate-summary-json.php
 
 **基本的な使用方法:**
 ```bash
-# 基本実行（data-summary.jsonを記事ディレクトリに生成）
-php scripts/analyze-csv-data.php resources/csv/202203 resources/articles/202203/data-summary.json
+# 単一期間の分析（比較なし）
+php scripts/generate-summary-json.php 202111
 
-# 過去データとの比較分析付き
-php scripts/analyze-csv-data.php resources/csv/202203 \
-    resources/articles/202203/data-summary.json \
-    resources/articles/202111/data-summary.json
+# 比較分析付き（前回期間との比較）
+php scripts/generate-summary-json.php 202203 202111
 
-# カスタム出力ファイル指定
-php scripts/analyze-csv-data.php resources/csv/202203 custom-output.json
+# 各期間のサマリーJSONを生成
+php scripts/generate-summary-json.php 202209 202203
+php scripts/generate-summary-json.php 202303 202209
 ```
 
+**引数:**
+- **第1引数（必須）**: 対象期間（YYYYMM形式、例：202203）
+- **第2引数（任意）**: 比較期間（YYYYMM形式、例：202111）
+
+**出力先:**
+- `resources/articles/{対象期間}/data-summary.json`
+
 **機能:**
-- 全CSVファイルの自動読み込み・分析
-- サービス別統計（施設数、定員、市場シェア）
-- 地域別統計（都道府県別施設数、成長率）
-- 事業者別統計（大手事業者ランキング）
-- 過去データとの比較分析（成長率、増減数）
-- JSON形式での統計データ出力
+- **包括的統計分析**: 29種類のサービス別詳細統計
+- **地域別分析**: 都道府県別施設数ランキングと首都圏vs地方比較
+- **事業者分析**: 法人形態別統計（社会福祉法人、株式会社、NPO、その他）
+- **定員規模分析**: 大規模(30+)、中規模(11-30)、小規模(1-10)施設の分布
+- **サービスカテゴリー**: 訪問系、施設系、相談系、支援系の分類統計
+- **市場洞察**: 成長サービス、成熟サービス、専門サービスの自動分類
+- **比較分析**: 前期間との成長率・増減数計算（比較期間指定時）
 
 **出力データ構造:**
 ```json
 {
   "metadata": {
     "data_date": "2022-03",
-    "total_records": 149540,
+    "comparison_date": "2021-11",
+    "total_records": 124419,
     "csv_files_count": 29,
-    "analysis_date": "2025-06-25"
+    "analysis_date": "2025-06-25",
+    "description": "Comprehensive statistical summary..."
   },
   "overall_statistics": {
-    "total_facilities": 149540,
-    "total_capacity": 1030245,
-    "service_types_count": 29
+    "total_facilities": 124419,
+    "total_capacity": 719999,
+    "service_types_count": 29,
+    "geographical_coverage": "All 47 prefectures",
+    "facility_growth": 3064,
+    "facility_growth_rate_percent": 2.5
   },
   "service_statistics": {
     "11": {
       "name": "居宅介護",
       "facilities": 19919,
       "capacity": null,
-      "market_share_percent": 13.3,
-      "growth_from_baseline": 384,
+      "type": "visiting_service",
+      "market_share_percent": 16.0,
+      "avg_capacity": 25.3,
+      "previous_facilities": 19535,
+      "growth": 384,
       "growth_rate_percent": 2.0
     }
   },
-  "regional_analysis": {...},
-  "business_analysis": {...}
+  "regional_analysis": {
+    "top_prefectures_by_facilities": {...},
+    "regional_distribution": {...}
+  },
+  "business_analysis": {
+    "corporation_types": {...},
+    "capacity_analysis": {...}
+  },
+  "service_categories": {
+    "visiting_services": {...},
+    "facility_services": {...},
+    "consultation_services": {...},
+    "support_services": {...}
+  },
+  "market_insights": {
+    "growth_services": [...],
+    "mature_services": [...],
+    "specialized_services": [...]
+  }
 }
 ```
 
 **記事作成での活用:**
 1. **データ収集**: スクリプトでCSVデータを一括分析
-2. **比較分析**: 過去データとの比較で成長トレンドを把握
-3. **記事執筆**: 出力されたJSONデータを元に記事を作成
+2. **比較分析**: 前期間との比較で成長トレンドを把握
+3. **記事執筆**: 充実したJSONデータを元に詳細な記事を作成
 4. **品質向上**: 一貫した分析手法で記事の客観性を確保
 
 ### 過去データとの比較分析
