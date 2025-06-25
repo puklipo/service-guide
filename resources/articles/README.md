@@ -17,6 +17,7 @@
 ```
 resources/articles/
 ├── README.md              # この文書（記事機能の説明）
+├── glossary.md            # 用語集
 ├── 202503/               # 2025年3月版
 │   ├── 01-market-overview.md
 │   ├── 02-regional-analysis.md  
