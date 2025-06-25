@@ -95,6 +95,69 @@ resources/articles/
 - `config/service.php`のサービス種別定義
 - 地域データ（都道府県、市区町村）
 
+### データ分析スクリプト
+
+記事作成を効率化するため、CSVデータ分析スクリプトを用意しています：
+
+#### scripts/analyze-csv-data.php
+
+**基本的な使用方法:**
+```bash
+# 基本実行（data-summary.jsonを生成）
+php scripts/analyze-csv-data.php resources/csv/202203
+
+# 過去データとの比較分析付き
+php scripts/analyze-csv-data.php resources/csv/202203 \
+    resources/csv/202203/data-summary.json \
+    resources/articles/202111/data-summary.json
+
+# カスタム出力ファイル指定
+php scripts/analyze-csv-data.php resources/csv/202203 custom-output.json
+```
+
+**機能:**
+- 全CSVファイルの自動読み込み・分析
+- サービス別統計（施設数、定員、市場シェア）
+- 地域別統計（都道府県別施設数、成長率）
+- 事業者別統計（大手事業者ランキング）
+- 過去データとの比較分析（成長率、増減数）
+- JSON形式での統計データ出力
+
+**出力データ構造:**
+```json
+{
+  "metadata": {
+    "data_date": "2022-03",
+    "total_records": 149540,
+    "csv_files_count": 29,
+    "analysis_date": "2025-06-25"
+  },
+  "overall_statistics": {
+    "total_facilities": 149540,
+    "total_capacity": 1030245,
+    "service_types_count": 29
+  },
+  "service_statistics": {
+    "11": {
+      "name": "居宅介護",
+      "facilities": 19919,
+      "capacity": null,
+      "market_share_percent": 13.3,
+      "growth_from_baseline": 384,
+      "growth_rate_percent": 2.0
+    }
+  },
+  "regional_analysis": {...},
+  "business_analysis": {...}
+}
+```
+
+**記事作成での活用:**
+1. **データ収集**: スクリプトでCSVデータを一括分析
+2. **比較分析**: 過去データとの比較で成長トレンドを把握
+3. **記事執筆**: 出力されたJSONデータを元に記事を作成
+4. **品質向上**: 一貫した分析手法で記事の客観性を確保
+
 ### 過去データとの比較分析
 
 #### data-summary.jsonの活用
