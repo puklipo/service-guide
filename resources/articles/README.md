@@ -187,7 +187,7 @@ php scripts/analyze-csv-data.php resources/csv/202203 custom-output.json
 
 #### データ保存方針について
 - **data-summary.json**: 記事ディレクトリ（resources/articles/YYYYMM/）に保存
-- **元CSVデータ**: 記事作成後は削除して容量を節約
+- **元CSVデータ**: 容量が大きすぎるとLaravel Vapor(AWS Lambda)へのデプロイが失敗するのでgitには含めない。ローカルには残す。
 - **再入手方法**: 必要時はWAMから再ダウンロード可能
 - **データ要求**: 元データが必要な場合は、以下を参照してユーザーに要求
   - WAM公式サイト: https://www.wam.go.jp/content/wamnet/pcpub/top/sfkopendata/
