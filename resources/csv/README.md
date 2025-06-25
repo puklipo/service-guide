@@ -25,5 +25,6 @@ php artisan wam:import
 ## CSVのデータが間違ってる場合
 `config/patch.php`と`app/Casts/Telephone.php`などを使って表示時に正しいデータに置き換える。
 
-## hash.txt
-自動更新用にファイルのハッシュを記録。
+## 古いCSVファイル
+`resources/csv/202503`などに`.gitignore`を追加してgit履歴からも削除する。
+最新のファイルだけは本番環境でのインポートに必要なので`.gitignore`は追加しない。
