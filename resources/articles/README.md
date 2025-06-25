@@ -17,14 +17,13 @@
 ```
 resources/articles/
 ├── README.md              # この文書（記事機能の説明）
-├── current/               # 最新データに基づく記事
+├── 202503/               # 2025年3月版
 │   ├── 01-market-overview.md
 │   ├── 02-regional-analysis.md  
 │   ├── 03-service-trends.md
 │   ├── 04-business-models.md
 │   ├── 05-capacity-analysis.md
 │   └── 06-growth-opportunities.md
-├── 202503/               # 2025年3月版
 ├── 202409/               # 2024年9月版  
 ├── 202403/               # 2024年3月版
 ├── 202309/               # 2023年9月版
