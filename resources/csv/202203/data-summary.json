@@ -1,0 +1,305 @@
+{
+  "data_date": "2022-03",
+  "total_facilities": 149540,
+  "total_csv_files": 29,
+  "services": {
+    "11": {
+      "name": "居宅介護",
+      "facilities": 19919,
+      "percentage": 13.3
+    },
+    "65": {
+      "name": "放課後等デイサービス",
+      "facilities": 15229,
+      "percentage": 10.2
+    },
+    "68": {
+      "name": "福祉型障害児入所施設",
+      "facilities": 234,
+      "percentage": 0.2
+    },
+    "33": {
+      "name": "共同生活援助",
+      "facilities": 10386,
+      "percentage": 6.9
+    },
+    "45": {
+      "name": "就労継続支援A型",
+      "facilities": 3789,
+      "percentage": 2.5
+    },
+    "66": {
+      "name": "居宅訪問型児童発達支援",
+      "facilities": 181,
+      "percentage": 0.1
+    },
+    "60": {
+      "name": "就労移行支援",
+      "facilities": 3221,
+      "percentage": 2.2
+    },
+    "70": {
+      "name": "障害児相談支援",
+      "facilities": 6624,
+      "percentage": 4.4
+    },
+    "15": {
+      "name": "同行援護",
+      "facilities": 6954,
+      "percentage": 4.7
+    },
+    "46": {
+      "name": "就労継続支援B型",
+      "facilities": 13587,
+      "percentage": 9.1
+    },
+    "62": {
+      "name": "就労定着支援",
+      "facilities": 1273,
+      "percentage": 0.9
+    },
+    "24": {
+      "name": "短期入所",
+      "facilities": 6247,
+      "percentage": 4.2
+    },
+    "54": {
+      "name": "地域相談支援(地域定着)",
+      "facilities": 3059,
+      "percentage": 2.0
+    },
+    "64": {
+      "name": "医療型児童発達支援",
+      "facilities": 89,
+      "percentage": 0.1
+    },
+    "22": {
+      "name": "生活介護",
+      "facilities": 10554,
+      "percentage": 7.1
+    },
+    "32": {
+      "name": "施設入所支援",
+      "facilities": 2494,
+      "percentage": 1.7
+    },
+    "41": {
+      "name": "自立訓練(機能訓練)",
+      "facilities": 213,
+      "percentage": 0.1
+    },
+    "61": {
+      "name": "自立生活援助",
+      "facilities": 317,
+      "percentage": 0.2
+    },
+    "42": {
+      "name": "自立訓練(生活訓練)",
+      "facilities": 1290,
+      "percentage": 0.9
+    },
+    "67": {
+      "name": "保育所等訪問支援",
+      "facilities": 1673,
+      "percentage": 1.1
+    },
+    "14": {
+      "name": "重度障害者等包括支援",
+      "facilities": 17,
+      "percentage": 0.0
+    },
+    "12": {
+      "name": "重度訪問介護",
+      "facilities": 17467,
+      "percentage": 11.7
+    },
+    "63": {
+      "name": "児童発達支援",
+      "facilities": 9109,
+      "percentage": 6.1
+    },
+    "13": {
+      "name": "行動援護",
+      "facilities": 2240,
+      "percentage": 1.5
+    },
+    "53": {
+      "name": "地域相談支援(地域移行)",
+      "facilities": 3183,
+      "percentage": 2.1
+    },
+    "34": {
+      "name": "宿泊型自立訓練",
+      "facilities": 219,
+      "percentage": 0.1
+    },
+    "21": {
+      "name": "療養介護",
+      "facilities": 242,
+      "percentage": 0.2
+    },
+    "52": {
+      "name": "計画相談支援",
+      "facilities": 9536,
+      "percentage": 6.4
+    },
+    "69": {
+      "name": "医療型障害児入所施設",
+      "facilities": 194,
+      "percentage": 0.1
+    }
+  },
+  "top_prefectures": [
+    {
+      "prefecture": "大阪府",
+      "code": "27",
+      "facilities": 18229,
+      "percentage": 12.2
+    },
+    {
+      "prefecture": "東京都",
+      "code": "13",
+      "facilities": 10550,
+      "percentage": 7.1
+    },
+    {
+      "prefecture": "愛知県",
+      "code": "23",
+      "facilities": 9360,
+      "percentage": 6.3
+    },
+    {
+      "prefecture": "北海道",
+      "code": "01",
+      "facilities": 8751,
+      "percentage": 5.9
+    },
+    {
+      "prefecture": "神奈川県",
+      "code": "14",
+      "facilities": 7622,
+      "percentage": 5.1
+    },
+    {
+      "prefecture": "兵庫県",
+      "code": "28",
+      "facilities": 7458,
+      "percentage": 5.0
+    },
+    {
+      "prefecture": "福岡県",
+      "code": "40",
+      "facilities": 6810,
+      "percentage": 4.6
+    },
+    {
+      "prefecture": "千葉県",
+      "code": "12",
+      "facilities": 5146,
+      "percentage": 3.4
+    },
+    {
+      "prefecture": "埼玉県",
+      "code": "11",
+      "facilities": 4791,
+      "percentage": 3.2
+    },
+    {
+      "prefecture": "静岡県",
+      "code": "22",
+      "facilities": 3533,
+      "percentage": 2.4
+    }
+  ],
+  "top_companies": [
+    {
+      "name": "株式会社ニチイ学館",
+      "facilities": 2005
+    },
+    {
+      "name": "株式会社　ニチイ学館",
+      "facilities": 980
+    },
+    {
+      "name": "アースサポート株式会社",
+      "facilities": 372
+    },
+    {
+      "name": "株式会社クラ・ゼミ",
+      "facilities": 353
+    },
+    {
+      "name": "株式会社ケア２１",
+      "facilities": 259
+    },
+    {
+      "name": "株式会社ケアリッツ・アンド・パートナーズ",
+      "facilities": 257
+    },
+    {
+      "name": "ＳＯＭＰＯケア株式会社",
+      "facilities": 221
+    },
+    {
+      "name": "ソーシャルインクルー株式会社",
+      "facilities": 207
+    },
+    {
+      "name": "ウェルビー株式会社",
+      "facilities": 199
+    },
+    {
+      "name": "株式会社LITALICOパートナーズ",
+      "facilities": 184
+    }
+  ],
+  "service_categories": {
+    "訪問系サービス": {
+      "total": 46597,
+      "percentage": 31.2,
+      "services": [
+        11,
+        12,
+        13,
+        14,
+        15
+      ]
+    },
+    "日中活動系サービス": {
+      "total": 32896,
+      "percentage": 22.0,
+      "services": [
+        21,
+        22,
+        60,
+        41,
+        42,
+        45,
+        46
+      ]
+    },
+    "居住系サービス": {
+      "total": 13099,
+      "percentage": 8.8,
+      "services": [
+        32,
+        33,
+        34
+      ]
+    },
+    "児童向けサービス": {
+      "total": 33333,
+      "percentage": 22.3,
+      "services": [
+        63,
+        64,
+        65,
+        66,
+        67,
+        68,
+        69,
+        70
+      ]
+    }
+  }
+}
