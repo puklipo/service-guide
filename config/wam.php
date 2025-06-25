@@ -1,5 +1,5 @@
 <?php
 
 return [
-    'last_updated' => '2025年3月',
+    'current' => '202503',
 ];
