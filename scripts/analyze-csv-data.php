@@ -98,6 +98,10 @@ foreach ($csvFiles as $csvFile) {
     // Extract service code from filename (e.g., csvdownload011.csv -> 11)
     if (preg_match('/csvdownload(\d+)\.csv/', $filename, $matches)) {
         $serviceCode = ltrim($matches[1], '0');
+        // Fix for service 070 -> should be 70, not 7
+        if ($matches[1] === '070') {
+            $serviceCode = '70';
+        }
         $serviceName = $serviceMap[$serviceCode] ?? "Unknown Service ($serviceCode)";
         
         echo "Processing: $filename (Service: $serviceName)\n";
@@ -162,6 +166,7 @@ foreach ($csvFiles as $csvFile) {
             'market_share_percent' => 0 // Will be calculated later
         ];
         
+        
         // Aggregate prefecture statistics
         foreach ($prefCounts as $prefCode => $count) {
             $prefectureStats[$prefCode] = ($prefectureStats[$prefCode] ?? 0) + $count;
@@ -184,16 +189,48 @@ foreach ($serviceStats as $code => &$stats) {
     $stats['market_share_percent'] = round(($stats['facilities'] / $totalFacilities) * 100, 1);
 }
 
+// Fix service 70 data if it was overwritten incorrectly
+if (isset($serviceStats['70']) && $serviceStats['70']['name'] !== '障害児相談支援') {
+    // Re-process csvdownload070.csv to get correct data
+    $csvFile070 = $csvDirectory . '/csvdownload070.csv';
+    if (file_exists($csvFile070)) {
+        $handle = fopen($csvFile070, 'r');
+        if ($handle !== false) {
+            $header = fgetcsv($handle);
+            $facilityCount = 0;
+            while (fgetcsv($handle) !== false) {
+                $facilityCount++;
+            }
+            fclose($handle);
+            
+            $serviceStats['70'] = [
+                'name' => '障害児相談支援',
+                'facilities' => $facilityCount,
+                'capacity' => null,
+                'avg_capacity' => null,
+                'market_share_percent' => round(($facilityCount / $totalFacilities) * 100, 1)
+            ];
+            echo "  FIXED: Service 70 corrected to 障害児相談支援 with $facilityCount facilities\n";
+        }
+    }
+}
+
 // Sort prefectures by facility count
 arsort($prefectureStats);
 
 // Sort companies by facility count
 arsort($companyStats);
 
+// Extract data date from directory name (e.g., 202409 -> 2024-09)
+$dataDate = 'unknown';
+if (preg_match('/(\d{4})(\d{2})/', basename($csvDirectory), $matches)) {
+    $dataDate = $matches[1] . '-' . $matches[2];
+}
+
 // Prepare final data structure
 $analysisData = [
     'metadata' => [
-        'data_date' => date('Y-m'),
+        'data_date' => $dataDate,
         'total_records' => $totalFacilities,
         'csv_files_count' => count($csvFiles),
         'analysis_date' => date('Y-m-d'),
