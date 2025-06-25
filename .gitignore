@@ -23,5 +23,3 @@ yarn-error.log
 .env.staging
 _ide_helper_models.php
 /build
-
-resources/csv/20**/*
