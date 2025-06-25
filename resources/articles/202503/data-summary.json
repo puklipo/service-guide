@@ -1,23 +1,23 @@
 {
     "metadata": {
         "data_date": "2025-03",
-        "total_records": 164948,
+        "total_records": 190482,
         "csv_files_count": 29,
         "analysis_date": "2025-06-25",
         "description": "Comprehensive statistical summary of disability services in Japan as of 2025-03",
         "comparison_date": "2024-09"
     },
     "overall_statistics": {
-        "total_facilities": 164948,
-        "total_capacity": 904583,
+        "total_facilities": 190482,
+        "total_capacity": 1329969,
         "service_types_count": 29,
         "geographical_coverage": "All 47 prefectures",
-        "previous_facilities": 159187,
-        "previous_capacity": 878018,
-        "facility_growth": 5761,
+        "previous_facilities": 183841,
+        "previous_capacity": 1287113,
+        "facility_growth": 6641,
         "facility_growth_rate_percent": 3.6,
-        "capacity_growth": 26565,
-        "capacity_growth_rate_percent": 3
+        "capacity_growth": 42856,
+        "capacity_growth_rate_percent": 3.3
     },
     "service_statistics": {
         "11": {
@@ -25,7 +25,7 @@
             "facilities": 24448,
             "capacity": null,
             "type": "visiting_service",
-            "market_share_percent": 14.8,
+            "market_share_percent": 12.8,
             "previous_facilities": 23827,
             "growth": 621,
             "growth_rate_percent": 2.6
@@ -35,7 +35,7 @@
             "facilities": 20611,
             "capacity": null,
             "type": "visiting_service",
-            "market_share_percent": 12.5,
+            "market_share_percent": 10.8,
             "previous_facilities": 20220,
             "growth": 391,
             "growth_rate_percent": 1.9
@@ -45,7 +45,7 @@
             "facilities": 2924,
             "capacity": null,
             "type": "visiting_service",
-            "market_share_percent": 1.8,
+            "market_share_percent": 1.5,
             "previous_facilities": 2784,
             "growth": 140,
             "growth_rate_percent": 5
@@ -65,7 +65,7 @@
             "facilities": 7637,
             "capacity": null,
             "type": "visiting_service",
-            "market_share_percent": 4.6,
+            "market_share_percent": 4,
             "previous_facilities": 7512,
             "growth": 125,
             "growth_rate_percent": 1.7
@@ -75,7 +75,7 @@
             "facilities": 263,
             "capacity": 22750,
             "type": "facility_service",
-            "market_share_percent": 0.2,
+            "market_share_percent": 0.1,
             "avg_capacity": 86.5,
             "previous_facilities": 261,
             "growth": 2,
@@ -86,7 +86,7 @@
             "facilities": 12828,
             "capacity": 314366,
             "type": "facility_service",
-            "market_share_percent": 7.8,
+            "market_share_percent": 6.7,
             "avg_capacity": 24.5,
             "previous_facilities": 12580,
             "growth": 248,
@@ -97,7 +97,7 @@
             "facilities": 8517,
             "capacity": 41520,
             "type": "facility_service",
-            "market_share_percent": 5.2,
+            "market_share_percent": 4.5,
             "avg_capacity": 4.9,
             "previous_facilities": 8206,
             "growth": 311,
@@ -108,7 +108,7 @@
             "facilities": 2555,
             "capacity": 125284,
             "type": "facility_service",
-            "market_share_percent": 1.5,
+            "market_share_percent": 1.3,
             "avg_capacity": 49,
             "previous_facilities": 2534,
             "growth": 21,
@@ -119,7 +119,7 @@
             "facilities": 15060,
             "capacity": null,
             "type": "facility_service",
-            "market_share_percent": 9.1,
+            "market_share_percent": 7.9,
             "previous_facilities": 14457,
             "growth": 603,
             "growth_rate_percent": 4.2
@@ -136,23 +136,25 @@
         },
         "41": {
             "name": "自立訓練(機能訓練)",
-            "facilities": 0,
-            "capacity": null,
+            "facilities": 266,
+            "capacity": 4480,
             "type": "facility_service",
-            "market_share_percent": 0,
-            "previous_facilities": 0,
-            "growth": 0,
-            "growth_rate_percent": 0
+            "market_share_percent": 0.1,
+            "avg_capacity": 16.8,
+            "previous_facilities": 258,
+            "growth": 8,
+            "growth_rate_percent": 3.1
         },
         "42": {
             "name": "自立訓練(生活訓練)",
-            "facilities": 0,
-            "capacity": null,
+            "facilities": 1627,
+            "capacity": 18223,
             "type": "facility_service",
-            "market_share_percent": 0,
-            "previous_facilities": 0,
-            "growth": 0,
-            "growth_rate_percent": 0
+            "market_share_percent": 0.9,
+            "avg_capacity": 11.2,
+            "previous_facilities": 1592,
+            "growth": 35,
+            "growth_rate_percent": 2.2
         },
         "34": {
             "name": "宿泊型自立訓練",
@@ -170,7 +172,7 @@
             "facilities": 3418,
             "capacity": 39815,
             "type": "facility_service",
-            "market_share_percent": 2.1,
+            "market_share_percent": 1.8,
             "avg_capacity": 11.6,
             "previous_facilities": 3424,
             "growth": -6,
@@ -178,30 +180,32 @@
         },
         "45": {
             "name": "就労継続支援A型",
-            "facilities": 0,
-            "capacity": null,
+            "facilities": 4607,
+            "capacity": 71632,
             "type": "facility_service",
-            "market_share_percent": 0,
-            "previous_facilities": 0,
-            "growth": 0,
-            "growth_rate_percent": 0
+            "market_share_percent": 2.4,
+            "avg_capacity": 15.5,
+            "previous_facilities": 4651,
+            "growth": -44,
+            "growth_rate_percent": -0.9
         },
         "46": {
             "name": "就労継続支援B型",
-            "facilities": 0,
-            "capacity": null,
+            "facilities": 19034,
+            "capacity": 331051,
             "type": "facility_service",
-            "market_share_percent": 0,
-            "previous_facilities": 0,
-            "growth": 0,
-            "growth_rate_percent": 0
+            "market_share_percent": 10,
+            "avg_capacity": 17.4,
+            "previous_facilities": 18153,
+            "growth": 881,
+            "growth_rate_percent": 4.9
         },
         "62": {
             "name": "就労定着支援",
             "facilities": 1859,
             "capacity": null,
             "type": "support_service",
-            "market_share_percent": 1.1,
+            "market_share_percent": 1,
             "previous_facilities": 1812,
             "growth": 47,
             "growth_rate_percent": 2.6
@@ -211,7 +215,7 @@
             "facilities": 15357,
             "capacity": 137950,
             "type": "facility_service",
-            "market_share_percent": 9.3,
+            "market_share_percent": 8.1,
             "avg_capacity": 9,
             "previous_facilities": 14402,
             "growth": 955,
@@ -233,7 +237,7 @@
             "facilities": 23031,
             "capacity": 193226,
             "type": "facility_service",
-            "market_share_percent": 14,
+            "market_share_percent": 12.1,
             "avg_capacity": 8.4,
             "previous_facilities": 21944,
             "growth": 1087,
@@ -254,7 +258,7 @@
             "facilities": 3338,
             "capacity": null,
             "type": "visiting_service",
-            "market_share_percent": 2,
+            "market_share_percent": 1.8,
             "previous_facilities": 3034,
             "growth": 304,
             "growth_rate_percent": 10
@@ -306,7 +310,7 @@
             "facilities": 12399,
             "capacity": null,
             "type": "consultation_service",
-            "market_share_percent": 7.5,
+            "market_share_percent": 6.5,
             "previous_facilities": 11966,
             "growth": 433,
             "growth_rate_percent": 3.6
@@ -316,7 +320,7 @@
             "facilities": 9113,
             "capacity": null,
             "type": "consultation_service",
-            "market_share_percent": 5.5,
+            "market_share_percent": 4.8,
             "previous_facilities": 8675,
             "growth": 438,
             "growth_rate_percent": 5
@@ -326,34 +330,34 @@
         "top_prefectures_by_facilities": {
             "27": {
                 "name": "大阪府",
-                "facilities": 21483,
-                "percentage": 13
+                "facilities": 23949,
+                "percentage": 12.6
             },
             "13": {
                 "name": "東京都",
-                "facilities": 11694,
-                "percentage": 7.1
+                "facilities": 12976,
+                "percentage": 6.8
             },
             "23": {
                 "name": "愛知県",
-                "facilities": 10024,
-                "percentage": 6.1
+                "facilities": 11436,
+                "percentage": 6
             },
             "01": {
                 "name": "北海道",
-                "facilities": 9137,
-                "percentage": 5.5
+                "facilities": 10886,
+                "percentage": 5.7
             },
             "14": {
                 "name": "神奈川県",
-                "facilities": 9073,
-                "percentage": 5.5
+                "facilities": 10025,
+                "percentage": 5.3
             }
         },
         "regional_distribution": {
             "metropolitan_areas": {
-                "facilities": 67625,
-                "percentage": 41,
+                "facilities": 75751,
+                "percentage": 39.8,
                 "prefectures": [
                     "東京都",
                     "神奈川県",
@@ -365,8 +369,8 @@
                 ]
             },
             "local_areas": {
-                "facilities": 97323,
-                "percentage": 59,
+                "facilities": 114731,
+                "percentage": 60.2,
                 "characteristics": "Higher service density per capita in rural areas"
             }
         }
@@ -374,55 +378,55 @@
     "business_analysis": {
         "corporation_types": {
             "social_welfare": {
-                "facilities": 43011,
-                "percentage": 26.1,
-                "avg_capacity": 10.7,
+                "facilities": 49866,
+                "percentage": 26.2,
+                "avg_capacity": 11.9,
                 "characteristics": "Larger facilities, traditional services"
             },
             "joint_stock": {
-                "facilities": 63622,
-                "percentage": 38.6,
-                "avg_capacity": 3.3,
+                "facilities": 71887,
+                "percentage": 37.7,
+                "avg_capacity": 4.7,
                 "characteristics": "Smaller facilities, visiting services"
             },
             "npo": {
-                "facilities": 15137,
-                "percentage": 9.2,
-                "avg_capacity": 3.7,
+                "facilities": 19590,
+                "percentage": 10.3,
+                "avg_capacity": 6.4,
                 "characteristics": "Community-based services"
             },
             "others": {
-                "facilities": 43178,
-                "percentage": 26.2,
-                "avg_capacity": 4.1,
+                "facilities": 49139,
+                "percentage": 25.8,
+                "avg_capacity": 5.5,
                 "characteristics": "Including medical corporations, government entities"
             }
         },
         "capacity_analysis": {
             "large_facilities": {
                 "definition": "30+ capacity",
-                "count": 7537,
-                "percentage": 13.6,
-                "avg_capacity": 53.6
+                "count": 9806,
+                "percentage": 12.7,
+                "avg_capacity": 50
             },
             "medium_facilities": {
                 "definition": "11-30 capacity",
-                "count": 8879,
-                "percentage": 16.1,
-                "avg_capacity": 19.2
+                "count": 24387,
+                "percentage": 31.7,
+                "avg_capacity": 19.3
             },
             "small_facilities": {
                 "definition": "1-10 capacity",
-                "count": 38812,
-                "percentage": 70.3,
-                "avg_capacity": 8.5
+                "count": 42742,
+                "percentage": 55.6,
+                "avg_capacity": 8.6
             }
         }
     },
     "service_categories": {
         "visiting_services": {
             "total_facilities": 59312,
-            "percentage": 36,
+            "percentage": 31.1,
             "services": [
                 "居宅介護",
                 "重度訪問介護",
@@ -434,8 +438,8 @@
             ]
         },
         "facility_services": {
-            "total_facilities": 81781,
-            "percentage": 49.6,
+            "total_facilities": 107315,
+            "percentage": 56.3,
             "services": [
                 "療養介護",
                 "生活介護",
@@ -454,11 +458,11 @@
                 "福祉型障害児入所施設",
                 "医療型障害児入所施設"
             ],
-            "total_capacity": 904583
+            "total_capacity": 1329969
         },
         "consultation_services": {
             "total_facilities": 21512,
-            "percentage": 13,
+            "percentage": 11.3,
             "services": [
                 "計画相談支援",
                 "地域相談支援(地域移行)",
@@ -468,7 +472,7 @@
         },
         "support_services": {
             "total_facilities": 2343,
-            "percentage": 1.4,
+            "percentage": 1.2,
             "services": [
                 "自立生活援助",
                 "就労定着支援"
