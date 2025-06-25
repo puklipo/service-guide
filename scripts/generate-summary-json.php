@@ -123,6 +123,21 @@ function analyzeCSVData($csvPath, $serviceConfig)
     foreach ($csvFiles as $csvFile) {
         echo '処理中: '.basename($csvFile)."\n";
 
+        // CSVファイル名からサービスコードを取得 (csvdownload053.csv -> 53)
+        $filename = basename($csvFile);
+        if (preg_match('/csvdownload0?(\d+)\.csv/', $filename, $matches)) {
+            $serviceCode = intval($matches[1]);
+        } else {
+            echo "警告: ファイル名からサービスコードを取得できません: $filename\n";
+            continue;
+        }
+
+        // サービスコードが設定に存在するかチェック
+        if (!isset($serviceConfig[$serviceCode])) {
+            echo "警告: 未知のサービスコード: $serviceCode (ファイル: $filename)\n";
+            continue;
+        }
+
         if (($handle = fopen($csvFile, 'r')) !== false) {
             // ヘッダーをスキップ
             fgetcsv($handle);
@@ -134,68 +149,54 @@ function analyzeCSVData($csvPath, $serviceConfig)
 
                 $prefCode = substr($data[0], 0, 2); // 都道府県コード
                 $corporationName = trim($data[3]); // 法人名
-                $serviceType = trim($data[11]); // サービス種別
                 $capacity = isset($data[28]) && $data[28] !== '' ? intval($data[28]) : 0;
 
-                // サービス種別でコードを特定（全角半角の正規化を含む）
-                $serviceCode = null;
-                $normalizedServiceType = mb_convert_kana($serviceType, 'asKV'); // 全角英数→半角、全角カナ→半角、全角記号→半角
-                
-                foreach ($serviceConfig as $code => $name) {
-                    $normalizedConfigName = mb_convert_kana($name, 'asKV');
-                    if ($normalizedConfigName === $normalizedServiceType) {
-                        $serviceCode = $code;
-                        break;
-                    }
+                // CSVファイル名から取得したサービスコードを使用
+                // サービス統計
+                $statistics['service_stats'][$serviceCode]['facilities']++;
+                $statistics['service_stats'][$serviceCode]['capacity'] += $capacity;
+                $statistics['total_facilities']++;
+                $statistics['total_capacity'] += $capacity;
+
+                // 地域統計
+                if (! isset($statistics['regional_stats'][$prefCode])) {
+                    $statistics['regional_stats'][$prefCode] = [
+                        'name' => $prefectures[$prefCode] ?? '不明',
+                        'facilities' => 0,
+                    ];
+                }
+                $statistics['regional_stats'][$prefCode]['facilities']++;
+
+                // 法人形態分析
+                $corpType = 'others';
+                if (strpos($corporationName, '社会福祉法人') !== false) {
+                    $corpType = 'social_welfare';
+                } elseif (strpos($corporationName, '株式会社') !== false) {
+                    $corpType = 'joint_stock';
+                } elseif (strpos($corporationName, 'NPO') !== false || strpos($corporationName, '特定非営利活動法人') !== false) {
+                    $corpType = 'npo';
                 }
 
-                if ($serviceCode !== null) {
-                    // サービス統計
-                    $statistics['service_stats'][$serviceCode]['facilities']++;
-                    $statistics['service_stats'][$serviceCode]['capacity'] += $capacity;
-                    $statistics['total_facilities']++;
-                    $statistics['total_capacity'] += $capacity;
+                if (! isset($statistics['corporation_stats'][$corpType])) {
+                    $statistics['corporation_stats'][$corpType] = ['facilities' => 0, 'capacity' => 0];
+                }
+                $statistics['corporation_stats'][$corpType]['facilities']++;
+                $statistics['corporation_stats'][$corpType]['capacity'] += $capacity;
 
-                    // 地域統計
-                    if (! isset($statistics['regional_stats'][$prefCode])) {
-                        $statistics['regional_stats'][$prefCode] = [
-                            'name' => $prefectures[$prefCode] ?? '不明',
-                            'facilities' => 0,
-                        ];
-                    }
-                    $statistics['regional_stats'][$prefCode]['facilities']++;
-
-                    // 法人形態分析
-                    $corpType = 'others';
-                    if (strpos($corporationName, '社会福祉法人') !== false) {
-                        $corpType = 'social_welfare';
-                    } elseif (strpos($corporationName, '株式会社') !== false) {
-                        $corpType = 'joint_stock';
-                    } elseif (strpos($corporationName, 'NPO') !== false || strpos($corporationName, '特定非営利活動法人') !== false) {
-                        $corpType = 'npo';
+                // 定員規模分析
+                if ($capacity > 0) {
+                    $sizeCategory = 'small';
+                    if ($capacity >= 30) {
+                        $sizeCategory = 'large';
+                    } elseif ($capacity >= 11) {
+                        $sizeCategory = 'medium';
                     }
 
-                    if (! isset($statistics['corporation_stats'][$corpType])) {
-                        $statistics['corporation_stats'][$corpType] = ['facilities' => 0, 'capacity' => 0];
+                    if (! isset($statistics['capacity_stats'][$sizeCategory])) {
+                        $statistics['capacity_stats'][$sizeCategory] = ['facilities' => 0, 'capacity' => 0];
                     }
-                    $statistics['corporation_stats'][$corpType]['facilities']++;
-                    $statistics['corporation_stats'][$corpType]['capacity'] += $capacity;
-
-                    // 定員規模分析
-                    if ($capacity > 0) {
-                        $sizeCategory = 'small';
-                        if ($capacity >= 30) {
-                            $sizeCategory = 'large';
-                        } elseif ($capacity >= 11) {
-                            $sizeCategory = 'medium';
-                        }
-
-                        if (! isset($statistics['capacity_stats'][$sizeCategory])) {
-                            $statistics['capacity_stats'][$sizeCategory] = ['facilities' => 0, 'capacity' => 0];
-                        }
-                        $statistics['capacity_stats'][$sizeCategory]['facilities']++;
-                        $statistics['capacity_stats'][$sizeCategory]['capacity'] += $capacity;
-                    }
+                    $statistics['capacity_stats'][$sizeCategory]['facilities']++;
+                    $statistics['capacity_stats'][$sizeCategory]['capacity'] += $capacity;
                 }
             }
 
