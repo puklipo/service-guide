@@ -101,7 +101,7 @@ class WamImport implements OnEachRow, SkipsEmptyRows, SkipsOnFailure, WithChunkR
             'name_kana' => $row['法人の名称_かな'],
             'area' => $this->kana($row['法人住所（市区町村）']),
             'address' => $this->kana($row['法人住所（番地以降）']),
-            'tel' => !empty($row['法人電話番号']) ? $row['法人電話番号'] : 'N/A',
+            'tel' => ! empty($row['法人電話番号']) ? $row['法人電話番号'] : 'N/A',
             'url' => $row['法人URL'] ?? '',
         ]);
     }

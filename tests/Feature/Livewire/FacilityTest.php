@@ -42,9 +42,9 @@ class FacilityTest extends TestCase
         ]);
 
         $response = $this->get(route('facility', $facility));
-        
+
         $expectedTitle = 'テスト事業所 (居宅介護)  - 東京都渋谷区';
-        $response->assertSee('<title>' . $expectedTitle . '</title>', false);
+        $response->assertSee('<title>'.$expectedTitle.'</title>', false);
     }
 
     public function test_facilities_computed_property_returns_paginated_results(): void
@@ -105,7 +105,7 @@ class FacilityTest extends TestCase
         // Should only include facilities in same area with same service
         // (3 related + 1 original = 4, but original might be excluded from its own list)
         $this->assertLessThanOrEqual(4, count($facilities->items()));
-        
+
         foreach ($facilities->items() as $relatedFacility) {
             $this->assertEquals($area1->id, $relatedFacility->area_id);
             $this->assertEquals($service1->id, $relatedFacility->service_id);
@@ -169,7 +169,7 @@ class FacilityTest extends TestCase
         $facility = Facility::factory()->create(['description' => null]);
 
         $response = $this->get(route('facility', $facility));
-        
+
         // The description section should not be rendered at all
         $response->assertOk();
         $response->assertDontSee('prose prose-indigo', false);
@@ -189,10 +189,10 @@ class FacilityTest extends TestCase
     public function test_facility_mount_redirects_when_service_parameter_present(): void
     {
         $facility = Facility::factory()->create();
-        
+
         // Test the actual route with service parameter
-        $response = $this->get(route('facility', $facility) . '?service=11');
-        
+        $response = $this->get(route('facility', $facility).'?service=11');
+
         // Should redirect to route without service parameter (308 redirect)
         $response->assertRedirect(route('facility', $facility));
     }
@@ -215,7 +215,7 @@ class FacilityTest extends TestCase
         $this->actingAs($user);
 
         $response = $this->get(route('facility', $facility));
-        
+
         $response->assertOk();
         // Admin should see components (test passes if page loads without admin restrictions)
         $this->assertTrue(true);
@@ -229,7 +229,7 @@ class FacilityTest extends TestCase
         $this->actingAs($user);
 
         $response = $this->get(route('facility', $facility));
-        
+
         $response->assertOk()
             ->assertDontSee('<livewire:index-now', false)
             ->assertDontSee('<livewire:facility-admin', false);
@@ -240,7 +240,7 @@ class FacilityTest extends TestCase
         $facility = Facility::factory()->create();
 
         $response = $this->get(route('facility', $facility));
-        
+
         $response->assertOk()
             ->assertDontSee('<livewire:index-now', false)
             ->assertDontSee('<livewire:facility-admin', false);

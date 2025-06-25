@@ -38,7 +38,7 @@ class MapServiceTest extends TestCase
         ]);
 
         $services = config('service');
-        
+
         foreach ($services as $serviceId => $serviceName) {
             $component->assertSee($serviceName);
         }
@@ -55,9 +55,9 @@ class MapServiceTest extends TestCase
         ]);
 
         $services = config('service');
-        
+
         foreach (array_slice($services, 0, 3, true) as $serviceId => $serviceName) {
-            $expectedLink = '/?pref=' . $pref->id . '&amp;area=' . $area->id . '&amp;service=' . $serviceId;
+            $expectedLink = '/?pref='.$pref->id.'&amp;area='.$area->id.'&amp;service='.$serviceId;
             $component->assertSee($expectedLink, false);
         }
     }
@@ -85,7 +85,7 @@ class MapServiceTest extends TestCase
             'pref' => $pref->id,
             'area' => $area->id,
         ]);
-        
+
         $component->assertSee('<details', false);
         $component->assertSee('<summary>サービスを表示</summary>', false);
     }
@@ -101,10 +101,10 @@ class MapServiceTest extends TestCase
         ]);
 
         $services = config('service');
-        
+
         // Check that each service has a unique wire:key (test a few)
         foreach (array_slice($services, 0, 3, true) as $serviceId => $serviceName) {
-            $component->assertSee('wire:key="' . $serviceId . '"', false);
+            $component->assertSee('wire:key="'.$serviceId.'"', false);
         }
     }
 
@@ -117,7 +117,7 @@ class MapServiceTest extends TestCase
             'pref' => $pref->id,
             'area' => $area->id,
         ]);
-        
+
         // Check for specific CSS classes
         $component->assertSee('*:hover:text-primary *:hover:underline', false);
         $component->assertSee('text-sm', false);
@@ -133,10 +133,10 @@ class MapServiceTest extends TestCase
             'pref' => $prefId,
             'area' => $areaId,
         ]);
-        
+
         // Check that numeric IDs are handled correctly in URLs
-        $component->assertSee('pref=' . $prefId, false);
-        $component->assertSee('area=' . $areaId, false);
+        $component->assertSee('pref='.$prefId, false);
+        $component->assertSee('area='.$areaId, false);
     }
 
     public function test_map_service_handles_string_ids(): void
@@ -148,10 +148,10 @@ class MapServiceTest extends TestCase
             'pref' => $prefId,
             'area' => $areaId,
         ]);
-        
+
         // Check that string IDs are handled correctly in URLs
-        $component->assertSee('pref=' . $prefId, false);
-        $component->assertSee('area=' . $areaId, false);
+        $component->assertSee('pref='.$prefId, false);
+        $component->assertSee('area='.$areaId, false);
     }
 
     public function test_map_service_specific_service_links(): void
@@ -163,11 +163,11 @@ class MapServiceTest extends TestCase
             'pref' => $pref->id,
             'area' => $area->id,
         ]);
-        
+
         // Test specific service links (using known service IDs from config)
-        $expectedLink11 = '/?pref=' . $pref->id . '&amp;area=' . $area->id . '&amp;service=11';
-        $expectedLink12 = '/?pref=' . $pref->id . '&amp;area=' . $area->id . '&amp;service=12';
-        
+        $expectedLink11 = '/?pref='.$pref->id.'&amp;area='.$area->id.'&amp;service=11';
+        $expectedLink12 = '/?pref='.$pref->id.'&amp;area='.$area->id.'&amp;service=12';
+
         $component->assertSee($expectedLink11, false);
         $component->assertSee($expectedLink12, false);
     }
@@ -181,7 +181,7 @@ class MapServiceTest extends TestCase
             'pref' => $pref->id,
             'area' => $area->id,
         ]);
-        
+
         // Verify the component is minimal - no complex logic, just display
         $component->assertSee('サービスを表示');
         $component->assertSee('<details', false);
@@ -195,7 +195,7 @@ class MapServiceTest extends TestCase
             'pref' => null,
             'area' => null,
         ]);
-        
+
         // Should still render but with null values in URLs
         $component->assertSee('サービスを表示');
         $component->assertSee('pref=', false);
@@ -211,7 +211,7 @@ class MapServiceTest extends TestCase
             'pref' => $pref->id,
             'area' => $area->id,
         ]);
-        
+
         // The details element should be collapsible (closed by default)
         $component->assertSee('<details', false);
         $component->assertDontSee('<details open', false);

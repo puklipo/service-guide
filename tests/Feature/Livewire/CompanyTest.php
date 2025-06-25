@@ -38,15 +38,15 @@ class CompanyTest extends TestCase
         ]);
 
         $response = $this->get(route('company', $company));
-        
+
         $expectedTitle = 'テスト法人 - 東京都新宿区';
-        $response->assertSee('<title>' . $expectedTitle . '</title>', false);
+        $response->assertSee('<title>'.$expectedTitle.'</title>', false);
     }
 
     public function test_facilities_computed_property_returns_paginated_results(): void
     {
         $company = Company::factory()->create();
-        
+
         // Create 12 facilities for this company
         Facility::factory()->count(12)->create(['company_id' => $company->id]);
 
@@ -65,7 +65,7 @@ class CompanyTest extends TestCase
 
         // Create facilities for company1
         Facility::factory()->count(3)->create(['company_id' => $company1->id]);
-        
+
         // Create facilities for company2 (should not appear in company1's list)
         Facility::factory()->count(2)->create(['company_id' => $company2->id]);
 
@@ -73,7 +73,7 @@ class CompanyTest extends TestCase
         $facilities = $component->get('facilities');
 
         $this->assertCount(3, $facilities->items());
-        
+
         foreach ($facilities->items() as $facility) {
             $this->assertEquals($company1->id, $facility->company_id);
         }
@@ -113,7 +113,7 @@ class CompanyTest extends TestCase
         $company = Company::factory()->create(['url' => '']);
 
         $response = $this->get(route('company', $company));
-        
+
         // URL section should be empty when no URL is provided
         $response->assertOk();
         // Test passes if no URLs are incorrectly displayed
@@ -131,7 +131,7 @@ class CompanyTest extends TestCase
             'service_id' => $service1->id,
             'name' => 'テスト事業所1',
         ]);
-        
+
         $facility2 = Facility::factory()->create([
             'company_id' => $company->id,
             'service_id' => $service2->id,
@@ -158,7 +158,7 @@ class CompanyTest extends TestCase
         ]);
 
         $response = $this->get(route('company', $company));
-        
+
         $response->assertSee(route('facility', $facility), false);
         $response->assertSee('テスト事業所');
     }
@@ -182,7 +182,7 @@ class CompanyTest extends TestCase
         $this->actingAs($user);
 
         $response = $this->get(route('company', $company));
-        
+
         $response->assertOk();
         // Admin should see components (test passes if page loads without admin restrictions)
         $this->assertTrue(true);
@@ -196,7 +196,7 @@ class CompanyTest extends TestCase
         $this->actingAs($user);
 
         $response = $this->get(route('company', $company));
-        
+
         $response->assertOk()
             ->assertDontSee('<livewire:index-now', false);
     }
@@ -206,7 +206,7 @@ class CompanyTest extends TestCase
         $company = Company::factory()->create();
 
         $response = $this->get(route('company', $company));
-        
+
         $response->assertOk()
             ->assertDontSee('<livewire:index-now', false);
     }
@@ -216,7 +216,7 @@ class CompanyTest extends TestCase
         $company = Company::factory()->create(['name' => 'テスト法人']);
 
         $component = Volt::test('company', ['company' => $company]);
-        
+
         $this->assertEquals($company->id, $component->get('company')->id);
         $this->assertEquals('テスト法人', $component->get('company')->name);
     }
@@ -224,7 +224,7 @@ class CompanyTest extends TestCase
     public function test_company_pagination_works_correctly(): void
     {
         $company = Company::factory()->create();
-        
+
         // Create more than 10 facilities to test pagination
         Facility::factory()->count(15)->create(['company_id' => $company->id]);
 
@@ -244,7 +244,7 @@ class CompanyTest extends TestCase
 
         $this->assertCount(0, $facilities->items());
         $this->assertFalse($facilities->hasPages());
-        
+
         // Should still display the company information
         $component->assertSee('テスト法人')
             ->assertSee('法人情報');
@@ -258,7 +258,7 @@ class CompanyTest extends TestCase
         ]);
 
         $response = $this->get(route('company', $company));
-        
+
         // Check for ruby tags for proper furigana display
         $response->assertSee('<ruby>', false);
         $response->assertSee('<rt class="text-xs">テストホウジン</rt>', false);

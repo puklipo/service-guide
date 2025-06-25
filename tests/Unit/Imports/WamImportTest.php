@@ -22,7 +22,7 @@ class WamImportTest extends TestCase
     public function test_wam_import_can_be_instantiated(): void
     {
         $import = new WamImport(11);
-        
+
         $this->assertInstanceOf(WamImport::class, $import);
     }
 
@@ -50,7 +50,7 @@ class WamImportTest extends TestCase
     public function test_wam_import_chunk_size(): void
     {
         $import = new WamImport(11);
-        
+
         $this->assertEquals(1000, $import->chunkSize());
     }
 
@@ -291,7 +291,7 @@ class WamImportTest extends TestCase
         (new WamImport(11))->import($csvPath);
 
         $this->assertGreaterThan($initialCount, Facility::count());
-        
+
         $this->assertDatabaseHas('facilities', [
             'name' => 'テスト訪問介護事業所',
             'service_id' => 11,
