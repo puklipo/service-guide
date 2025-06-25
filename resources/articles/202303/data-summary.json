@@ -1,0 +1,503 @@
+{
+    "metadata": {
+        "data_date": "2023-03",
+        "total_records": 133094,
+        "csv_files_count": 29,
+        "analysis_date": "2025-06-25",
+        "description": "Comprehensive statistical summary of disability services in Japan as of 2023-03",
+        "comparison_date": "2022-09"
+    },
+    "overall_statistics": {
+        "total_facilities": 133094,
+        "total_capacity": 759635,
+        "service_types_count": 29,
+        "geographical_coverage": "All 47 prefectures",
+        "previous_facilities": 129866,
+        "previous_capacity": 747741,
+        "facility_growth": 3228,
+        "facility_growth_rate_percent": 2.5,
+        "capacity_growth": 11894,
+        "capacity_growth_rate_percent": 1.6
+    },
+    "service_statistics": {
+        "11": {
+            "name": "居宅介護",
+            "facilities": 20972,
+            "capacity": null,
+            "type": "visiting_service",
+            "market_share_percent": 15.8,
+            "previous_facilities": 20497,
+            "growth": 475,
+            "growth_rate_percent": 2.3
+        },
+        "12": {
+            "name": "重度訪問介護",
+            "facilities": 18248,
+            "capacity": null,
+            "type": "visiting_service",
+            "market_share_percent": 13.7,
+            "previous_facilities": 17899,
+            "growth": 349,
+            "growth_rate_percent": 1.9
+        },
+        "13": {
+            "name": "行動援護",
+            "facilities": 2360,
+            "capacity": null,
+            "type": "visiting_service",
+            "market_share_percent": 1.8,
+            "previous_facilities": 2299,
+            "growth": 61,
+            "growth_rate_percent": 2.7
+        },
+        "14": {
+            "name": "重度障害者等包括支援",
+            "facilities": 18,
+            "capacity": null,
+            "type": "visiting_service",
+            "market_share_percent": 0,
+            "previous_facilities": 19,
+            "growth": -1,
+            "growth_rate_percent": -5.3
+        },
+        "15": {
+            "name": "同行援護",
+            "facilities": 7083,
+            "capacity": null,
+            "type": "visiting_service",
+            "market_share_percent": 5.3,
+            "previous_facilities": 7007,
+            "growth": 76,
+            "growth_rate_percent": 1.1
+        },
+        "21": {
+            "name": "療養介護",
+            "facilities": 246,
+            "capacity": 20142,
+            "type": "facility_service",
+            "market_share_percent": 0.2,
+            "avg_capacity": 81.9,
+            "previous_facilities": 245,
+            "growth": 1,
+            "growth_rate_percent": 0.4
+        },
+        "22": {
+            "name": "生活介護",
+            "facilities": 11083,
+            "capacity": 277267,
+            "type": "facility_service",
+            "market_share_percent": 8.3,
+            "avg_capacity": 25,
+            "previous_facilities": 10943,
+            "growth": 140,
+            "growth_rate_percent": 1.3
+        },
+        "24": {
+            "name": "短期入所",
+            "facilities": 6650,
+            "capacity": 35383,
+            "type": "facility_service",
+            "market_share_percent": 5,
+            "avg_capacity": 5.3,
+            "previous_facilities": 6500,
+            "growth": 150,
+            "growth_rate_percent": 2.3
+        },
+        "32": {
+            "name": "施設入所支援",
+            "facilities": 2508,
+            "capacity": 120619,
+            "type": "facility_service",
+            "market_share_percent": 1.9,
+            "avg_capacity": 48.1,
+            "previous_facilities": 2499,
+            "growth": 9,
+            "growth_rate_percent": 0.4
+        },
+        "33": {
+            "name": "共同生活援助",
+            "facilities": 11332,
+            "capacity": null,
+            "type": "facility_service",
+            "market_share_percent": 8.5,
+            "previous_facilities": 10974,
+            "growth": 358,
+            "growth_rate_percent": 3.3
+        },
+        "61": {
+            "name": "自立生活援助",
+            "facilities": 340,
+            "capacity": null,
+            "type": "support_service",
+            "market_share_percent": 0.3,
+            "previous_facilities": 334,
+            "growth": 6,
+            "growth_rate_percent": 1.8
+        },
+        "41": {
+            "name": "自立訓練(機能訓練)",
+            "facilities": 0,
+            "capacity": null,
+            "type": "facility_service",
+            "market_share_percent": 0,
+            "previous_facilities": 0,
+            "growth": 0,
+            "growth_rate_percent": 0
+        },
+        "42": {
+            "name": "自立訓練(生活訓練)",
+            "facilities": 0,
+            "capacity": null,
+            "type": "facility_service",
+            "market_share_percent": 0,
+            "previous_facilities": 0,
+            "growth": 0,
+            "growth_rate_percent": 0
+        },
+        "34": {
+            "name": "宿泊型自立訓練",
+            "facilities": 222,
+            "capacity": 3449,
+            "type": "facility_service",
+            "market_share_percent": 0.2,
+            "avg_capacity": 15.5,
+            "previous_facilities": 221,
+            "growth": 1,
+            "growth_rate_percent": 0.5
+        },
+        "60": {
+            "name": "就労移行支援",
+            "facilities": 3275,
+            "capacity": 35494,
+            "type": "facility_service",
+            "market_share_percent": 2.5,
+            "avg_capacity": 10.8,
+            "previous_facilities": 3268,
+            "growth": 7,
+            "growth_rate_percent": 0.2
+        },
+        "45": {
+            "name": "就労継続支援A型",
+            "facilities": 0,
+            "capacity": null,
+            "type": "facility_service",
+            "market_share_percent": 0,
+            "previous_facilities": 0,
+            "growth": 0,
+            "growth_rate_percent": 0
+        },
+        "46": {
+            "name": "就労継続支援B型",
+            "facilities": 0,
+            "capacity": null,
+            "type": "facility_service",
+            "market_share_percent": 0,
+            "previous_facilities": 0,
+            "growth": 0,
+            "growth_rate_percent": 0
+        },
+        "62": {
+            "name": "就労定着支援",
+            "facilities": 1419,
+            "capacity": null,
+            "type": "support_service",
+            "market_share_percent": 1.1,
+            "previous_facilities": 1381,
+            "growth": 38,
+            "growth_rate_percent": 2.8
+        },
+        "63": {
+            "name": "児童発達支援",
+            "facilities": 10511,
+            "capacity": 97811,
+            "type": "facility_service",
+            "market_share_percent": 7.9,
+            "avg_capacity": 9.3,
+            "previous_facilities": 10003,
+            "growth": 508,
+            "growth_rate_percent": 5.1
+        },
+        "64": {
+            "name": "医療型児童発達支援",
+            "facilities": 87,
+            "capacity": 2136,
+            "type": "facility_service",
+            "market_share_percent": 0.1,
+            "avg_capacity": 24.6,
+            "previous_facilities": 87,
+            "growth": 0,
+            "growth_rate_percent": 0
+        },
+        "65": {
+            "name": "放課後等デイサービス",
+            "facilities": 17004,
+            "capacity": 145662,
+            "type": "facility_service",
+            "market_share_percent": 12.8,
+            "avg_capacity": 8.6,
+            "previous_facilities": 16416,
+            "growth": 588,
+            "growth_rate_percent": 3.6
+        },
+        "66": {
+            "name": "居宅訪問型児童発達支援",
+            "facilities": 220,
+            "capacity": null,
+            "type": "visiting_service",
+            "market_share_percent": 0.2,
+            "previous_facilities": 207,
+            "growth": 13,
+            "growth_rate_percent": 6.3
+        },
+        "67": {
+            "name": "保育所等訪問支援",
+            "facilities": 2007,
+            "capacity": null,
+            "type": "visiting_service",
+            "market_share_percent": 1.5,
+            "previous_facilities": 1902,
+            "growth": 105,
+            "growth_rate_percent": 5.5
+        },
+        "68": {
+            "name": "福祉型障害児入所施設",
+            "facilities": 235,
+            "capacity": 6721,
+            "type": "facility_service",
+            "market_share_percent": 0.2,
+            "avg_capacity": 28.6,
+            "previous_facilities": 235,
+            "growth": 0,
+            "growth_rate_percent": 0
+        },
+        "69": {
+            "name": "医療型障害児入所施設",
+            "facilities": 198,
+            "capacity": 14951,
+            "type": "facility_service",
+            "market_share_percent": 0.1,
+            "avg_capacity": 75.5,
+            "previous_facilities": 196,
+            "growth": 2,
+            "growth_rate_percent": 1
+        },
+        "53": {
+            "name": "地域相談支援(地域移行)",
+            "facilities": 0,
+            "capacity": null,
+            "type": "consultation_service",
+            "market_share_percent": 0,
+            "previous_facilities": 0,
+            "growth": 0,
+            "growth_rate_percent": 0
+        },
+        "54": {
+            "name": "地域相談支援(地域定着)",
+            "facilities": 0,
+            "capacity": null,
+            "type": "consultation_service",
+            "market_share_percent": 0,
+            "previous_facilities": 0,
+            "growth": 0,
+            "growth_rate_percent": 0
+        },
+        "52": {
+            "name": "計画相談支援",
+            "facilities": 10033,
+            "capacity": null,
+            "type": "consultation_service",
+            "market_share_percent": 7.5,
+            "previous_facilities": 9852,
+            "growth": 181,
+            "growth_rate_percent": 1.8
+        },
+        "70": {
+            "name": "障害児相談支援",
+            "facilities": 7043,
+            "capacity": null,
+            "type": "consultation_service",
+            "market_share_percent": 5.3,
+            "previous_facilities": 6882,
+            "growth": 161,
+            "growth_rate_percent": 2.3
+        }
+    },
+    "regional_analysis": {
+        "top_prefectures_by_facilities": {
+            "27": {
+                "name": "大阪府",
+                "facilities": 17901,
+                "percentage": 13.4
+            },
+            "13": {
+                "name": "東京都",
+                "facilities": 9522,
+                "percentage": 7.2
+            },
+            "23": {
+                "name": "愛知県",
+                "facilities": 8484,
+                "percentage": 6.4
+            },
+            "01": {
+                "name": "北海道",
+                "facilities": 7450,
+                "percentage": 5.6
+            },
+            "14": {
+                "name": "神奈川県",
+                "facilities": 7252,
+                "percentage": 5.4
+            }
+        },
+        "regional_distribution": {
+            "metropolitan_areas": {
+                "facilities": 53371,
+                "percentage": 40.1,
+                "prefectures": [
+                    "東京都",
+                    "神奈川県",
+                    "埼玉県",
+                    "千葉県",
+                    "大阪府",
+                    "兵庫県",
+                    "京都府"
+                ]
+            },
+            "local_areas": {
+                "facilities": 79723,
+                "percentage": 59.9,
+                "characteristics": "Higher service density per capita in rural areas"
+            }
+        }
+    },
+    "business_analysis": {
+        "corporation_types": {
+            "social_welfare": {
+                "facilities": 40505,
+                "percentage": 30.4,
+                "avg_capacity": 10.6,
+                "characteristics": "Larger facilities, traditional services"
+            },
+            "joint_stock": {
+                "facilities": 45777,
+                "percentage": 34.4,
+                "avg_capacity": 3.1,
+                "characteristics": "Smaller facilities, visiting services"
+            },
+            "npo": {
+                "facilities": 13670,
+                "percentage": 10.3,
+                "avg_capacity": 3.6,
+                "characteristics": "Community-based services"
+            },
+            "others": {
+                "facilities": 33142,
+                "percentage": 24.9,
+                "avg_capacity": 4.2,
+                "characteristics": "Including medical corporations, government entities"
+            }
+        },
+        "capacity_analysis": {
+            "large_facilities": {
+                "definition": "30+ capacity",
+                "count": 7007,
+                "percentage": 16.4,
+                "avg_capacity": 54.2
+            },
+            "medium_facilities": {
+                "definition": "11-30 capacity",
+                "count": 7208,
+                "percentage": 16.8,
+                "avg_capacity": 19.2
+            },
+            "small_facilities": {
+                "definition": "1-10 capacity",
+                "count": 28611,
+                "percentage": 66.8,
+                "avg_capacity": 8.4
+            }
+        }
+    },
+    "service_categories": {
+        "visiting_services": {
+            "total_facilities": 50908,
+            "percentage": 38.2,
+            "services": [
+                "居宅介護",
+                "重度訪問介護",
+                "行動援護",
+                "重度障害者等包括支援",
+                "同行援護",
+                "居宅訪問型児童発達支援",
+                "保育所等訪問支援"
+            ]
+        },
+        "facility_services": {
+            "total_facilities": 63351,
+            "percentage": 47.6,
+            "services": [
+                "療養介護",
+                "生活介護",
+                "短期入所",
+                "施設入所支援",
+                "共同生活援助",
+                "宿泊型自立訓練",
+                "自立訓練(機能訓練)",
+                "自立訓練(生活訓練)",
+                "就労継続支援A型",
+                "就労継続支援B型",
+                "就労移行支援",
+                "児童発達支援",
+                "医療型児童発達支援",
+                "放課後等デイサービス",
+                "福祉型障害児入所施設",
+                "医療型障害児入所施設"
+            ],
+            "total_capacity": 759635
+        },
+        "consultation_services": {
+            "total_facilities": 17076,
+            "percentage": 12.8,
+            "services": [
+                "計画相談支援",
+                "地域相談支援(地域移行)",
+                "地域相談支援(地域定着)",
+                "障害児相談支援"
+            ]
+        },
+        "support_services": {
+            "total_facilities": 1759,
+            "percentage": 1.3,
+            "services": [
+                "自立生活援助",
+                "就労定着支援"
+            ]
+        }
+    },
+    "market_insights": {
+        "growth_services": [
+            "放課後等デイサービス",
+            "児童発達支援",
+            "就労定着支援",
+            "自立生活援助"
+        ],
+        "mature_services": [
+            "居宅介護",
+            "重度訪問介護",
+            "生活介護",
+            "就労継続支援B型"
+        ],
+        "specialized_services": [
+            "重度障害者等包括支援",
+            "医療型児童発達支援",
+            "医療型障害児入所施設"
+        ]
+    },
+    "notes": {
+        "data_source": "WAM (Welfare and Medical Service Agency) CSV files",
+        "calculation_method": "Aggregated from 29 CSV files by service type",
+        "capacity_note": "Visiting services do not have capacity limits",
+        "regional_codes": "Prefecture codes as per Japanese government standards"
+    }
+}
