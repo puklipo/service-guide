@@ -106,14 +106,6 @@ $facilities = computed(function () {
                             href="https://www.bing.com/search?q={{ rawurlencode($facility->name.' site:www.wam.go.jp/sfkohyoout/') }}"
                             class="link link-primary link-animated" target="_blank" rel="nofollow">Bing検索</a></td>
                 </tr>
-{{--                <tr>--}}
-{{--                    <th class="text-base-content bg-base-200">更新日</th>--}}
-{{--                    <td>--}}
-{{--                        <div class="text-xs text-pretty">--}}
-{{--                            {{ config('wam.last_updated') }}時点のデータを表示しています。最新の情報はWAMのページを検索して確認してください。--}}
-{{--                        </div>--}}
-{{--                    </td>--}}
-{{--                </tr>--}}
             </table>
         </div>
     </div>
