@@ -24,4 +24,4 @@ yarn-error.log
 _ide_helper_models.php
 /build
 
-resources/csv/20**/*.csv
+resources/csv/20**/*
