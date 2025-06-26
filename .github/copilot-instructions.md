@@ -58,11 +58,10 @@ vendor/bin/phpunit tests/Unit
 
 ### コード品質
 ```bash
-# Laravel Pint (コードスタイル)
-./vendor/bin/pint
-
-# IDE ヘルパー生成
-php artisan ide-helper:models -M
+# Laravel Pint (コードスタイルチェック)
+vendor/bin/pint --test
+# Laravel Pint (コードスタイル修正)
+vendor/bin/pint
 ```
 
 ### データ管理
