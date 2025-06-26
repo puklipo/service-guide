@@ -8,7 +8,7 @@
 
         <title>{{ $title ?? config('app.name', 'Laravel') }}</title>
 
-        @if(filled($description))<meta name="description" content="{{ $description }}">@endif
+        @if(isset($description) && filled($description))<meta name="description" content="{{ $description }}">@endif
 
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
