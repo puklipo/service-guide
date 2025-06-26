@@ -93,9 +93,13 @@ resources/articles/
 ## 技術仕様
 
 ### ファイル形式
-- **Markdown**: 記事本体は.md形式で保存
-- **HTML変換**: 表示時にMarkdownからHTMLに変換
+- **Markdown**: 記事本体は.md形式で保存。md内でhtml使用可。
+- **HTML変換**: 表示時にMarkdownからHTMLに変換。@app/Support/Markdown.php の`parse()` 事前に用意しているMarkdownファイルを使うだけなのでhtmlの入力を許可している。
 - **画像・グラフ**: 必要に応じて統計グラフや地図を生成
+
+### 公開用ルート
+- `/articles/{YYYYMM}/{article_slug}`でアクセス可能
+- @resources/views/livewire/articles/show.blade.php
 
 ### 更新プロセス
 1. `php artisan csv:update`コマンドでCSVデータ更新後、統計データを再集計
