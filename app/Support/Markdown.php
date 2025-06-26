@@ -11,7 +11,7 @@ class Markdown
      * Parse the given Markdown text into HTML.
      * Only use for trusted input, so HTML is allowed.
      */
-    public static function parse(string $text, array $options = []): HtmlString
+    public static function parse(string $text, array $options = [], array $extensions = []): HtmlString
     {
         $config = array_merge([
             'html_input' => 'allow',
@@ -24,14 +24,14 @@ class Markdown
             ],
         ], $options);
 
-        return new HtmlString(Str::markdown($text, $config));
+        return new HtmlString(Str::markdown($text, $config, $extensions));
     }
 
     /**
      * Parse the given Markdown text into HTML.
      * Escape all input as it is used for user-provided content.
      */
-    public static function escape(string $text, array $options = []): HtmlString
+    public static function escape(string $text, array $options = [], array $extensions = []): HtmlString
     {
         $config = array_merge([
             'html_input' => 'escape',
@@ -41,6 +41,6 @@ class Markdown
             'allow_unsafe_links' => false,
         ], $options);
 
-        return new HtmlString(Str::markdown($text, $config));
+        return new HtmlString(Str::markdown($text, $config, $extensions));
     }
 }
