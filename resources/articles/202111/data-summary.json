@@ -3,7 +3,7 @@
         "data_date": "2021-11",
         "total_records": 145937,
         "csv_files_count": 29,
-        "analysis_date": "2025-06-25",
+        "analysis_date": "2025-06-26",
         "description": "Comprehensive statistical summary of disability services in Japan as of 2021-11"
     },
     "overall_statistics": {
@@ -52,7 +52,7 @@
             "name": "療養介護",
             "facilities": 242,
             "capacity": 19680,
-            "type": "facility_service",
+            "type": "daytime_service",
             "market_share_percent": 0.2,
             "avg_capacity": 81.3
         },
@@ -60,7 +60,7 @@
             "name": "生活介護",
             "facilities": 10407,
             "capacity": 263749,
-            "type": "facility_service",
+            "type": "daytime_service",
             "market_share_percent": 7.1,
             "avg_capacity": 25.3
         },
@@ -68,7 +68,7 @@
             "name": "短期入所",
             "facilities": 6094,
             "capacity": 33696,
-            "type": "facility_service",
+            "type": "daytime_service",
             "market_share_percent": 4.2,
             "avg_capacity": 5.5
         },
@@ -76,7 +76,7 @@
             "name": "施設入所支援",
             "facilities": 2484,
             "capacity": 118989,
-            "type": "facility_service",
+            "type": "residential_service",
             "market_share_percent": 1.7,
             "avg_capacity": 47.9
         },
@@ -84,21 +84,21 @@
             "name": "共同生活援助",
             "facilities": 10012,
             "capacity": null,
-            "type": "facility_service",
+            "type": "residential_service",
             "market_share_percent": 6.9
         },
         "61": {
             "name": "自立生活援助",
             "facilities": 301,
             "capacity": null,
-            "type": "support_service",
+            "type": "residential_service",
             "market_share_percent": 0.2
         },
         "41": {
             "name": "自立訓練(機能訓練)",
             "facilities": 211,
             "capacity": 3217,
-            "type": "facility_service",
+            "type": "daytime_service",
             "market_share_percent": 0.1,
             "avg_capacity": 15.2
         },
@@ -106,7 +106,7 @@
             "name": "自立訓練(生活訓練)",
             "facilities": 1280,
             "capacity": 12986,
-            "type": "facility_service",
+            "type": "daytime_service",
             "market_share_percent": 0.9,
             "avg_capacity": 10.1
         },
@@ -114,7 +114,7 @@
             "name": "宿泊型自立訓練",
             "facilities": 219,
             "capacity": 3521,
-            "type": "facility_service",
+            "type": "residential_service",
             "market_share_percent": 0.2,
             "avg_capacity": 16.1
         },
@@ -122,7 +122,7 @@
             "name": "就労移行支援",
             "facilities": 3188,
             "capacity": 33594,
-            "type": "facility_service",
+            "type": "daytime_service",
             "market_share_percent": 2.2,
             "avg_capacity": 10.5
         },
@@ -130,7 +130,7 @@
             "name": "就労継続支援A型",
             "facilities": 3682,
             "capacity": 55911,
-            "type": "facility_service",
+            "type": "daytime_service",
             "market_share_percent": 2.5,
             "avg_capacity": 15.2
         },
@@ -138,7 +138,7 @@
             "name": "就労継続支援B型",
             "facilities": 13245,
             "capacity": 225407,
-            "type": "facility_service",
+            "type": "daytime_service",
             "market_share_percent": 9.1,
             "avg_capacity": 17
         },
@@ -146,14 +146,14 @@
             "name": "就労定着支援",
             "facilities": 1234,
             "capacity": null,
-            "type": "support_service",
+            "type": "consultation_service",
             "market_share_percent": 0.8
         },
         "63": {
             "name": "児童発達支援",
             "facilities": 8680,
             "capacity": 83951,
-            "type": "facility_service",
+            "type": "daytime_service",
             "market_share_percent": 5.9,
             "avg_capacity": 9.7
         },
@@ -161,7 +161,7 @@
             "name": "医療型児童発達支援",
             "facilities": 89,
             "capacity": 2036,
-            "type": "facility_service",
+            "type": "daytime_service",
             "market_share_percent": 0.1,
             "avg_capacity": 22.9
         },
@@ -169,7 +169,7 @@
             "name": "放課後等デイサービス",
             "facilities": 14663,
             "capacity": 128349,
-            "type": "facility_service",
+            "type": "daytime_service",
             "market_share_percent": 10,
             "avg_capacity": 8.8
         },
@@ -191,7 +191,7 @@
             "name": "福祉型障害児入所施設",
             "facilities": 235,
             "capacity": 6630,
-            "type": "facility_service",
+            "type": "residential_service",
             "market_share_percent": 0.2,
             "avg_capacity": 28.2
         },
@@ -199,7 +199,7 @@
             "name": "医療型障害児入所施設",
             "facilities": 193,
             "capacity": 14752,
-            "type": "facility_service",
+            "type": "residential_service",
             "market_share_percent": 0.1,
             "avg_capacity": 76.4
         },
@@ -343,45 +343,46 @@
                 "保育所等訪問支援"
             ]
         },
-        "facility_services": {
-            "total_facilities": 74924,
-            "percentage": 51.3,
+        "daytime_services": {
+            "total_facilities": 61781,
+            "percentage": 42.3,
             "services": [
                 "療養介護",
                 "生活介護",
                 "短期入所",
+                "自立訓練(機能訓練)",
+                "自立訓練(生活訓練)",
+                "就労移行支援",
+                "就労継続支援A型",
+                "就労継続支援B型",
+                "児童発達支援",
+                "医療型児童発達支援",
+                "放課後等デイサービス"
+            ],
+            "total_capacity": 862576
+        },
+        "residential_services": {
+            "total_facilities": 13444,
+            "percentage": 9.2,
+            "services": [
                 "施設入所支援",
                 "共同生活援助",
                 "宿泊型自立訓練",
-                "自立訓練(機能訓練)",
-                "自立訓練(生活訓練)",
-                "就労継続支援A型",
-                "就労継続支援B型",
-                "就労移行支援",
-                "児童発達支援",
-                "医療型児童発達支援",
-                "放課後等デイサービス",
+                "自立生活援助",
                 "福祉型障害児入所施設",
                 "医療型障害児入所施設"
             ],
-            "total_capacity": 1006468
+            "total_capacity": 143892
         },
-        "consultation_services": {
-            "total_facilities": 21970,
-            "percentage": 15.1,
+        "consultation_support_services": {
+            "total_facilities": 23204,
+            "percentage": 15.9,
             "services": [
                 "計画相談支援",
                 "地域相談支援(地域移行)",
                 "地域相談支援(地域定着)",
+                "就労定着支援",
                 "障害児相談支援"
-            ]
-        },
-        "support_services": {
-            "total_facilities": 1535,
-            "percentage": 1.1,
-            "services": [
-                "自立生活援助",
-                "就労定着支援"
             ]
         }
     },
