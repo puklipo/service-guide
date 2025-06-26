@@ -139,7 +139,7 @@ php scripts/generate-summary-json.php 202303 202209
 - **地域別分析**: 都道府県別施設数ランキングと首都圏vs地方比較
 - **事業者分析**: 法人形態別統計（社会福祉法人、株式会社、NPO、その他）
 - **定員規模分析**: 大規模(30+)、中規模(11-30)、小規模(1-10)施設の分布
-- **サービスカテゴリー**: 訪問系、施設系、相談系、支援系の分類統計
+- **サービスカテゴリー**: 訪問系、通所・日中活動系、居住・入所系、相談・支援系の分類統計
 - **市場洞察**: 成長サービス、成熟サービス、専門サービスの自動分類
 - **比較分析**: 前期間との成長率・増減数計算（比較期間指定時）
 
@@ -185,9 +185,9 @@ php scripts/generate-summary-json.php 202303 202209
   },
   "service_categories": {
     "visiting_services": {...},
-    "facility_services": {...},
-    "consultation_services": {...},
-    "support_services": {...}
+    "daytime_services": {...},
+    "residential_services": {...},
+    "consultation_support_services": {...}
   },
   "market_insights": {
     "growth_services": [...],

@@ -57,22 +57,29 @@ $serviceConfig = include $configPath;
  */
 function getServiceType($serviceCode)
 {
+    // 訪問系サービス（WAMと同じ + 居宅訪問型児童発達支援 + 保育所等訪問支援）
     $visitingServices = [11, 12, 13, 14, 15, 66, 67];
-    $facilityServices = [21, 22, 24, 32, 33, 34, 41, 42, 45, 46, 60, 63, 64, 65, 68, 69];
-    $consultationServices = [52, 53, 54, 70];
-    $supportServices = [61, 62];
+
+    // 通所・日中活動系サービス（日中活動系 + 障害児通所系の施設で行うもの）
+    $daytimeServices = [21, 22, 24, 41, 42, 60, 45, 46, 63, 64, 65];
+
+    // 居住・入所系サービス（施設系 + 居住系 + 障害児入所系）
+    $residentialServices = [32, 33, 34, 61, 68, 69];
+
+    // 相談・支援系サービス（相談系 + 就労定着支援）
+    $consultationServices = [52, 53, 54, 62, 70];
 
     if (in_array($serviceCode, $visitingServices)) {
         return 'visiting_service';
     }
-    if (in_array($serviceCode, $facilityServices)) {
-        return 'facility_service';
+    if (in_array($serviceCode, $daytimeServices)) {
+        return 'daytime_service';
+    }
+    if (in_array($serviceCode, $residentialServices)) {
+        return 'residential_service';
     }
     if (in_array($serviceCode, $consultationServices)) {
         return 'consultation_service';
-    }
-    if (in_array($serviceCode, $supportServices)) {
-        return 'support_service';
     }
 
     return 'other';
@@ -375,9 +382,9 @@ $businessAnalysis['capacity_analysis'] = $capacityAnalysis;
 $serviceCategories = [];
 $categoryTypes = [
     'visiting_services' => [11, 12, 13, 14, 15, 66, 67],
-    'facility_services' => [21, 22, 24, 32, 33, 34, 41, 42, 45, 46, 60, 63, 64, 65, 68, 69],
-    'consultation_services' => [52, 53, 54, 70],
-    'support_services' => [61, 62],
+    'daytime_services' => [21, 22, 24, 41, 42, 60, 45, 46, 63, 64, 65],
+    'residential_services' => [32, 33, 34, 61, 68, 69],
+    'consultation_support_services' => [52, 53, 54, 62, 70],
 ];
 
 foreach ($categoryTypes as $categoryName => $serviceCodes) {
