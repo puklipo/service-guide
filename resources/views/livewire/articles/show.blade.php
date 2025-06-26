@@ -38,7 +38,7 @@ title(fn () => $this->title);
     @include('layouts.header')
 
     <div class="prose max-w-4xl mx-6 lg:mx-auto my-12">
-        <article class="prose">
+        <article>
             {{ Markdown::parse($this->document->body()) }}
         </article>
 
