@@ -39,6 +39,12 @@ title(fn () => $this->title);
 
         <div class="my-6">
             <h3>{{ Carbon::createFromFormat('Ym',$date)->format('Y年m月') }}の記事</h3>
+            <livewire:articles.list :date="$date" />
+        </div>
+
+        <div class="my-6">
+            <!-- 別の時期の同じ記事 -->
+            <h3></h3>
         </div>
     </div>
 </div>
