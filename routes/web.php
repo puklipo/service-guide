@@ -15,6 +15,10 @@ Volt::route('c/{company}', 'company')
     ->name('company')
     ->whereNumber('company');
 
+Volt::route('articles/{date}/{slug}', 'articles.show')
+    ->name('articles.show')
+    ->where('date', '[0-9]{4}[0-9]{2}');
+
 Volt::route('map', 'map')->name('map');
 
 Route::get('sitemap.xml', SitemapController::class)->name('sitemap');

@@ -17,6 +17,7 @@
         "maatwebsite/excel": "^3.1",
         "revolution/laravel-str-mixins": "^2.5",
         "spatie/laravel-sitemap": "^7.2.0",
+        "spatie/yaml-front-matter": "^2.1",
         "torann/json-ld": "^0.0.19"
     },
     "require-dev": {
