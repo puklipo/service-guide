@@ -11,7 +11,6 @@
 - Livewire 3 + Volt（関数型コンポーネント）
 - Tailwind CSS 4 + FlyOnUI
 - Laravel Breeze (認証)
-- Laravel Sail (ローカル開発)
 - AWS Vapor (デプロイ)
 
 ## 開発コマンド
