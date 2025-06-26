@@ -125,6 +125,10 @@ php scripts/generate-summary-json.php 202203 202111
 # 各期間のサマリーJSONを生成
 php scripts/generate-summary-json.php 202209 202203
 php scripts/generate-summary-json.php 202303 202209
+php scripts/generate-summary-json.php 202309 202303
+php scripts/generate-summary-json.php 202403 202309
+php scripts/generate-summary-json.php 202409 202403
+php scripts/generate-summary-json.php 202503 202409
 ```
 
 **引数:**
