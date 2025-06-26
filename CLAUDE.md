@@ -11,7 +11,6 @@ This is a Japanese disability service facility directory application built with 
 - Livewire 3 + Volt (functional components)
 - Tailwind CSS 4 + FlyOnUI
 - Laravel Breeze for authentication
-- Laravel Sail for local development
 - AWS Vapor for deployment
 
 ## Development Commands
