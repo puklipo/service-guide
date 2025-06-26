@@ -58,8 +58,10 @@ vendor/bin/phpunit tests/Unit
 
 ### Code Quality
 ```bash
-# Laravel Pint (code style)
-./vendor/bin/pint
+# Laravel Pint (code style check)
+vendor/bin/pint --test
+# Laravel Pint (code style fix)
+vendor/bin/pint
 ```
 
 ### Data Management
