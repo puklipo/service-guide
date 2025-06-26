@@ -233,6 +233,7 @@ class CsvUpdateCommand extends Command
     private function updateConfigFile(string $newPeriod): void
     {
         try {
+            // wam.phpはcurrent専用。ここで上書きするので他の用途には使わない。
             $configPath = config_path('wam.php');
             $configContent = "<?php\n\nreturn [\n    'current' => '{$newPeriod}',\n];\n";
 
