@@ -1,8 +1,8 @@
 <?php
 
-use App\Articles\Article;
-
 use App\Support\Markdown;
+use Illuminate\Support\Carbon;
+use Spatie\YamlFrontMatter\YamlFrontMatter;
 
 use function Livewire\Volt\{state};
 use function Livewire\Volt\layout;
@@ -11,7 +11,7 @@ use function Livewire\Volt\title;
 
 layout('layouts.app');
 
-state(['title', 'description', 'body']);
+state(['date', 'title', 'description', 'body']);
 
 mount(function (string $date, string $slug) {
     $file = resource_path('articles/'.$date.'/'.$slug.'.md');
@@ -19,10 +19,10 @@ mount(function (string $date, string $slug) {
         return to_route('home');
     }
 
-    $article = new Article($file);
-    $this->title = $article->matter('title') ?? 'Article';
-    $this->description = $article->matter('description') ?? 'No description provided.';
-    $this->body = $article->body();
+    $document = YamlFrontMatter::parseFile($file);
+    $this->title = $document->matter('title') ?? 'Article';
+    $this->description = $document->matter('description') ?? 'No description provided.';
+    $this->body = $document->body();
 });
 
 title(fn () => $this->title);
@@ -33,6 +33,12 @@ title(fn () => $this->title);
     @include('layouts.header')
 
     <div class="prose max-w-4xl mx-6 lg:mx-auto my-12">
-        {{ Markdown::parse($body) }}
+        <article class="prose">
+            {{ Markdown::parse($body) }}
+        </article>
+
+        <div class="my-6">
+            <h3>{{ Carbon::createFromFormat('Ym',$date)->format('Y年m月') }}の記事</h3>
+        </div>
     </div>
 </div>
