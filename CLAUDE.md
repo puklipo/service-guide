@@ -60,9 +60,6 @@ vendor/bin/phpunit tests/Unit
 ```bash
 # Laravel Pint (code style)
 ./vendor/bin/pint
-
-# Generate IDE helpers
-php artisan ide-helper:models -M
 ```
 
 ### Data Management
@@ -70,9 +67,6 @@ php artisan ide-helper:models -M
 # Import facility data from CSV files
 php artisan wam:import                # Import all services
 php artisan wam:import 14             # Import specific service
-
-# Generate sitemap
-php artisan sitemap:generate
 ```
 
 ## Architecture Overview
