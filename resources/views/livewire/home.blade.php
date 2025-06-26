@@ -114,4 +114,9 @@
     <div class="my-3">
         {{ $this->facilities->links() }}
     </div>
+
+
+    <div class="my-12">
+        <livewire:articles.list :date="config('wam.current')"/>
+    </div>
 </div>
