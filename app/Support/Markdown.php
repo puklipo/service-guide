@@ -8,6 +8,7 @@ use Illuminate\Support\Str;
 use League\CommonMark\Extension\FrontMatter\Data\SymfonyYamlFrontMatterParser;
 use League\CommonMark\Extension\FrontMatter\FrontMatterExtension;
 use League\CommonMark\Extension\FrontMatter\FrontMatterParser;
+use App\Support\Markdown\Extension\BladeComponentsExtension;
 
 class Markdown
 {
@@ -26,10 +27,18 @@ class Markdown
             'disallowed_raw_html' => [
                 'disallowed_tags' => ['title', 'textarea', 'style', 'xmp', 'noembed', 'noframes', 'plaintext'],
             ],
+            'blade_components' => [
+                'allowed_components' => config('markdown.blade_components.allowed_components', [
+                    'chart.bar',
+                    'chart.line',
+                    'chart.pie',
+                ]),
+            ],
         ], $options);
 
         $extensions = array_merge($extensions, [
             new FrontMatterExtension,
+            new BladeComponentsExtension,
         ]);
 
         return new HtmlString(Str::markdown($text, $config, $extensions));
