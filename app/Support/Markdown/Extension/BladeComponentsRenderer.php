@@ -41,10 +41,6 @@ class BladeComponentsRenderer implements NodeRendererInterface
      */
     public function render(Node $node, ChildNodeRendererInterface $childRenderer)
     {
-        info('BladeComponentsRenderer: render method called', [
-            'node_type' => get_class($node),
-        ]);
-
         // CommonMarkバージョン2.x以上では処理できない場合はデフォルトのレンダラーに任せる
         if (!($node instanceof FencedCode)) {
             return $childRenderer->renderNodes([$node]);
@@ -53,11 +49,6 @@ class BladeComponentsRenderer implements NodeRendererInterface
         $info = $node->getInfo();
         $content = $node->getLiteral();
 
-        info('BladeComponentsRenderer: processing fenced code block', [
-            'info' => $info,
-            'content_length' => strlen($content),
-        ]);
-
         // bladeという言語タグが指定されているか確認
         if ($info !== 'blade') {
             // blade以外の言語指定は処理しない（デフォルトのレンダラーに任せる）
@@ -65,7 +56,6 @@ class BladeComponentsRenderer implements NodeRendererInterface
         }
 
         // Bladeコンポーネントをレンダリングして結果を直接返す
-        // NodeRendererInterfaceは \Stringable|string|null のいずれかを返すことを許容している
         return $this->processBlade($content);
     }
 
@@ -77,14 +67,9 @@ class BladeComponentsRenderer implements NodeRendererInterface
      */
     private function processBlade(string $content): ?string
     {
-        info('BladeComponentsRenderer: processBlade called', [
-            'content' => $content,
-        ]);
-
         // コンテンツにコンポーネントタグが含まれているか確認
         if (! preg_match('/<x-([a-z0-9_\-\.]+).*?(?:\/?>|><\/x-[a-z0-9_\-\.]+>)/is', $content, $matches)) {
             // コンポーネントタグが見つからない
-            info('BladeComponentsRenderer: component tag not found');
             if (config('app.debug')) {
                 return '<div class="debug-info p-4 bg-yellow-100 border border-yellow-300 rounded">コンポーネントタグが見つかりません: ' . e($content) . '</div>';
             }
@@ -97,11 +82,6 @@ class BladeComponentsRenderer implements NodeRendererInterface
         // コンポーネント名の正規化（常に.形式に変換）
         $normalizedName = str_replace('::', '.', $componentName);
 
-        info('BladeComponentsRenderer: component name extracted', [
-            'componentName' => $componentName,
-            'normalizedName' => $normalizedName,
-        ]);
-
         // 許可リストの正規化（常に.形式に変換）
         $normalizedAllowedComponents = array_map(function ($name) {
             return str_replace('::', '.', $name);
@@ -110,19 +90,7 @@ class BladeComponentsRenderer implements NodeRendererInterface
         // 正規化した名前で比較
         $isAllowed = in_array($normalizedName, $normalizedAllowedComponents, true);
 
-        info('BladeComponentsRenderer: component permission check', [
-            'componentName' => $componentName,
-            'normalizedName' => $normalizedName,
-            'allowedComponents' => $this->allowedComponents,
-            'isAllowed' => $isAllowed,
-        ]);
-
         if (!$isAllowed) {
-            // デバッグ情報
-            info('BladeComponentsRenderer: component not allowed', [
-                'componentName' => $componentName,
-            ]);
-
             // 許可されていないコンポーネントの場合は、テスト期待値と一致するようにコードブロックとして表示
             return '<pre><code class="language-blade">' . e($content) . '</code></pre>';
         }
@@ -135,26 +103,10 @@ class BladeComponentsRenderer implements NodeRendererInterface
                 $modifiedContent = str_replace('<x-' . $componentName, '<x-' . $normalizedName, $content);
             }
 
-            info('BladeComponentsRenderer: rendering blade component', [
-                'modifiedContent' => $modifiedContent,
-            ]);
-
-            // レンダリングを高速化するためにBladeファサードを直接使用（PHPタグなど不要）
-            $renderedHtml = Blade::render($modifiedContent);
-
-            info('BladeComponentsRenderer: blade rendering successful', [
-                'renderedHtml_length' => strlen($renderedHtml),
-                'renderedHtml_preview' => substr($renderedHtml, 0, 200), // 最初の200文字をプレビュー表示
-            ]);
-
-            return $renderedHtml;
+            // レンダリングを高速化するためにBladeファサードを直接使用
+            return Blade::render($modifiedContent);
         } catch (\Throwable $e) {
             // エラーが発生した場合はエラーメッセージを表示
-            info('BladeComponentsRenderer: blade rendering error', [
-                'error' => $e->getMessage(),
-                'trace' => $e->getTraceAsString(),
-            ]);
-
             if (config('app.debug')) {
                 return '<div class="error p-4 bg-red-100 border border-red-300 rounded">レンダリングエラー: '.e($e->getMessage()).'</div>';
             }
