@@ -64,28 +64,9 @@ class BladeComponentsRenderer implements NodeRendererInterface
             return $childRenderer->renderNodes([$node]);
         }
 
-        // Bladeコンポーネントとして処理
-        $result = $this->processBlade($content);
-
-        // 結果がnullの場合は空文字を返す
-        if ($result === null) {
-            return '';
-        }
-
-        // HTMLコンテンツをStringableとして返す（pre/codeタグが追加されないようにするため）
-        return new class($result) implements \Stringable {
-            private string $content;
-
-            public function __construct(string $content)
-            {
-                $this->content = $content;
-            }
-
-            public function __toString(): string
-            {
-                return $this->content;
-            }
-        };
+        // Bladeコンポーネントをレンダリングして結果を直接返す
+        // NodeRendererInterfaceは \Stringable|string|null のいずれかを返すことを許容している
+        return $this->processBlade($content);
     }
 
     /**
