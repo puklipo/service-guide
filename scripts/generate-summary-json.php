@@ -445,27 +445,81 @@ $marketInsights = [
     'specialized_services' => [],
 ];
 
-// 成長サービス（児童系、就労支援系）
-$growthServiceCodes = [65, 63, 62, 61]; // 放課後等デイ、児童発達支援、就労定着支援、自立生活援助
-foreach ($growthServiceCodes as $code) {
-    if (isset($targetStats['service_stats'][$code])) {
-        $marketInsights['growth_services'][] = $targetStats['service_stats'][$code]['name'];
+// 成長サービス：比較データがある場合は成長率の高い上位4サービス（マイナス成長は除外）
+// 比較データがない場合は元の固定サービスを使用
+if ($comparisonPeriod) {
+    // 成長率でソートするための一時配列を作成
+    $growthRatedServices = [];
+    foreach ($serviceStatistics as $code => $service) {
+        if (isset($service['growth_rate_percent']) && $service['growth_rate_percent'] > 0 && $service['facilities'] > 1000) {
+            $growthRatedServices[$code] = $service['growth_rate_percent'];
+        }
+    }
+
+    // 成長率の高い順にソート
+    arsort($growthRatedServices);
+
+    // 上位4つを抽出
+    $count = 0;
+    foreach ($growthRatedServices as $code => $growthRate) {
+        if ($count < 4) {
+            $marketInsights['growth_services'][] = $serviceStatistics[$code]['name'];
+            $count++;
+        } else {
+            break;
+        }
+    }
+} else {
+    // 比較データがない場合は元の固定サービスを使用
+    $growthServiceCodes = [65, 63, 62, 61]; // 放課後等デイ、児童発達支援、就労定着支援、自立生活援助
+    foreach ($growthServiceCodes as $code) {
+        if (isset($targetStats['service_stats'][$code])) {
+            $marketInsights['growth_services'][] = $targetStats['service_stats'][$code]['name'];
+        }
     }
 }
 
-// 成熟サービス（大手のサービス）
-$matureServiceCodes = [11, 12, 22, 46]; // 居宅介護、重度訪問介護、生活介護、就労継続支援B型
-foreach ($matureServiceCodes as $code) {
-    if (isset($targetStats['service_stats'][$code])) {
-        $marketInsights['mature_services'][] = $targetStats['service_stats'][$code]['name'];
+// 成熟サービス：施設数が最も多い上位4サービス
+$facilitiesCountServices = [];
+foreach ($serviceStatistics as $code => $service) {
+    if ($service['facilities'] > 0) {
+        $facilitiesCountServices[$code] = $service['facilities'];
     }
 }
 
-// 専門性の高いサービス（施設数が少ないもの）
-$specializedServiceCodes = [14, 64, 69]; // 重度障害者等包括支援、医療型児童発達支援、医療型障害児入所施設
-foreach ($specializedServiceCodes as $code) {
-    if (isset($targetStats['service_stats'][$code])) {
-        $marketInsights['specialized_services'][] = $targetStats['service_stats'][$code]['name'];
+// 施設数の多い順にソート
+arsort($facilitiesCountServices);
+
+// 上位4つを抽出
+$count = 0;
+foreach ($facilitiesCountServices as $code => $facilities) {
+    if ($count < 4) {
+        $marketInsights['mature_services'][] = $serviceStatistics[$code]['name'];
+        $count++;
+    } else {
+        break;
+    }
+}
+
+// 専門サービス：施設数が最も少ない上位3サービス（施設数0を除く）
+$specializedServices = [];
+foreach ($serviceStatistics as $code => $service) {
+    if ($service['facilities'] > 0) { // 施設数0のサービスは除外
+        $specializedServices[$code] = $service['facilities'];
+    }
+}
+
+// 施設数の少ない順にソート
+asort($specializedServices);
+
+// 上位3つを抽出
+$count = 0;
+foreach ($specializedServices as $code => $facilities) {
+    if ($count < 3) {
+        $marketInsights['specialized_services'][] = $serviceStatistics[$code]['name'];
+        $count++;
+    } else {
+        break;
     }
 }
 
