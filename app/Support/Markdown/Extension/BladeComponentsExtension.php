@@ -122,7 +122,7 @@ class BladeComponentsExtension implements ConfigurableExtensionInterface, NodeRe
             'content' => $content,
         ]);
 
-        // コンポーネント名を抽出 (マルチラインモードでドットが改行にもマッチするように)
+        // コンテンツにコンポーネントタグが含まれているか確認
         if (! preg_match('/<x-([a-z0-9_\-\.]+).*?(?:\/?>|><\/x-[a-z0-9_\-\.]+>)/is', $content, $matches)) {
             // コンポーネントタグが見つからない
             info('BladeComponentsExtension: component tag not found');
@@ -187,11 +187,12 @@ class BladeComponentsExtension implements ConfigurableExtensionInterface, NodeRe
                 'modifiedContent' => $modifiedContent,
             ]);
 
-            // Bladeコンポーネントをレンダリング
+            // レンダリングを高速化するためにBladeファサードを直接使用（PHPタグなど不要）
             $renderedHtml = Blade::render($modifiedContent);
 
             info('BladeComponentsExtension: blade rendering successful', [
                 'renderedHtml_length' => strlen($renderedHtml),
+                'renderedHtml_preview' => substr($renderedHtml, 0, 200), // 最初の200文字をプレビュー表示
             ]);
 
             return $renderedHtml;

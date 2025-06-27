@@ -174,12 +174,15 @@ class ArticleTest extends TestCase
         // 期待される結果: chart-containerクラスを持つdivが含まれていること
         $this->assertStringContainsString('<div class="chart-container', $html, 'レンダリング結果にchart-containerクラスが含まれていません');
 
-        // 期待される結果: データ属性が正しくレンダリングされていること
-        $this->assertStringContainsString('data:', $html, 'レンダリング結果にデータ配列が含まれていません');
-        $this->assertStringContainsString('labels:', $html, 'レンダリング結果にラベル配列が含まれていません');
+        // 期待される結果: データとラベルがJSON形式で含まれていることを確認
+        $this->assertStringContainsString('"data":', $html, 'レンダリング結果にデータ配列が含まれていません');
+        $this->assertStringContainsString('"labels":', $html, 'レンダリング結果にラベル配列が含まれていません');
+        $this->assertStringContainsString('[145937,149540,155972,159780]', $html, 'レンダリング結果に正しいデータ値が含まれていません');
+
+        // タイトルが表示されていることを確認
         $this->assertStringContainsString('テストグラフ', $html, 'レンダリング結果にグラフタイトルが含まれていません');
 
-        // 期待される結果: x-dataディレクティブが含まれていること
+        // Alpine.js関連の属性が含まれていることを確認
         $this->assertStringContainsString('x-data=', $html, 'レンダリング結果にAlpine.jsのx-dataディレクティブが含まれていません');
     }
 }
