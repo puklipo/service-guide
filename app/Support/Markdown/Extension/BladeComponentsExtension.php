@@ -3,6 +3,7 @@
 namespace App\Support\Markdown\Extension;
 
 use Illuminate\Support\Facades\Blade;
+use Illuminate\Support\HtmlString;
 use League\CommonMark\Environment\EnvironmentBuilderInterface;
 use League\CommonMark\Extension\CommonMark\Node\Block\FencedCode;
 use League\CommonMark\Extension\CommonMark\Node\Block\IndentedCode;
@@ -115,18 +116,30 @@ class BladeComponentsExtension implements ConfigurableExtensionInterface, NodeRe
         // Bladeコンポーネントとして処理
         $result = $this->processBlade($content);
 
-        // HTMLコンテンツを文字列として返す
-        return new class($result ?: '') implements \Stringable {
-            private string $content;
+        // HTML出力を直接返すための特殊なStringableオブジェクト
+        // <pre><code>タグでラップされないようにするため
+        return new class($result) implements \Stringable {
+            private $content;
 
-            public function __construct(string $content)
+            public function __construct($content)
             {
                 $this->content = $content;
             }
 
             public function __toString(): string
             {
-                return $this->content;
+                // HtmlStringの場合はtoHtmlメソッドを呼び出す
+                if ($this->content instanceof \Illuminate\Support\HtmlString) {
+                    return $this->content->toHtml();
+                }
+
+                // content自体がnullの場合は空文字を返す
+                if ($this->content === null) {
+                    return '';
+                }
+
+                // それ以外の場合は文字列に変換して返す
+                return (string) $this->content;
             }
         };
     }
@@ -134,14 +147,15 @@ class BladeComponentsExtension implements ConfigurableExtensionInterface, NodeRe
     /**
      * Bladeコンポーネントとしてコンテンツを処理
      */
-    private function processBlade(string $content): ?string
+    private function processBlade(string $content): HtmlString|string|null
     {
         info('BladeComponentsExtension: processBlade called', [
             'content' => $content,
         ]);
 
-        // コンポーネント名を抽出
-        if (! preg_match('/<x-([a-z0-9_\-:\.]+).*?(?:\/?>|><\/x-[a-z0-9_\-:\.]+>)/i', $content, $matches)) {
+        // コンポーネント名を抽出 (マルチラインモードでドットが改行にもマッチするように)
+        // コンポーネント名は<x-で始まる必要があり、Alpine.jsのx-data属性などと区別する
+        if (! preg_match('/(?:<x-)([a-z0-9_\-\.]+)(?:\s|\n|>).*?(?:\/?>|><\/x-[a-z0-9_\-\.]+>)/is', $content, $matches)) {
             // コンポーネントタグが見つからない
             info('BladeComponentsExtension: component tag not found');
             if (config('app.debug')) {
@@ -206,14 +220,15 @@ class BladeComponentsExtension implements ConfigurableExtensionInterface, NodeRe
                 'modifiedContent' => $modifiedContent,
             ]);
 
-            // Bladeコンポーネントをレンダリング
+            // Bladeコンポーネントをレンダリング（エスケープ防止のためにraw()を使用）
             $renderedHtml = Blade::render($modifiedContent);
 
             info('BladeComponentsExtension: blade rendering successful', [
                 'renderedHtml_length' => strlen($renderedHtml),
             ]);
 
-            return $renderedHtml;
+            // 重要: rawコンテンツとして明示的に返す
+            return new \Illuminate\Support\HtmlString($renderedHtml);
         } catch (\Throwable $e) {
             // エラーが発生した場合はエラーメッセージを表示
             info('BladeComponentsExtension: blade rendering error', [
