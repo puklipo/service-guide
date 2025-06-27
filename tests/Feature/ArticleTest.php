@@ -3,10 +3,7 @@
 namespace Tests\Feature;
 
 use App\Support\Markdown;
-use App\Support\Markdown\Extension\BladeComponentsExtension;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\Blade;
 use Tests\TestCase;
 
 class ArticleTest extends TestCase
@@ -21,7 +18,7 @@ class ArticleTest extends TestCase
         $testArticleDir = dirname($testArticlePath);
 
         // ディレクトリがなければ作成
-        if (!File::exists($testArticleDir)) {
+        if (! File::exists($testArticleDir)) {
             File::makeDirectory($testArticleDir, 0755, true);
         }
 
@@ -80,7 +77,7 @@ class ArticleTest extends TestCase
         $componentPath = resource_path('views/components/tests/mock.blade.php');
         $componentDir = dirname($componentPath);
 
-        if (!File::exists($componentDir)) {
+        if (! File::exists($componentDir)) {
             File::makeDirectory($componentDir, 0755, true);
         }
 
@@ -152,7 +149,7 @@ class ArticleTest extends TestCase
     {
         // テスト用のBarコンポーネントファイルがなければスキップ
         $barChartPath = resource_path('views/components/chart/bar.blade.php');
-        if (!File::exists($barChartPath)) {
+        if (! File::exists($barChartPath)) {
             $this->markTestSkipped('バーグラフコンポーネントが存在しないためテストをスキップします');
         }
 
