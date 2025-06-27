@@ -22,7 +22,7 @@ class Spammer implements ValidationRule
             ->unique()
             ->each(function ($mail) use ($value, $fail) {
                 if (Str::is($mail, $value)) {
-                    logger()->warning('Spam: '.$value);
+                    // logger()->warning('Spam: '.$value);
 
                     $fail('');
 
