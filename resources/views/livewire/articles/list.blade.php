@@ -1,7 +1,7 @@
 <?php
 
+use App\Support\Markdown;
 use Illuminate\Support\Str;
-use Spatie\YamlFrontMatter\YamlFrontMatter;
 use Illuminate\Support\Facades\File;
 
 use function Livewire\Volt\{state, computed};
@@ -32,9 +32,10 @@ $articles = computed(function () {
     foreach (File::files($path) as $file) {
         if (Str::endsWith($file, '.md') && File::exists($file)) {
             $slug = Str::of($file)->basename()->chopEnd('.md')->value();
-            $document = YamlFrontMatter::parseFile($file);
-            $title = $document->matter('title');
-            $description = $document->matter('description');
+
+            $matter = Markdown::matter($file);
+            $title = data_get($matter, 'title', Str::of($slug)->replace('-', ' ')->title()->value());
+            $description = data_get($matter, 'description', Str::of($title)->limit(100)->value());
 
             $articles[] = [
                 'slug' => $slug,

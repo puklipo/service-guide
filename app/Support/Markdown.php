@@ -2,8 +2,12 @@
 
 namespace App\Support;
 
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\HtmlString;
 use Illuminate\Support\Str;
+use League\CommonMark\Extension\FrontMatter\Data\SymfonyYamlFrontMatterParser;
+use League\CommonMark\Extension\FrontMatter\FrontMatterExtension;
+use League\CommonMark\Extension\FrontMatter\FrontMatterParser;
 
 class Markdown
 {
@@ -24,6 +28,10 @@ class Markdown
             ],
         ], $options);
 
+        $extensions = array_merge($extensions, [
+            new FrontMatterExtension,
+        ]);
+
         return new HtmlString(Str::markdown($text, $config, $extensions));
     }
 
@@ -42,5 +50,19 @@ class Markdown
         ], $options);
 
         return new HtmlString(Str::markdown($text, $config, $extensions));
+    }
+
+    /**
+     * Parse the front matter from a Markdown file.
+     *
+     * @param  string  $file  The path to the Markdown file.
+     * @return array|null The front matter data, or null if not found.
+     */
+    public static function matter(string $file): ?array
+    {
+        $frontMatterParser = new FrontMatterParser(new SymfonyYamlFrontMatterParser);
+        $md = $frontMatterParser->parse(File::get($file));
+
+        return $md->getFrontMatter();
     }
 }

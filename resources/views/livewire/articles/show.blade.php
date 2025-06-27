@@ -2,7 +2,9 @@
 
 use App\Support\Markdown;
 use Illuminate\Support\Carbon;
-use Spatie\YamlFrontMatter\YamlFrontMatter;
+use Illuminate\Support\Facades\File;
+
+use Illuminate\Support\Str;
 
 use function Livewire\Volt\{state};
 use function Livewire\Volt\layout;
@@ -24,13 +26,13 @@ mount(function (string $date, string $slug) {
         return to_route('home');
     }
 
-    $document = YamlFrontMatter::parseFile($this->file);
-    $this->title = $document->matter('title');
-    $this->description = $document->matter('description');
+    $matter = Markdown::matter($this->file);
+    $this->title = data_get($matter, 'title', Str::of($slug)->replace('-', ' ')->title()->value());
+    $this->description = data_get($matter, 'description', Str::of($this->title)->limit(100)->value());
 });
 
-$document = computed(function () {
-    return YamlFrontMatter::parseFile($this->file);
+$markdown = computed(function () {
+    return Markdown::parse(File::get($this->file));
 });
 
 title(fn () => $this->title);
@@ -45,7 +47,7 @@ title(fn () => $this->title);
         <livewire:articles.date-select :date="$date"/>
 
         <article>
-            {{ Markdown::parse($this->document->body()) }}
+            {{ Markdown::parse($this->markdown) }}
         </article>
 
         <div class="my-6">
