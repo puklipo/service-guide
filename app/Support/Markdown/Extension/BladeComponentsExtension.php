@@ -35,14 +35,10 @@ class BladeComponentsExtension implements ConfigurableExtensionInterface
      */
     public function register(EnvironmentBuilderInterface $environment): void
     {
-        // デバッグログ
-        info('BladeComponentsExtension: register method called');
-
-        // FencedCodeノードのレンダラーとして専用のレンダラークラスを登録
         $environment->addRenderer(
             FencedCode::class,
-            new BladeComponentsRenderer(),
-            10
+            new BladeComponentsRenderer,
+            10,
         );
     }
 }

@@ -16,8 +16,6 @@ class BladeComponentsRenderer implements NodeRendererInterface
 {
     /**
      * 許可されたコンポーネントのキャッシュ
-     *
-     * @var array|null
      */
     private ?array $allowedComponents = null;
 
@@ -42,7 +40,7 @@ class BladeComponentsRenderer implements NodeRendererInterface
     public function render(Node $node, ChildNodeRendererInterface $childRenderer)
     {
         // CommonMarkバージョン2.x以上では処理できない場合はデフォルトのレンダラーに任せる
-        if (!($node instanceof FencedCode)) {
+        if (! ($node instanceof FencedCode)) {
             return $childRenderer->renderNodes([$node]);
         }
 
@@ -62,7 +60,7 @@ class BladeComponentsRenderer implements NodeRendererInterface
     /**
      * Bladeコンポーネントとしてコンテンツを処理
      *
-     * @param string $content bladeタグを含むコンテンツ
+     * @param  string  $content  bladeタグを含むコンテンツ
      * @return string|null レンダリング結果のHTML
      */
     private function processBlade(string $content): ?string
@@ -71,40 +69,26 @@ class BladeComponentsRenderer implements NodeRendererInterface
         if (! preg_match('/<x-([a-z0-9_\-\.]+).*?(?:\/?>|><\/x-[a-z0-9_\-\.]+>)/is', $content, $matches)) {
             // コンポーネントタグが見つからない
             if (config('app.debug')) {
-                return '<div class="debug-info p-4 bg-yellow-100 border border-yellow-300 rounded">コンポーネントタグが見つかりません: ' . e($content) . '</div>';
+                return '<div class="debug-info p-4 bg-yellow-100 border border-yellow-300 rounded">コンポーネントタグが見つかりません: '.e($content).'</div>';
             }
+
             return null;
         }
 
         // 抽出されたコンポーネント名
         $componentName = $matches[1];
 
-        // コンポーネント名の正規化（常に.形式に変換）
-        $normalizedName = str_replace('::', '.', $componentName);
+        // 許可されたコンポーネントかチェック
+        $isAllowed = in_array($componentName, $this->allowedComponents, true);
 
-        // 許可リストの正規化（常に.形式に変換）
-        $normalizedAllowedComponents = array_map(function ($name) {
-            return str_replace('::', '.', $name);
-        }, $this->allowedComponents);
-
-        // 正規化した名前で比較
-        $isAllowed = in_array($normalizedName, $normalizedAllowedComponents, true);
-
-        if (!$isAllowed) {
+        if (! $isAllowed) {
             // 許可されていないコンポーネントの場合は、テスト期待値と一致するようにコードブロックとして表示
-            return '<pre><code class="language-blade">' . e($content) . '</code></pre>';
+            return '<pre><code class="language-blade">'.e($content).'</code></pre>';
         }
 
         try {
-            // コンポーネント名を常に.形式に変換
-            $modifiedContent = $content;
-            if (strpos($componentName, '::') !== false) {
-                // ::形式を.形式に変換
-                $modifiedContent = str_replace('<x-' . $componentName, '<x-' . $normalizedName, $content);
-            }
-
             // レンダリングを高速化するためにBladeファサードを直接使用
-            return Blade::render($modifiedContent);
+            return Blade::render($content);
         } catch (\Throwable $e) {
             // エラーが発生した場合はエラーメッセージを表示
             if (config('app.debug')) {
