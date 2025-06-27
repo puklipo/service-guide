@@ -36,8 +36,10 @@ class BladeComponentsRenderer implements NodeRendererInterface
 
     /**
      * NodeRendererInterfaceを実装したrender()メソッド
+     *
+     * @return \Stringable|string|null
      */
-    public function render(Node $node, ChildNodeRendererInterface $childRenderer): \Stringable
+    public function render(Node $node, ChildNodeRendererInterface $childRenderer)
     {
         info('BladeComponentsRenderer: render method called', [
             'node_type' => get_class($node),
@@ -67,19 +69,7 @@ class BladeComponentsRenderer implements NodeRendererInterface
 
         // 結果がnullの場合は空文字を返す
         if ($result === null) {
-            return new class('') implements \Stringable {
-                private string $content;
-
-                public function __construct(string $content)
-                {
-                    $this->content = $content;
-                }
-
-                public function __toString(): string
-                {
-                    return $this->content;
-                }
-            };
+            return '';
         }
 
         // HTMLコンテンツをStringableとして返す（pre/codeタグが追加されないようにするため）
