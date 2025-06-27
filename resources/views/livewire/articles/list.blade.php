@@ -30,7 +30,7 @@ $articles = computed(function () {
     }
 
     foreach (File::files($path) as $file) {
-        if (Str::endsWith($file, '.md') && File::exists($file)) {
+        if (Str::startsWith(basename($file), '0') && Str::endsWith($file, '.md') && File::exists($file)) {
             $slug = Str::of($file)->basename()->chopEnd('.md')->value();
 
             $matter = Markdown::matter($file);
