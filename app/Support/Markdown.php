@@ -2,13 +2,13 @@
 
 namespace App\Support;
 
+use App\Support\Markdown\Extension\BladeComponentsExtension;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\HtmlString;
 use Illuminate\Support\Str;
 use League\CommonMark\Extension\FrontMatter\Data\SymfonyYamlFrontMatterParser;
 use League\CommonMark\Extension\FrontMatter\FrontMatterExtension;
 use League\CommonMark\Extension\FrontMatter\FrontMatterParser;
-use App\Support\Markdown\Extension\BladeComponentsExtension;
 
 class Markdown
 {
