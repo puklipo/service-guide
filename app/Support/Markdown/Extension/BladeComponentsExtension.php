@@ -58,7 +58,26 @@ class BladeComponentsExtension implements ConfigurableExtensionInterface, NodeRe
 
         // CommonMarkバージョン2.x以上では処理できない場合はデフォルトのレンダラーに任せる
         if (!($node instanceof FencedCode)) {
-            return $childRenderer->renderNodes([$node]);
+            // childRenderer->renderNodesメソッドの戻り値をStringableに変換することを保証
+            $result = $childRenderer->renderNodes([$node]);
+            // すでにStringableの場合はそのまま返す
+            if ($result instanceof \Stringable) {
+                return $result;
+            }
+            // それ以外の場合は文字列としてラップして返す
+            return new class((string)$result) implements \Stringable {
+                private string $content;
+
+                public function __construct(string $content)
+                {
+                    $this->content = $content;
+                }
+
+                public function __toString(): string
+                {
+                    return $this->content;
+                }
+            };
         }
 
         $info = $node->getInfo();
@@ -72,7 +91,25 @@ class BladeComponentsExtension implements ConfigurableExtensionInterface, NodeRe
         // bladeという言語タグが指定されているか確認
         if ($info !== 'blade') {
             // blade以外の言語指定は処理しない（デフォルトのレンダラーに任せる）
-            return $childRenderer->renderNodes([$node]);
+            $result = $childRenderer->renderNodes([$node]);
+            // すでにStringableの場合はそのまま返す
+            if ($result instanceof \Stringable) {
+                return $result;
+            }
+            // それ以外の場合は文字列としてラップして返す
+            return new class((string)$result) implements \Stringable {
+                private string $content;
+
+                public function __construct(string $content)
+                {
+                    $this->content = $content;
+                }
+
+                public function __toString(): string
+                {
+                    return $this->content;
+                }
+            };
         }
 
         // Bladeコンポーネントとして処理
