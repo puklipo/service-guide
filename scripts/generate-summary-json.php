@@ -136,12 +136,14 @@ function analyzeCSVData($csvPath, $serviceConfig)
             $serviceCode = intval($matches[1]);
         } else {
             echo "警告: ファイル名からサービスコードを取得できません: $filename\n";
+
             continue;
         }
 
         // サービスコードが設定に存在するかチェック
-        if (!isset($serviceConfig[$serviceCode])) {
+        if (! isset($serviceConfig[$serviceCode])) {
             echo "警告: 未知のサービスコード: $serviceCode (ファイル: $filename)\n";
+
             continue;
         }
 
