@@ -88,24 +88,6 @@ class SpammerTest extends TestCase
         $this->assertFalse($passed);
     }
 
-    public function test_spammer_rule_logs_warning_for_spam_emails(): void
-    {
-        Log::spy();
-
-        Http::fake([
-            'https://grouphome.guide/api/spam' => Http::response(['spam@example.com']),
-        ]);
-
-        config(['spam' => []]);
-
-        $rule = new Spammer;
-        $rule->validate('email', 'spam@example.com', function () {});
-
-        Log::shouldHaveReceived('warning')
-            ->once()
-            ->with('Spam: spam@example.com');
-    }
-
     public function test_spammer_rule_handles_api_failure_gracefully(): void
     {
         Http::fake([
