@@ -5,16 +5,10 @@ namespace Tests\Unit\Support\Markdown;
 use App\Support\Markdown\Extension\BladeComponentsExtension;
 use App\Support\Markdown\Extension\BladeComponentsRenderer;
 use Illuminate\Support\Facades\Blade;
-use League\CommonMark\Environment\Environment;
-use League\CommonMark\Extension\CommonMark\CommonMarkCoreExtension;
 use League\CommonMark\Extension\CommonMark\Node\Block\FencedCode;
-use League\CommonMark\MarkdownConverter;
-use League\CommonMark\Node\StringContainerHelper;
 use League\CommonMark\Renderer\ChildNodeRendererInterface;
-use League\Config\ConfigurationBuilderInterface;
-use League\Config\ConfigurationInterface;
-use Tests\TestCase;
 use Mockery;
+use Tests\TestCase;
 
 class BladeComponentsExtensionTest extends TestCase
 {
@@ -37,12 +31,12 @@ class BladeComponentsExtensionTest extends TestCase
             ->with(
                 FencedCode::class,
                 Mockery::type(BladeComponentsRenderer::class),
-                10
+                10,
             )
             ->once();
 
         // エクステンションを登録
-        $extension = new BladeComponentsExtension();
+        $extension = new BladeComponentsExtension;
         $extension->register($environment);
 
         // 明示的なアサーションを追加
@@ -58,7 +52,7 @@ class BladeComponentsExtensionTest extends TestCase
         config(['markdown.blade_components.allowed_components' => ['chart.bar']]);
 
         // レンダラーのインスタンスを作成
-        $renderer = new BladeComponentsRenderer();
+        $renderer = new BladeComponentsRenderer;
 
         // プライベートメソッドをテストするためにリフレクションを使用
         $reflection = new \ReflectionClass($renderer);
@@ -117,23 +111,19 @@ class BladeComponentsExtensionTest extends TestCase
         $literalReflection->setValue($fencedCode, '<x-chart.bar :data="[100, 200, 300]" />');
 
         // レンダラーのインスタンス
-        $renderer = new BladeComponentsRenderer();
+        $renderer = new BladeComponentsRenderer;
 
         // 子ノードレンダラーをモック
         $childRenderer = Mockery::mock(ChildNodeRendererInterface::class);
         $childRenderer->shouldReceive('renderNodes')
-            ->andReturn(new class('モックレンダリング結果') implements \Stringable {
-                private string $content;
-                public function __construct(string $content) { $this->content = $content; }
-                public function __toString(): string { return $this->content; }
-            });
+            ->andReturn('モックレンダリング結果');
 
         // renderメソッドを呼び出し、結果を検証
         $result = $renderer->render($fencedCode, $childRenderer);
 
         // PHP言語を指定したため、bladeコンポーネントとして処理されずに
         // childRendererのrenderNodesメソッドの結果が返されることを検証
-        $this->assertEquals('モックレンダリング結果', (string)$result);
+        $this->assertEquals('モックレンダリング結果', $result);
     }
 
     /**
@@ -145,7 +135,7 @@ class BladeComponentsExtensionTest extends TestCase
         config(['markdown.blade_components.allowed_components' => ['chart.bar']]);
 
         // レンダラーのインスタンスを作成
-        $renderer = new BladeComponentsRenderer();
+        $renderer = new BladeComponentsRenderer;
 
         // プライベートメソッドをテストするためにリフレクションを使用
         $reflection = new \ReflectionClass($renderer);
