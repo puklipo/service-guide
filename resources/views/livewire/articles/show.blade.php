@@ -47,7 +47,7 @@ title(fn () => $this->title);
         <livewire:articles.date-select :date="$date"/>
 
         <article>
-            {{ Markdown::parse($this->markdown) }}
+            {{ $this->markdown }}
         </article>
 
         <div class="my-6">

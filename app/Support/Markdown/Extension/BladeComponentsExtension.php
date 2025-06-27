@@ -49,7 +49,39 @@ class BladeComponentsExtension implements ConfigurableExtensionInterface, NodeRe
     }
 
     /**
+     * FencedCode用のHTMLブロック出力クラス
+     *
+     * CommonMarkでレンダリングされる際に<pre><code>タグで囲まれることを回避するための特殊なクラス
+     */
+    private function createRawHtmlOutput($content): \Stringable
+    {
+        return new class($content) implements \Stringable {
+            private $content;
+
+            public function __construct($content)
+            {
+                $this->content = $content;
+            }
+
+            public function __toString(): string
+            {
+                if ($this->content instanceof \Illuminate\Support\HtmlString) {
+                    return $this->content->toHtml();
+                }
+
+                if ($this->content === null) {
+                    return '';
+                }
+
+                return (string) $this->content;
+            }
+        };
+    }
+
+    /**
      * NodeRendererInterfaceを実装したrender()メソッド
+     *
+     * このメソッドはマークダウンパーサーから呼び出され、FencedCodeノードをレンダリングします
      */
     public function render(Node $node, ChildNodeRendererInterface $childRenderer): \Stringable
     {
@@ -59,26 +91,12 @@ class BladeComponentsExtension implements ConfigurableExtensionInterface, NodeRe
 
         // CommonMarkバージョン2.x以上では処理できない場合はデフォルトのレンダラーに任せる
         if (!($node instanceof FencedCode)) {
-            // childRenderer->renderNodesメソッドの戻り値をStringableに変換することを保証
+            // デフォルトのレンダリングを使用
             $result = $childRenderer->renderNodes([$node]);
-            // すでにStringableの場合はそのまま返す
             if ($result instanceof \Stringable) {
                 return $result;
             }
-            // それ以外の場合は文字列としてラップして返す
-            return new class((string)$result) implements \Stringable {
-                private string $content;
-
-                public function __construct(string $content)
-                {
-                    $this->content = $content;
-                }
-
-                public function __toString(): string
-                {
-                    return $this->content;
-                }
-            };
+            return $this->createRawHtmlOutput($result);
         }
 
         $info = $node->getInfo();
@@ -93,55 +111,18 @@ class BladeComponentsExtension implements ConfigurableExtensionInterface, NodeRe
         if ($info !== 'blade') {
             // blade以外の言語指定は処理しない（デフォルトのレンダラーに任せる）
             $result = $childRenderer->renderNodes([$node]);
-            // すでにStringableの場合はそのまま返す
             if ($result instanceof \Stringable) {
                 return $result;
             }
-            // それ以外の場合は文字列としてラップして返す
-            return new class((string)$result) implements \Stringable {
-                private string $content;
-
-                public function __construct(string $content)
-                {
-                    $this->content = $content;
-                }
-
-                public function __toString(): string
-                {
-                    return $this->content;
-                }
-            };
+            return $this->createRawHtmlOutput($result);
         }
 
         // Bladeコンポーネントとして処理
         $result = $this->processBlade($content);
 
-        // HTML出力を直接返すための特殊なStringableオブジェクト
-        // <pre><code>タグでラップされないようにするため
-        return new class($result) implements \Stringable {
-            private $content;
-
-            public function __construct($content)
-            {
-                $this->content = $content;
-            }
-
-            public function __toString(): string
-            {
-                // HtmlStringの場合はtoHtmlメソッドを呼び出す
-                if ($this->content instanceof \Illuminate\Support\HtmlString) {
-                    return $this->content->toHtml();
-                }
-
-                // content自体がnullの場合は空文字を返す
-                if ($this->content === null) {
-                    return '';
-                }
-
-                // それ以外の場合は文字列に変換して返す
-                return (string) $this->content;
-            }
-        };
+        // 重要: 通常のStringableではなく、生のHTMLを返す特殊なStringableを返す
+        // これによりCommonMarkがさらに<pre><code>タグを追加することを防ぐ
+        return $this->createRawHtmlOutput($result);
     }
 
     /**

@@ -144,4 +144,42 @@ class ArticleTest extends TestCase
         $this->assertContains('chart.line', config('markdown.blade_components.allowed_components'));
         $this->assertContains('chart.pie', config('markdown.blade_components.allowed_components'));
     }
+
+    /**
+     * グラフコンポーネントが正しくレンダリングされることを確認
+     */
+    public function test_chart_bar_component_renders_correctly_in_markdown()
+    {
+        // テスト用のBarコンポーネントファイルがなければスキップ
+        $barChartPath = resource_path('views/components/chart/bar.blade.php');
+        if (!File::exists($barChartPath)) {
+            $this->markTestSkipped('バーグラフコンポーネントが存在しないためテストをスキップします');
+        }
+
+        // chart.barコンポーネントを許可リストに設定
+        config(['markdown.blade_components.allowed_components' => ['chart.bar']]);
+
+        // マークダウン内にBladeコンポーネントを含める
+        $markdown = "```blade\n<x-chart.bar\n  :data=\"[145937, 149540, 155972, 159780]\"\n  :labels=\"['2021年11月', '2022年3月', '2022年9月', '2023年3月']\"\n  title=\"テストグラフ\"\n/>\n```";
+
+        // マークダウンを解析
+        $html = Markdown::parse($markdown);
+
+        // レンダリング結果をログに出力（デバッグ用）
+        info('Rendered HTML for chart.bar:', ['html' => $html]);
+
+        // 期待される結果: <pre><code>タグが含まれていないこと
+        $this->assertStringNotContainsString('<pre><code', $html, 'レンダリング結果に<pre><code>タグが含まれています');
+
+        // 期待される結果: chart-containerクラスを持つdivが含まれていること
+        $this->assertStringContainsString('<div class="chart-container', $html, 'レンダリング結果にchart-containerクラスが含まれていません');
+
+        // 期待される結果: データ属性が正しくレンダリングされていること
+        $this->assertStringContainsString('data:', $html, 'レンダリング結果にデータ配列が含まれていません');
+        $this->assertStringContainsString('labels:', $html, 'レンダリング結果にラベル配列が含まれていません');
+        $this->assertStringContainsString('テストグラフ', $html, 'レンダリング結果にグラフタイトルが含まれていません');
+
+        // 期待される結果: x-dataディレクティブが含まれていること
+        $this->assertStringContainsString('x-data=', $html, 'レンダリング結果にAlpine.jsのx-dataディレクティブが含まれていません');
+    }
 }

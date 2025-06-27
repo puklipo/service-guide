@@ -1,5 +1,5 @@
-<x-chart.base>
-    @props(['data', 'labels', 'maxValue' => null, 'barColor' => 'blue'])
+<x-chart.base :title="$title">
+    @props(['data', 'labels', 'maxValue' => null, 'barColor' => 'blue', 'title' => null])
 
     @php
         $maxValue = $maxValue ?? max($data);
