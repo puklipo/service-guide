@@ -451,7 +451,7 @@ if ($comparisonPeriod) {
     // 成長率でソートするための一時配列を作成
     $growthRatedServices = [];
     foreach ($serviceStatistics as $code => $service) {
-        if (isset($service['growth_rate_percent']) && $service['growth_rate_percent'] > 0 && $service['facilities'] > 1000) {
+        if (isset($service['growth_rate_percent']) && $service['growth_rate_percent'] > 0 && $service['facilities'] > 300) {
             $growthRatedServices[$code] = $service['growth_rate_percent'];
         }
     }
