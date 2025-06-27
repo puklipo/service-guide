@@ -47,7 +47,6 @@ class BladeComponentsExtensionTest extends TestCase
 
         // 明示的なアサーションを追加
         $this->assertTrue(true, 'Mockery expectationsは満たされており、例外は発生していません');
-        // Mockeryはteardown時に期待値が満たされたかチェックするので、このアサーションは形式的なものです
     }
 
     /**
@@ -55,8 +54,8 @@ class BladeComponentsExtensionTest extends TestCase
      */
     public function test_blade_component_renderer_handles_allowed_components()
     {
-        // テスト用の設定
-        config(['markdown.blade_components.allowed_components' => ['test-chart']]);
+        // テスト用の設定（変更：chart.barからchart-barに変更）
+        config(['markdown.blade_components.allowed_components' => ['chart.bar']]);
 
         // レンダラーのインスタンスを作成
         $renderer = new BladeComponentsRenderer();
@@ -66,11 +65,10 @@ class BladeComponentsExtensionTest extends TestCase
         $method = $reflection->getMethod('processBlade');
         $method->setAccessible(true);
 
-        // モックBladeコンテンツ
-        $content = '<x-test-chart :data="[100, 200, 300]" />';
+        // モックBladeコンテンツ（変更なし）
+        $content = '<x-chart.bar :data="[100, 200, 300]" />';
 
         // コンテンツが許可されたコンポーネントとして処理されることを確認
-        // ここでは実際のレンダリングの代わりに、methodがnullを返さないことを確認
         $result = $method->invokeArgs($renderer, [$content]);
         $this->assertNotNull($result, '許可されたコンポーネントが処理されていません');
     }
@@ -105,8 +103,7 @@ class BladeComponentsExtensionTest extends TestCase
      */
     public function test_non_blade_code_blocks_are_not_processed()
     {
-        // このテストでは実際のFencedCodeオブジェクトを使用（finalクラスなのでモックできないため）
-        // 正しいコンストラクタ引数を指定: 長さ、使用する文字、オフセット
+        // 実際のFencedCodeオブジェクトを使用
         $fencedCode = new FencedCode(3, '`', 0);
 
         // infoプロパティに言語を設定するためにリフレクションを使用
@@ -117,7 +114,7 @@ class BladeComponentsExtensionTest extends TestCase
         // リテラル（内容）も同様にリフレクションを使用して設定
         $literalReflection = new \ReflectionProperty($fencedCode, 'literal');
         $literalReflection->setAccessible(true);
-        $literalReflection->setValue($fencedCode, '<x-test-chart :data="[100, 200, 300]" />');
+        $literalReflection->setValue($fencedCode, '<x-chart.bar :data="[100, 200, 300]" />');
 
         // レンダラーのインスタンス
         $renderer = new BladeComponentsRenderer();
@@ -137,5 +134,32 @@ class BladeComponentsExtensionTest extends TestCase
         // PHP言語を指定したため、bladeコンポーネントとして処理されずに
         // childRendererのrenderNodesメソッドの結果が返されることを検証
         $this->assertEquals('モックレンダリング結果', (string)$result);
+    }
+
+    /**
+     * 許可されていないコンポーネントがコードブロックとして表示されることを確認
+     */
+    public function test_disallowed_component_renders_as_code_block()
+    {
+        // 許可リストに含まれないコンポーネントを設定
+        config(['markdown.blade_components.allowed_components' => ['chart.bar']]);
+
+        // レンダラーのインスタンスを作成
+        $renderer = new BladeComponentsRenderer();
+
+        // プライベートメソッドをテストするためにリフレクションを使用
+        $reflection = new \ReflectionClass($renderer);
+        $method = $reflection->getMethod('processBlade');
+        $method->setAccessible(true);
+
+        // 許可されていないコンポーネント
+        $content = '<x-unauthorized-component />';
+
+        // 処理結果を取得
+        $result = $method->invokeArgs($renderer, [$content]);
+
+        // 結果がコードブロックHTMLとして表示されることを確認
+        $this->assertStringContainsString('<pre><code class="language-blade">', $result);
+        $this->assertStringContainsString('&lt;x-unauthorized-component /&gt;', $result);
     }
 }
