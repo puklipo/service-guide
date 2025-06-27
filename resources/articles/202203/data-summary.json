@@ -3,7 +3,7 @@
         "data_date": "2022-03",
         "total_records": 149540,
         "csv_files_count": 29,
-        "analysis_date": "2025-06-26",
+        "analysis_date": "2025-06-27",
         "description": "Comprehensive statistical summary of disability services in Japan as of 2022-03",
         "comparison_date": "2021-11"
     },
@@ -482,21 +482,21 @@
     },
     "market_insights": {
         "growth_services": [
-            "放課後等デイサービス",
+            "保育所等訪問支援",
             "児童発達支援",
-            "就労定着支援",
-            "自立生活援助"
+            "放課後等デイサービス",
+            "共同生活援助"
         ],
         "mature_services": [
             "居宅介護",
             "重度訪問介護",
-            "生活介護",
+            "放課後等デイサービス",
             "就労継続支援B型"
         ],
         "specialized_services": [
             "重度障害者等包括支援",
             "医療型児童発達支援",
-            "医療型障害児入所施設"
+            "居宅訪問型児童発達支援"
         ]
     },
     "notes": {
