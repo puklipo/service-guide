@@ -88,9 +88,9 @@ class ArticleTest extends TestCase
 
         try {
             // テスト用に許可コンポーネントを設定
-            config(['markdown.blade_components.allowed_components' => ['tests::mock']]);
+            config(['markdown.blade_components.allowed_components' => ['tests.mock']]);
 
-            $markdown = "```blade\n<x-tests::mock value=\"テスト値\" />\n```";
+            $markdown = "```blade\n<x-tests.mock value=\"テスト値\" />\n```";
 
             $html = Markdown::parse($markdown);
 
@@ -108,12 +108,12 @@ class ArticleTest extends TestCase
      */
     public function test_disallowed_blade_components_are_rendered_as_code()
     {
-        config(['markdown.blade_components.allowed_components' => ['chart::bar']]);
+        config(['markdown.blade_components.allowed_components' => ['chart.bar']]);
 
         $markdown = "```blade\n<x-unauthorized-component />\n```";
         $html = Markdown::parse($markdown);
 
-        $this->assertStringContainsString('<pre><code>', $html);
+        $this->assertStringContainsString('<pre><code class="language-blade">', $html);
         $this->assertStringContainsString('&lt;x-unauthorized-component /&gt;', $html);
     }
 
@@ -140,8 +140,8 @@ class ArticleTest extends TestCase
     public function test_chart_configuration_is_loaded()
     {
         $this->assertIsArray(config('markdown.blade_components.allowed_components'));
-        $this->assertContains('chart::bar', config('markdown.blade_components.allowed_components'));
-        $this->assertContains('chart::line', config('markdown.blade_components.allowed_components'));
-        $this->assertContains('chart::pie', config('markdown.blade_components.allowed_components'));
+        $this->assertContains('chart.bar', config('markdown.blade_components.allowed_components'));
+        $this->assertContains('chart.line', config('markdown.blade_components.allowed_components'));
+        $this->assertContains('chart.pie', config('markdown.blade_components.allowed_components'));
     }
 }

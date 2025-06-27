@@ -28,18 +28,18 @@ class BladeComponentsExtensionTest extends TestCase
     {
         $environment = Mockery::mock('League\CommonMark\Environment\EnvironmentBuilderInterface');
 
-        // イベントリスナーが登録されることを検証
-        $environment->shouldReceive('addEventListener')
-            ->with('renderer.block.fenced_code.pre', Mockery::type('array'))
-            ->once();
-
-        $environment->shouldReceive('addEventListener')
-            ->with('renderer.block.indented_code.pre', Mockery::type('array'))
+        // addRendererメソッドが呼び出されることを期待
+        $environment->shouldReceive('addRenderer')
+            ->with(FencedCode::class, Mockery::type(BladeComponentsExtension::class), 10)
             ->once();
 
         // エクステンションを登録
         $extension = new BladeComponentsExtension();
         $extension->register($environment);
+
+        // 明示的なアサーションを追加
+        $this->assertTrue(true, 'Mockery expectationsは満たされており、例外は発生していません');
+        // Mockeryはteardown時に期待値が満たされたかチェックするので、このアサーションは形式的なものです
     }
 
     /**
