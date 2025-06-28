@@ -4,6 +4,10 @@
     @php
         // 最大値が指定されていなければ、データの最大値を使用
         $maxValue = $maxValue ?? max($data);
+        // 最小値を取得（グラフのベースラインとして使用）
+        $minValue = min($data);
+        // データの範囲を計算
+        $dataRange = $maxValue - $minValue;
 
         // データとラベルをJSON形式にエンコード
         $jsonData = json_encode($data);
@@ -17,6 +21,8 @@
                 const data = @json($data);
                 const labels = @json($labels);
                 const maxValue = @json($maxValue);
+                const minValue = @json($minValue);
+                const dataRange = maxValue - minValue;
 
                 // ダークモードかどうかを検出
                 const isDarkMode = () => {
@@ -28,17 +34,18 @@
                 const width = 800;
                 const height = 400;
                 const paddingBottom = 40;
-                const paddingLeft = 40;
+                const paddingLeft = 60; // Y軸ラベル用に少し広げる
 
-                // ポイントの位置を計算
+                // ポイントの位置を計算（最小値を基準とした相対的な位置）
                 function calculatePoints() {
                     const points = [];
                     const xStep = (width - paddingLeft) / (data.length - 1);
-                    const yScale = (height - paddingBottom) / maxValue;
+                    const yScale = (height - paddingBottom) / dataRange; // 範囲に基づくスケール
 
                     for (let i = 0; i < data.length; i++) {
                         const x = paddingLeft + i * xStep;
-                        const y = height - data[i] * yScale;
+                        // 最小値を引いて相対的な位置を計算
+                        const y = height - ((data[i] - minValue) * yScale) - paddingBottom;
                         points.push({ x, y, value: data[i], label: labels[i] });
                     }
 
@@ -80,18 +87,32 @@
                     svg.setAttribute("viewBox", `0 0 ${width} ${height}`);
                     svg.setAttribute("class", "w-full h-64 bg-opacity-50");
 
+                    // 最小値と最大値のラベルを追加
+                    const minValueLabel = document.createElementNS("http://www.w3.org/2000/svg", "text");
+                    minValueLabel.setAttribute("x", paddingLeft - 10);
+                    minValueLabel.setAttribute("y", height - paddingBottom);
+                    minValueLabel.setAttribute("text-anchor", "end");
+                    minValueLabel.setAttribute("font-size", "12");
+                    minValueLabel.setAttribute("class", "text-xs");
+                    minValueLabel.textContent = minValue.toLocaleString();
+                    svg.appendChild(minValueLabel);
+
                     // ポイントを計算
                     const points = calculatePoints();
 
                     // 参照用に要素を保持する配列
                     const gridLines = [];
+                    const gridLabels = [];
                     const circles = [];
                     const axisLabels = [];
 
                     // グリッド線を追加
                     const gridCount = 5;
-                    for (let i = 1; i < gridCount; i++) {
-                        const y = height - (i * (height - paddingBottom) / gridCount);
+                    for (let i = 0; i < gridCount; i++) {
+                        const ratio = i / (gridCount - 1);
+                        const y = ((height - paddingBottom) * (1 - ratio)) + paddingBottom / 2;
+
+                        // グリッド線
                         const gridLine = document.createElementNS("http://www.w3.org/2000/svg", "line");
                         gridLine.setAttribute("x1", paddingLeft);
                         gridLine.setAttribute("y1", y);
@@ -100,15 +121,29 @@
                         gridLine.setAttribute("stroke-width", "1");
                         gridLines.push(gridLine);
                         svg.appendChild(gridLine);
+
+                        // Y軸ラベル（値）
+                        if (i > 0) { // 最小値は既に表示済みなのでスキップ
+                            const yValue = minValue + (dataRange * ratio);
+                            const valueLabel = document.createElementNS("http://www.w3.org/2000/svg", "text");
+                            valueLabel.setAttribute("x", paddingLeft - 10);
+                            valueLabel.setAttribute("y", y + 4); // テキスト位置微調整
+                            valueLabel.setAttribute("text-anchor", "end");
+                            valueLabel.setAttribute("font-size", "12");
+                            valueLabel.setAttribute("class", "text-xs");
+                            valueLabel.textContent = Math.round(yValue).toLocaleString();
+                            gridLabels.push(valueLabel);
+                            svg.appendChild(valueLabel);
+                        }
                     }
 
-                    // 折れ線パスを追加
-                    const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
-                    path.setAttribute("d", getPath(points));
-                    path.setAttribute("fill", "none");
-                    path.setAttribute("stroke-width", "3");
-                    path.setAttribute("class", "transition-all duration-300");
-                    svg.appendChild(path);
+                    // Y軸を追加
+                    const yAxis = document.createElementNS("http://www.w3.org/2000/svg", "line");
+                    yAxis.setAttribute("x1", paddingLeft);
+                    yAxis.setAttribute("y1", paddingBottom / 2);
+                    yAxis.setAttribute("x2", paddingLeft);
+                    yAxis.setAttribute("y2", height - paddingBottom / 2);
+                    svg.appendChild(yAxis);
 
                     // X軸を追加
                     const xAxis = document.createElementNS("http://www.w3.org/2000/svg", "line");
@@ -117,6 +152,14 @@
                     xAxis.setAttribute("x2", width);
                     xAxis.setAttribute("y2", height - paddingBottom / 2);
                     svg.appendChild(xAxis);
+
+                    // 折れ線パスを追加
+                    const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+                    path.setAttribute("d", getPath(points));
+                    path.setAttribute("fill", "none");
+                    path.setAttribute("stroke-width", "3");
+                    path.setAttribute("class", "transition-all duration-300");
+                    svg.appendChild(path);
 
                     // 各データポイントを追加
                     points.forEach(point => {
@@ -164,12 +207,21 @@
                     // SVGをコンテナに追加
                     container.appendChild(svg);
 
+                    // 最小値の情報を追加
+                    const minValueInfo = document.createElement('div');
+                    minValueInfo.className = 'text-xs ml-2 opacity-70 mt-1';
+                    minValueInfo.textContent = `※グラフの最小値: ${minValue.toLocaleString()}`;
+                    container.appendChild(minValueInfo);
+
                     // ダークモード切替関数
                     function updateChartColors() {
                         const dark = isDarkMode();
 
                         // コンテナの背景色
                         container.className = `w-full rounded-md ${dark ? 'bg-gray-900' : 'bg-white'}`;
+
+                        // 最小値情報の色
+                        minValueInfo.className = `text-xs ml-2 opacity-70 mt-1 ${dark ? 'text-gray-400' : 'text-gray-500'}`;
 
                         // ツールチップのテキスト色
                         const tooltip = document.getElementById('line-chart-tooltip');
@@ -182,11 +234,20 @@
                             line.setAttribute("stroke", dark ? "#374151" : "#f1f5f9"); // dark:gray-700, light:slate-100
                         });
 
-                        // X軸の色
+                        // Y軸の値ラベルの色
+                        gridLabels.forEach(label => {
+                            label.setAttribute("fill", dark ? "#9ca3af" : "#64748b"); // dark:gray-400, light:slate-500
+                        });
+
+                        // 最小値ラベルの色
+                        minValueLabel.setAttribute("fill", dark ? "#9ca3af" : "#64748b");
+
+                        // X軸とY軸の色
                         xAxis.setAttribute("stroke", dark ? "#4b5563" : "#cbd5e1"); // dark:gray-600, light:slate-300
+                        yAxis.setAttribute("stroke", dark ? "#4b5563" : "#cbd5e1");
 
                         // 折れ線の色
-                        path.setAttribute("stroke", dark ? "#3b82f6" : "#3b82f6"); // blue-500 (同じ色でもOK)
+                        path.setAttribute("stroke", dark ? "#3b82f6" : "#3b82f6"); // blue-500
 
                         // データポイントの色
                         circles.forEach(circle => {

@@ -4,10 +4,15 @@
     @php
     // 最大値が指定されていなければ、データの最大値を使用
     $maxValue = $maxValue ?? max($data);
+    // 最小値を取得（グラフのベースラインに使用）
+    $minValue = min($data);
+    // データ範囲を計算
+    $dataRange = $maxValue - $minValue;
 
     // データとラベルをJSON形式にエンコード
     $jsonData = json_encode($data);
     $jsonLabels = json_encode($labels);
+    $jsonMinValue = json_encode($minValue);
     @endphp
 
     <div class="chart-bar-component w-full">
@@ -17,6 +22,8 @@
                 const data = @json($data);
                 const labels = @json($labels);
                 const maxValue = @json($maxValue);
+                const minValue = @json($minValue);
+                const dataRange = @json($dataRange);
 
                 // ダークモードかどうかを検出
                 const isDarkMode = () => {
@@ -30,9 +37,10 @@
                 const barSpacing = 8; // バー間のスペース
                 const labelHeight = 48; // ラベルの高さ
 
-                // 高さを計算
+                // 高さを計算（最小値を考慮）
                 function calculateBarHeight(value) {
-                    return Math.round((value / maxValue) * maxBarHeightPx);
+                    // 値の相対位置に基づいて高さを計算（最小値からの相対的な高さ）
+                    return Math.round(((value - minValue) / dataRange) * maxBarHeightPx);
                 }
 
                 // DOMの準備ができたら実行
@@ -63,6 +71,12 @@
                     tooltip.id = 'bar-chart-tooltip';
                     tooltip.className = 'mt-4 text-center text-sm font-medium';
                     tooltip.textContent = '詳細を表示するにはグラフにカーソルを合わせてください';
+
+                    // 最小値のベースラインを表示
+                    const baselineInfo = document.createElement('div');
+                    baselineInfo.className = 'text-xs text-right w-full pr-2 opacity-70 -mb-1';
+                    baselineInfo.textContent = `最小値: ${minValue.toLocaleString()}`;
+                    container.appendChild(baselineInfo);
 
                     // バーの配列を保持（ダークモード切り替え時に参照するため）
                     const barElements = [];
@@ -126,8 +140,18 @@
                         const position = 100 - (i / gridCount) * 100;
                         gridLine.className = 'absolute w-full h-px';
                         gridLine.style.bottom = `${position}%`;
+                        // グリッド線に値を表示するラベルを追加
+                        const gridLabel = document.createElement('div');
+                        gridLabel.className = 'absolute -left-1 text-xs opacity-70';
+                        gridLabel.style.bottom = `${position}%`;
+                        gridLabel.style.transform = 'translateY(50%)';
+                        // 最小値からの相対的な値を計算
+                        const gridValue = Math.round(minValue + (dataRange * i / gridCount));
+                        gridLabel.textContent = gridValue.toLocaleString();
+
                         gridLines.push(gridLine);
                         gridContainer.appendChild(gridLine);
+                        gridContainer.appendChild(gridLabel);
                     }
 
                     container.style.position = 'relative';
@@ -139,6 +163,9 @@
 
                         // コンテナの背景色
                         container.className = `w-full ${dark ? 'bg-gray-900' : 'bg-white'}`;
+
+                        // 最小値表示の色
+                        baselineInfo.className = `text-xs text-right w-full pr-2 opacity-70 -mb-1 ${dark ? 'text-gray-400' : 'text-gray-500'}`;
 
                         // ツールチップのテキスト色
                         tooltip.className = `mt-4 text-center text-sm font-medium ${dark ? 'text-gray-300' : 'text-gray-600'}`;
