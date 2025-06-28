@@ -7,12 +7,14 @@ use League\CommonMark\Extension\CommonMark\Node\Block\FencedCode;
 use League\CommonMark\Node\Node;
 use League\CommonMark\Renderer\ChildNodeRendererInterface;
 use League\CommonMark\Renderer\NodeRendererInterface;
+use League\Config\ConfigurationAwareInterface;
+use League\Config\ConfigurationInterface;
 
 /**
  * BladeComponentsRenderer は、Markdown内のbladeコードブロックを
  * Bladeコンポーネントとしてレンダリングするためのレンダラーです。
  */
-class BladeComponentsRenderer implements NodeRendererInterface
+class BladeComponentsRenderer implements ConfigurationAwareInterface, NodeRendererInterface
 {
     /**
      * 許可されたコンポーネントのキャッシュ
@@ -20,16 +22,16 @@ class BladeComponentsRenderer implements NodeRendererInterface
     private ?array $allowedComponents = null;
 
     /**
-     * コンストラクタ
+     * 設定オブジェクト
      */
-    public function __construct()
+    private ?ConfigurationInterface $config = null;
+
+    /**
+     * 設定を設定する
+     */
+    public function setConfiguration(ConfigurationInterface $configuration): void
     {
-        // 許可されたコンポーネントを設定から読み込む
-        $this->allowedComponents = config('markdown.blade_components.allowed_components', [
-            'chart.bar',
-            'chart.line',
-            'chart.pie',
-        ]);
+        $this->config = $configuration;
     }
 
     /**
@@ -78,6 +80,9 @@ class BladeComponentsRenderer implements NodeRendererInterface
         // 抽出されたコンポーネント名
         $componentName = $matches[1];
 
+        // 許可されたコンポーネントを取得
+        $this->loadAllowedComponents();
+
         // 許可されたコンポーネントかチェック
         $isAllowed = in_array($componentName, $this->allowedComponents, true);
 
@@ -97,6 +102,43 @@ class BladeComponentsRenderer implements NodeRendererInterface
 
             // 本番環境ではシンプルなエラーメッセージを表示
             return '<div class="error p-4 bg-red-100 border border-red-300 rounded">グラフの表示に失敗しました</div>';
+        }
+    }
+
+    /**
+     * 許可されたコンポーネント一覧を読み込む
+     */
+    private function loadAllowedComponents(): void
+    {
+        if ($this->allowedComponents !== null) {
+            return;
+        }
+
+        // デフォルト値
+        $defaultAllowedComponents = [
+            'chart.bar',
+            'chart.line',
+            'chart.pie',
+        ];
+
+        // 設定オブジェクトからデータを取得
+        if ($this->config !== null) {
+            try {
+                $allowedComponents = $this->config->get('blade_components/allowed_components');
+                // 設定から値が取得できた場合はそれを使用
+                $this->allowedComponents = $allowedComponents;
+            } catch (\Exception $e) {
+                // 設定から値が取得できない場合はデフォルト値を使用
+                $this->allowedComponents = $defaultAllowedComponents;
+            }
+        } else {
+            // フォールバックとしてLaravelの設定を使用
+            $this->allowedComponents = config('markdown.blade_components.allowed_components', $defaultAllowedComponents);
+        }
+
+        // nullの場合はデフォルト値を使用
+        if ($this->allowedComponents === null) {
+            $this->allowedComponents = $defaultAllowedComponents;
         }
     }
 }
