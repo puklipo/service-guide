@@ -141,7 +141,7 @@
 
                     // 凡例を作成
                     const legend = document.createElement('div');
-                    legend.className = 'flex flex-wrap justify-center gap-4 mt-4';
+                    legend.className = 'flex flex-wrap justify-center gap-4 py-2';
                     legend.id = 'pie-chart-legend';
 
                     segments.forEach((segment, index) => {
