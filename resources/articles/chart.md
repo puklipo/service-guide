@@ -153,11 +153,15 @@ Markdownドキュメント内で、以下のように「blade」言語を指定�
 1. Bladeコンポーネント：
    - `resources/views/components/chart/base.blade.php` - 共通コンテナ
    - `resources/views/components/chart/bar.blade.php` - AlpineJSによるバーグラフ実装
+     - `resources/js/components/chart-bar.js`
    - `resources/views/components/chart/line.blade.php` - AlpineJSによる折れ線グラフ実装
+     - `resources/js/components/chart-line.js`
    - `resources/views/components/chart/pie.blade.php` - AlpineJSによる円グラフ実装
+     - `resources/js/components/chart-pie.js`
 
 2. CommonMarkエクステンション：
    - `App\Support\Markdown\Extension\BladeComponentsExtension`
+   - `App\Support\Markdown\Extension\BladeComponentsRenderer`
 
 3. 設定：
    - `config/markdown.php`（許可するコンポーネントを指定）
