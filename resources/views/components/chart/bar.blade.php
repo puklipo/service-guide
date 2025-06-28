@@ -82,9 +82,9 @@
                         attributeFilter: ['class']
                     });
 
-                    // 表示範囲の情報を追加
+                    // 表示範囲の情報を上部に追加
                     const rangeInfo = document.createElement('div');
-                    rangeInfo.className = 'text-xs text-right w-full pr-2 opacity-70 mb-2';
+                    rangeInfo.className = 'text-xs text-right w-full pr-2 opacity-70 mb-4';
                     rangeInfo.textContent = `表示範囲: ${displayMinValue.toLocaleString()} 〜 ${maxValue.toLocaleString()}`;
                     container.appendChild(rangeInfo);
 
@@ -235,7 +235,7 @@
                         container.className = `w-full ${dark ? 'bg-gray-900' : 'bg-white'}`;
 
                         // 表示範囲の色
-                        rangeInfo.className = `text-xs text-right w-full pr-2 opacity-70 mb-2 ${dark ? 'text-gray-400' : 'text-gray-500'}`;
+                        rangeInfo.className = `text-xs text-right w-full pr-2 opacity-70 mb-4 ${dark ? 'text-gray-400' : 'text-gray-500'}`;
 
                         // ツールチップのテキスト色
                         tooltip.className = `mt-4 text-center text-sm font-medium ${dark ? 'text-gray-300' : 'text-gray-600'}`;
