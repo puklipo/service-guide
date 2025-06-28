@@ -38,7 +38,7 @@ class DetectClosedCommand extends Command
 
         // 閉鎖された事業所のWAM IDと法人番号のペアを取得
         $closedFacilities = Facility::whereIn('no', $closedNumbers)
-            ->select(['wam', 'company_id'])
+            ->select(['wam', 'company_id', 'service_id', 'area_id'])
             ->get()
             ->map(function ($facility) {
                 return [
