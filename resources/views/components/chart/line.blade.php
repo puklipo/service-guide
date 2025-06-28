@@ -170,7 +170,7 @@
                     const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
                     path.setAttribute("d", getPath(points));
                     path.setAttribute("fill", "none");
-                    path.setAttribute("stroke-width", "3");
+                    path.setAttribute("stroke-width", "4");  // 線を太く（3から4に変更）
                     path.setAttribute("class", "transition-all duration-300");
                     svg.appendChild(path);
 
@@ -180,14 +180,14 @@
                         const circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
                         circle.setAttribute("cx", point.x);
                         circle.setAttribute("cy", point.y);
-                        circle.setAttribute("r", "5");
+                        circle.setAttribute("r", "6");  // ポイントを大きく（5から6に変更）
                         circle.setAttribute("stroke-width", "2");
                         circle.classList.add("cursor-pointer", "transition-all", "duration-200");
                         circles.push(circle);
 
                         // ホバー時のエフェクト
                         circle.addEventListener('mouseenter', function() {
-                            circle.setAttribute("r", "7");
+                            circle.setAttribute("r", "8");  // ホバー時のサイズも大きく（7から8に変更）
                             const tooltip = document.getElementById('line-chart-tooltip');
                             if (tooltip) {
                                 tooltip.textContent = `${point.label}: ${point.value.toLocaleString()}`;
@@ -196,7 +196,7 @@
 
                         // ホバー解除時
                         circle.addEventListener('mouseleave', function() {
-                            circle.setAttribute("r", "5");
+                            circle.setAttribute("r", "6");  // 元のサイズも変更（5から6に変更）
                             const tooltip = document.getElementById('line-chart-tooltip');
                             if (tooltip) {
                                 tooltip.textContent = 'グラフのポイントにカーソルを合わせると詳細が表示されます';
