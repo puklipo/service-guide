@@ -10,14 +10,7 @@
     $jsonLabels = json_encode($labels);
     @endphp
 
-    <!-- グラフデータをHTML属性として埋め込み（テスト用） -->
-    <div
-        class="chart-bar-component w-full"
-        data-chart-values="{{ $jsonData }}"
-        data-chart-labels="{{ $jsonLabels }}"
-        data-chart-max="{{ $maxValue }}"
-    >
-
+    <div>
         <script type="application/json" id="chart-data">
             {
                 "data": {{ $jsonData }},
