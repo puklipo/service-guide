@@ -10,7 +10,7 @@
     $jsonLabels = json_encode($labels);
     @endphp
 
-    <div>
+    <div class="chart-bar-component w-full">
         <script type="application/json" id="chart-data">
             {
                 "data": {{ $jsonData }},
