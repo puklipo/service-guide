@@ -45,5 +45,7 @@
         </div>
 
     <x-back-to-top/>
+
+    @livewireScriptConfig
     </body>
 </html>
