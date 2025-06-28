@@ -172,8 +172,8 @@ class ArticleTest extends TestCase
         $this->assertStringContainsString('<div class="chart-container', $html, 'レンダリング結果にchart-containerクラスが含まれていません');
 
         // 期待される結果: データとラベルがJavaScriptで使用されていることを確認
-        $this->assertStringContainsString('const data =', $html, 'レンダリング結果にデータ配列が含まれていません');
-        $this->assertStringContainsString('const labels =', $html, 'レンダリング結果にラベル配列が含まれていません');
+        $this->assertStringContainsString('data:', $html, 'レンダリング結果にデータ配列が含まれていません');
+        $this->assertStringContainsString('labels:', $html, 'レンダリング結果にラベル配列が含まれていません');
 
         // タイトルが表示されていることを確認
         $this->assertStringContainsString('テストグラフ', $html, 'レンダリング結果にグラフタイトルが含まれていません');
