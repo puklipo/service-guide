@@ -155,7 +155,7 @@
                         text.setAttribute("y", height - 10);
                         text.setAttribute("text-anchor", "middle");
                         text.setAttribute("font-size", "12");
-                        text.setAttribute("class", "text-xs md:text-sm");
+                        text.setAttribute("class", "text-sm md:text-md");
                         text.textContent = point.label;
                         axisLabels.push(text);
                         svg.appendChild(text);
