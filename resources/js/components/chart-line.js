@@ -1,18 +1,31 @@
+// resources/js/components/chart-line.js
+
+// デフォルトのチャート設定
 const CHART_DEFAULTS = {
-    width: 800,
-    height: 400,
-    paddingBottom: 60,
-    paddingLeft: 60,
-    paddingTop: 20,
-    paddingRight: 20,
-    gridCount: 5,
+    width: 800, // SVGの幅
+    height: 400, // SVGの高さ
+    paddingBottom: 60, // 下のパディング
+    paddingLeft: 60, // 左のパディング
+    paddingTop: 20, // 上のパディング
+    paddingRight: 20, // 右のパディング
+    gridCount: 5, // グリッド線の数
 };
 
+/**
+ * ダークモードが有効かどうかを判定します。
+ * @returns {boolean}
+ */
 const isDarkMode = () => {
     return document.documentElement.classList.contains('dark') ||
            window.matchMedia('(prefers-color-scheme: dark)').matches;
 };
 
+/**
+ * SVG要素を生成します。
+ * @param {string} tag - SVGタグ名
+ * @param {object} attributes - 属性のオブジェクト
+ * @returns {SVGElement}
+ */
 const createSvgElement = (tag, attributes) => {
     const el = document.createElementNS("http://www.w3.org/2000/svg", tag);
     for (const key in attributes) {
@@ -21,25 +34,32 @@ const createSvgElement = (tag, attributes) => {
     return el;
 };
 
+/**
+ * Alpine.jsの折れ線グラフコンポーネント
+ * @param {object} options - チャートのオプション
+ */
 export default function chartLine(options) {
     return {
-        // State
-        container: null,
-        svg: null,
-        tooltip: null,
-        rangeInfo: null,
-        gridLines: [],
-        gridLabels: [],
-        circles: [],
-        axisLabels: [],
-        path: null,
-        yAxis: null,
-        xAxis: null,
-        darkModeObserver: null,
+        // --- 状態管理 ---
+        container: null, // チャートのコンテナ要素
+        svg: null, // SVG要素
+        tooltip: null, // ツールチップ要素
+        rangeInfo: null, // 表示範囲情報要素
+        gridLines: [], // グリッド線
+        gridLabels: [], // グリッドのラベル
+        circles: [], // データポイントの円
+        axisLabels: [], // 軸のラベル
+        path: null, // 折れ線のパス
+        yAxis: null, // Y軸
+        xAxis: null, // X軸
+        darkModeObserver: null, // ダークモード監視
 
-        // Options
+        // --- オプション ---
         ...options,
 
+        /**
+         * コンポーネントの初期化
+         */
         init() {
             this.container = this.$refs.container;
             if (!this.container) return;
@@ -53,26 +73,37 @@ export default function chartLine(options) {
             });
         },
 
+        /**
+         * 基本的なDOM要素のセットアップ
+         */
         setupBaseElements() {
+            // 既存の要素をクリア
             while (this.container.firstChild) {
                 this.container.removeChild(this.container.firstChild);
             }
 
+            // 表示範囲情報を追加
             this.rangeInfo = document.createElement('div');
             this.rangeInfo.textContent = `表示範囲: ${this.displayMinValue.toLocaleString()} 〜 ${this.maxValue.toLocaleString()}`;
             this.container.appendChild(this.rangeInfo);
 
+            // SVGコンテナを生成
             this.svg = createSvgElement("svg", {
                 viewBox: `0 0 ${CHART_DEFAULTS.width} ${CHART_DEFAULTS.height}`
             });
             this.container.appendChild(this.svg);
 
+            // ツールチップを生成
             this.tooltip = document.createElement('div');
             this.tooltip.textContent = 'グラフのポイントにカーソルを合わせると詳細が表示されます';
             this.container.appendChild(this.tooltip);
         },
 
+        /**
+         * グリッド線と軸の描画
+         */
         renderGridAndAxes() {
+            // グリッド線とY軸ラベルを描画
             for (let i = 0; i < CHART_DEFAULTS.gridCount; i++) {
                 const ratio = i / (CHART_DEFAULTS.gridCount - 1);
                 const y = CHART_DEFAULTS.height - CHART_DEFAULTS.paddingBottom - (ratio * (CHART_DEFAULTS.height - CHART_DEFAULTS.paddingBottom - CHART_DEFAULTS.paddingTop));
@@ -88,26 +119,33 @@ export default function chartLine(options) {
                 this.svg.appendChild(valueLabel);
             }
 
+            // Y軸とX軸を描画
             this.yAxis = createSvgElement("line", { x1: CHART_DEFAULTS.paddingLeft, y1: CHART_DEFAULTS.paddingTop, x2: CHART_DEFAULTS.paddingLeft, y2: CHART_DEFAULTS.height - CHART_DEFAULTS.paddingBottom });
             this.svg.appendChild(this.yAxis);
             this.xAxis = createSvgElement("line", { x1: CHART_DEFAULTS.paddingLeft, y1: CHART_DEFAULTS.height - CHART_DEFAULTS.paddingBottom, x2: CHART_DEFAULTS.width - CHART_DEFAULTS.paddingRight, y2: CHART_DEFAULTS.height - CHART_DEFAULTS.paddingBottom });
             this.svg.appendChild(this.xAxis);
         },
 
+        /**
+         * 折れ線とデータポイントの描画
+         */
         renderLineAndPoints() {
             const points = this.calculatePoints();
             const shouldRotateLabels = this.data.length > 5;
             const labelRotationAngle = shouldRotateLabels ? -25 : 0;
             const labelYOffset = shouldRotateLabels ? 30 : 15;
 
+            // 折れ線パスを生成
             this.path = createSvgElement("path", { d: this.getPath(points), fill: "none", "stroke-width": "4", class: "transition-all duration-300" });
             this.svg.appendChild(this.path);
 
+            // データポイントとラベルを描画
             points.forEach(point => {
                 const circle = createSvgElement("circle", { cx: point.x, cy: point.y, r: "6", "stroke-width": "2", class: "cursor-pointer transition-all duration-200" });
                 this.circles.push(circle);
                 this.svg.appendChild(circle);
 
+                // ツールチップイベント
                 circle.addEventListener('mouseenter', () => {
                     circle.setAttribute("r", "8");
                     this.tooltip.textContent = `${point.label}: ${point.value.toLocaleString()}`;
@@ -117,6 +155,7 @@ export default function chartLine(options) {
                     this.tooltip.textContent = 'グラフのポイントにカーソルを合わせると詳細が表示されます';
                 });
 
+                // X軸ラベル
                 const text = createSvgElement("text", { x: point.x, y: CHART_DEFAULTS.height - CHART_DEFAULTS.paddingBottom + labelYOffset, "font-size": "12", class: "text-sm" });
                 if (shouldRotateLabels) {
                     text.setAttribute("transform", `rotate(${labelRotationAngle} ${point.x}, ${CHART_DEFAULTS.height - CHART_DEFAULTS.paddingBottom + 10})`);
@@ -130,12 +169,18 @@ export default function chartLine(options) {
             });
         },
 
+        /**
+         * イベントリスナーのセットアップ
+         */
         setupEventListeners() {
             this.darkModeObserver = new MutationObserver(() => this.updateChartColors());
             this.darkModeObserver.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
             window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => this.updateChartColors());
         },
 
+        /**
+         * ダークモードのスタイル更新
+         */
         updateChartColors() {
             const dark = isDarkMode();
             this.container.className = `line-chart-container w-full rounded-md ${dark ? 'bg-gray-900' : 'bg-white'}`;
@@ -154,6 +199,10 @@ export default function chartLine(options) {
             this.axisLabels.forEach(text => text.setAttribute("fill", dark ? "#9ca3af" : "#64748b"));
         },
 
+        /**
+         * データポイントの座標を計算
+         * @returns {Array<object>}
+         */
         calculatePoints() {
             const points = [];
             if (this.data.length <= 1) {
@@ -174,6 +223,11 @@ export default function chartLine(options) {
             return points;
         },
 
+        /**
+         * SVGパスデータを生成
+         * @param {Array<object>} points - データポイント
+         * @returns {string}
+         */
         getPath(points) {
             if (points.length < 2) return '';
             let path = `M ${points[0].x} ${points[0].y}`;
