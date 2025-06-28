@@ -159,7 +159,8 @@ php artisan wam:import 14             # Import specific service
 - Queue worker runs in separate Docker container
 
 ### Article System
-- For detailed information about the article feature, refer to `@resources/articles/README.md`
+- For detailed information about the article feature, refer to @resources/articles/README.md
+- For the feature that displays graphs within articles using Blade components in Markdown, see @resources/articles/chart.md
 
 ## Testing Strategy
 
