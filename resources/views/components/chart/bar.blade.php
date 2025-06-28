@@ -24,6 +24,9 @@
     $jsonLabels = json_encode($labels);
     $jsonMinValue = json_encode($minValue);
     $jsonDisplayMinValue = json_encode($displayMinValue);
+
+    // ユニークなID接頭辞を生成（複数のグラフがある場合に要素の衝突を防ぐ）
+    $chartId = 'bar-chart-' . uniqid();
     @endphp
 
     <div class="chart-bar-component w-full">
@@ -36,6 +39,7 @@
                 const minValue = @json($minValue);
                 const displayMinValue = @json($displayMinValue);
                 const adjustedDataRange = @json($adjustedDataRange);
+                const chartId = @json($chartId); // ユニークID接頭辞
 
                 // ダークモードかどうかを検出
                 const isDarkMode = () => {
@@ -64,7 +68,7 @@
 
                 // DOMの準備ができたら実行
                 document.addEventListener('DOMContentLoaded', function() {
-                    const container = document.querySelector('.bar-chart-container');
+                    const container = document.querySelector(`#${chartId}-container`);
                     if (!container) return;
 
                     // ダークモードの監視
@@ -174,7 +178,7 @@
                         // ホバー効果
                         bar.addEventListener('mouseenter', function() {
                             bar.setAttribute("opacity", "0.8");
-                            const tooltip = document.getElementById('bar-chart-tooltip');
+                            const tooltip = document.querySelector(`#${chartId}-tooltip`);
                             if (tooltip) {
                                 tooltip.textContent = `${labels[index]}: ${value.toLocaleString()}施設`;
                             }
@@ -182,7 +186,7 @@
 
                         bar.addEventListener('mouseleave', function() {
                             bar.setAttribute("opacity", "1");
-                            const tooltip = document.getElementById('bar-chart-tooltip');
+                            const tooltip = document.querySelector(`#${chartId}-tooltip`);
                             if (tooltip) {
                                 tooltip.textContent = '詳細を表示するにはグラフにカーソルを合わせてください';
                             }
@@ -190,7 +194,7 @@
 
                         // タッチデバイス対応
                         bar.addEventListener('touchstart', function() {
-                            const tooltip = document.getElementById('bar-chart-tooltip');
+                            const tooltip = document.querySelector(`#${chartId}-tooltip`);
                             if (tooltip) {
                                 tooltip.textContent = `${labels[index]}: ${value.toLocaleString()}施設`;
                             }
@@ -222,7 +226,7 @@
 
                     // ツールチップ
                     const tooltip = document.createElement('div');
-                    tooltip.id = 'bar-chart-tooltip';
+                    tooltip.id = `${chartId}-tooltip`;
                     tooltip.className = 'mt-4 text-center text-sm font-medium';
                     tooltip.textContent = '詳細を表示するにはグラフにカーソルを合わせてください';
                     container.appendChild(tooltip);
@@ -275,7 +279,7 @@
         </script>
 
         <!-- 棒グラフの表示エリア -->
-        <div class="bar-chart-container w-full bg-white dark:bg-gray-900">
+        <div id="{{ $chartId }}-container" class="bar-chart-container w-full bg-white dark:bg-gray-900">
             <!-- グラフ要素はJavaScriptで動的に生成されます -->
         </div>
     </div>

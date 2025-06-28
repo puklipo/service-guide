@@ -22,6 +22,9 @@
         // データとラベルをJSON形式にエンコード
         $jsonData = json_encode($data);
         $jsonLabels = json_encode($labels);
+
+        // ユニークなID接頭辞を生成（複数のグラフがある場合に要素の衝突を防ぐ）
+        $chartId = 'line-chart-' . uniqid();
     @endphp
 
     <div class="chart-line-component w-full">
@@ -34,6 +37,7 @@
                 const minValue = @json($minValue);
                 const displayMinValue = @json($displayMinValue);
                 const adjustedDataRange = @json($adjustedDataRange);
+                const chartId = @json($chartId); // ユニークID接頭辞
 
                 // ダークモードかどうかを検出
                 const isDarkMode = () => {
@@ -84,7 +88,7 @@
 
                 // DOMの準備ができたら実行
                 document.addEventListener('DOMContentLoaded', function() {
-                    const container = document.querySelector('.line-chart-container');
+                    const container = document.querySelector(`#${chartId}-container`);
                     if (!container) return;
 
                     // ダークモードの監視
@@ -188,7 +192,7 @@
                         // ホバー時のエフェクト
                         circle.addEventListener('mouseenter', function() {
                             circle.setAttribute("r", "8");  // ホバー時のサイズも大きく（7から8に変更）
-                            const tooltip = document.getElementById('line-chart-tooltip');
+                            const tooltip = document.querySelector(`#${chartId}-tooltip`);
                             if (tooltip) {
                                 tooltip.textContent = `${point.label}: ${point.value.toLocaleString()}`;
                             }
@@ -197,7 +201,7 @@
                         // ホバー解除時
                         circle.addEventListener('mouseleave', function() {
                             circle.setAttribute("r", "6");  // 元のサイズも変更（5から6に変更）
-                            const tooltip = document.getElementById('line-chart-tooltip');
+                            const tooltip = document.querySelector(`#${chartId}-tooltip`);
                             if (tooltip) {
                                 tooltip.textContent = 'グラフのポイントにカーソルを合わせると詳細が表示されます';
                             }
@@ -230,7 +234,7 @@
 
                     // ツールチップ
                     const tooltip = document.createElement('div');
-                    tooltip.id = 'line-chart-tooltip';
+                    tooltip.id = `${chartId}-tooltip`;
                     tooltip.className = 'mt-4 text-center text-sm font-medium';
                     tooltip.textContent = 'グラフのポイントにカーソルを合わせると詳細が表示されます';
                     container.appendChild(tooltip);
@@ -287,7 +291,7 @@
         </script>
 
         <!-- 折れ線グラフの表示エリア -->
-        <div class="line-chart-container w-full bg-white dark:bg-gray-900 rounded-md">
+        <div id="{{ $chartId }}-container" class="line-chart-container w-full bg-white dark:bg-gray-900 rounded-md">
             <!-- SVG要素はJavaScriptで動的に生成されます -->
         </div>
     </div>

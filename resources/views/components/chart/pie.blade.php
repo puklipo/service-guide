@@ -21,6 +21,9 @@
         '#0ea5e9'  // sky-500
     ];
     $jsonColors = json_encode($colors);
+
+    // ユニークなID接頭辞を生成（複数のグラフがある場合に要素の衝突を防ぐ）
+    $chartId = 'pie-chart-' . uniqid();
     @endphp
 
     <div class="chart-pie-component w-full">
@@ -32,6 +35,7 @@
                 const labels = @json($labels);
                 const total = @json($total);
                 const colors = @json($colors);
+                const chartId = @json($chartId); // ユニークID接頭辞
 
                 // ダークモードかどうかを検出
                 const isDarkMode = () => {
@@ -94,7 +98,7 @@
                         path.setAttribute("opacity", "0.85");
                         path.setAttribute("stroke-width", "1.2");
 
-                        const tooltip = document.getElementById('pie-tooltip');
+                        const tooltip = document.querySelector(`#${chartId}-tooltip`);
                         if (tooltip) {
                             const percent = ((value / total) * 100).toFixed(1);
                             tooltip.textContent = `${labels[index]}: ${value.toLocaleString()} (${percent}%)`;
@@ -106,7 +110,7 @@
                         path.setAttribute("opacity", "1");
                         path.setAttribute("stroke-width", "0.7");
 
-                        const tooltip = document.getElementById('pie-tooltip');
+                        const tooltip = document.querySelector(`#${chartId}-tooltip`);
                         if (tooltip) {
                             tooltip.textContent = '円グラフのセグメントにカーソルを合わせると詳細が表示されます';
                         }
@@ -120,7 +124,7 @@
 
                 // DOMに追加
                 document.addEventListener('DOMContentLoaded', () => {
-                    const container = document.querySelector('.pie-chart-container');
+                    const container = document.querySelector(`#${chartId}-container`);
                     if (!container) return;
 
                     // ダークモードの監視
@@ -142,7 +146,7 @@
                     // 凡例を作成
                     const legend = document.createElement('div');
                     legend.className = 'flex flex-wrap justify-center gap-4 py-2';
-                    legend.id = 'pie-chart-legend';
+                    legend.id = `${chartId}-legend`;
 
                     segments.forEach((segment, index) => {
                         const legendItem = document.createElement('div');
@@ -166,7 +170,7 @@
                             segment.path.setAttribute("opacity", "0.85");
                             segment.path.setAttribute("stroke-width", "1.2");
 
-                            const tooltip = document.getElementById('pie-tooltip');
+                            const tooltip = document.querySelector(`#${chartId}-tooltip`);
                             if (tooltip) {
                                 tooltip.textContent = `${segment.label}: ${segment.value.toLocaleString()} (${segment.percent}%)`;
                             }
@@ -176,7 +180,7 @@
                             segment.path.setAttribute("opacity", "1");
                             segment.path.setAttribute("stroke-width", "0.7");
 
-                            const tooltip = document.getElementById('pie-tooltip');
+                            const tooltip = document.querySelector(`#${chartId}-tooltip`);
                             if (tooltip) {
                                 tooltip.textContent = '円グラフのセグメントにカーソルを合わせると詳細が表示されます';
                             }
@@ -185,12 +189,9 @@
                         legend.appendChild(legendItem);
                     });
 
-                    const legendContainer = document.querySelector('.pie-chart-legend');
+                    const legendContainer = document.querySelector(`#${chartId}-legend-container`);
                     if (legendContainer) {
                         legendContainer.appendChild(legend);
-
-                        // 凡例コンテナにIDを追加して参照しやすくする
-                        legendContainer.id = 'pie-legend-container';
                     }
 
                     // ダークモードに応じてスタイルを更新する関数
@@ -201,7 +202,7 @@
                         container.className = `w-64 h-64 mx-auto ${dark ? 'bg-gray-900' : 'bg-white'}`;
 
                         // ツールチップのテキスト色
-                        const tooltip = document.getElementById('pie-tooltip');
+                        const tooltip = document.querySelector(`#${chartId}-tooltip`);
                         if (tooltip) {
                             tooltip.className = `text-center text-sm mt-3 font-medium ${dark ? 'text-gray-300' : 'text-gray-600'}`;
                         }
@@ -218,7 +219,7 @@
                         });
 
                         // 凡例コンテナの背景色
-                        const legendContainer = document.getElementById('pie-legend-container');
+                        const legendContainer = document.querySelector(`#${chartId}-legend-container`);
                         if (legendContainer) {
                             legendContainer.className = `pie-chart-legend mt-4 w-full ${dark ? 'bg-gray-900' : 'bg-white'}`;
                         }
@@ -236,17 +237,17 @@
 
         <!-- 円グラフの表示エリア -->
         <div class="flex flex-col items-center">
-            <div class="pie-chart-container w-64 h-64 mx-auto bg-white dark:bg-gray-900">
+            <div id="{{ $chartId }}-container" class="pie-chart-container w-64 h-64 mx-auto bg-white dark:bg-gray-900">
                 <!-- SVG要素はJavaScriptで動的に生成されます -->
             </div>
 
             <!-- ツールチップ -->
-            <div id="pie-tooltip" class="text-center text-sm text-gray-600 dark:text-gray-300 mt-3 font-medium">
+            <div id="{{ $chartId }}-tooltip" class="text-center text-sm text-gray-600 dark:text-gray-300 mt-3 font-medium">
                 円グラフのセグメントにカーソルを合わせると詳細が表示されます
             </div>
 
             <!-- 凡例表示エリア -->
-            <div class="pie-chart-legend mt-4 w-full bg-white dark:bg-gray-900">
+            <div id="{{ $chartId }}-legend-container" class="pie-chart-legend mt-4 w-full bg-white dark:bg-gray-900">
                 <!-- 凡例要素はJavaScriptで動的に生成されます -->
             </div>
         </div>
