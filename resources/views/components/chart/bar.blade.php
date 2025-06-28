@@ -18,62 +18,58 @@
 
     // 調整後のデータ範囲
     $adjustedDataRange = $maxValue - $displayMinValue;
-
-    // データとラベルをJSON形式にエンコード
-    $jsonData = json_encode($data);
-    $jsonLabels = json_encode($labels);
-    $jsonMinValue = json_encode($minValue);
-    $jsonDisplayMinValue = json_encode($displayMinValue);
-
-    // ユニークなID接頭辞を生成（複数のグラフがある場合に要素の衝突を防ぐ）
-    $chartId = 'bar-chart-' . uniqid();
     @endphp
 
-    <div class="chart-bar-component w-full">
-        <script>
-            // この即時実行関数は棒グラフを描画します
-            (function() {
-                const data = @json($data);
-                const labels = @json($labels);
-                const maxValue = @json($maxValue);
-                const minValue = @json($minValue);
-                const displayMinValue = @json($displayMinValue);
-                const adjustedDataRange = @json($adjustedDataRange);
-                const chartId = @json($chartId); // ユニークID接頭辞
+    <div class="chart-bar-component w-full" x-data="chartBar({
+        data: {{ json_encode($data) }},
+        labels: {{ json_encode($labels) }},
+        maxValue: {{ json_encode($maxValue) }},
+        minValue: {{ json_encode($minValue) }},
+        displayMinValue: {{ json_encode($displayMinValue) }},
+        adjustedDataRange: {{ json_encode($adjustedDataRange) }}
+    })" x-init="init()">
+        <div x-ref="container" class="bar-chart-container w-full bg-white dark:bg-gray-900">
+            <!-- Alpine will generate the chart here -->
+        </div>
+    </div>
+</x-chart.base>
 
-                // ダークモードかどうかを検出
-                const isDarkMode = () => {
-                    return document.documentElement.classList.contains('dark') ||
-                           window.matchMedia('(prefers-color-scheme: dark)').matches;
-                };
-
-                // グラフのパラメータ
-                const maxBarHeightPx = 256; // 最大の高さ（ピクセル）
-                const barSpacing = 8; // バー間のスペース（より狭く）
-                const labelHeight = 48; // ラベルの高さ
-
-                // グラフの寸法
-                const width = 800;
-                const height = 400;
-                const paddingBottom = 60; // ラベル用に余白を増やす
-                const paddingLeft = 60; // Y軸ラベル用に余白を確保
-                const paddingTop = 20; // 上部の余白
-                const paddingRight = 20; // 右側の余白
-
-                // 高さを計算（調整後の最小値を考慮）
-                function calculateBarHeight(value) {
-                    // 値の相対位置に基づいて高さを計算（調整後の最小値からの相対的な高さ）
-                    return ((value - displayMinValue) / adjustedDataRange) * (height - paddingBottom - paddingTop);
-                }
-
-                // DOMの準備ができたら実行
-                document.addEventListener('DOMContentLoaded', function() {
-                    const container = document.querySelector(`#${chartId}-container`);
+@once
+<script>
+    function chartBar(options) {
+        return {
+            init() {
+                this.$nextTick(() => {
+                    const container = this.$refs.container;
                     if (!container) return;
 
-                    // ダークモードの監視
-                    const darkModeObserver = new MutationObserver(function(mutations) {
-                        mutations.forEach(function(mutation) {
+                    const { data, labels, maxValue, minValue, displayMinValue, adjustedDataRange } = options;
+                    const chartId = 'bar-chart-' + Math.random().toString(36).substring(2, 9);
+
+                    const isDarkMode = () => {
+                        return document.documentElement.classList.contains('dark') ||
+                               window.matchMedia('(prefers-color-scheme: dark)').matches;
+                    };
+
+                    const width = 800;
+                    const height = 400;
+                    const paddingBottom = 60;
+                    const paddingLeft = 60;
+                    const paddingTop = 20;
+                    const paddingRight = 20;
+                    const barSpacing = 8;
+
+                    function calculateBarHeight(value) {
+                        if (adjustedDataRange === 0) return 0;
+                        return ((value - displayMinValue) / adjustedDataRange) * (height - paddingBottom - paddingTop);
+                    }
+
+                    while (container.firstChild) {
+                        container.removeChild(container.firstChild);
+                    }
+
+                    const darkModeObserver = new MutationObserver((mutations) => {
+                        mutations.forEach((mutation) => {
                             if (mutation.attributeName === 'class') {
                                 updateDarkModeStyles();
                             }
@@ -85,30 +81,24 @@
                         attributeFilter: ['class']
                     });
 
-                    // 表示範囲の情報を上部に追加
                     const rangeInfo = document.createElement('div');
                     rangeInfo.className = 'text-xs text-right w-full pr-2 opacity-70 mb-4';
                     rangeInfo.textContent = `表示範囲: ${displayMinValue.toLocaleString()} 〜 ${maxValue.toLocaleString()}`;
                     container.appendChild(rangeInfo);
 
-                    // SVG要素を作成
                     const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
                     svg.setAttribute("viewBox", `0 0 ${width} ${height}`);
                     svg.setAttribute("class", "w-full h-64 bg-opacity-50");
 
-                    // バーの配列を保持（ダークモード切り替え時に参照するため）
                     const barElements = [];
                     const labelElements = [];
                     const gridLines = [];
                     const gridLabels = [];
 
-                    // グリッド線を追加
                     const gridCount = 5;
                     for (let i = 0; i < gridCount; i++) {
                         const ratio = i / (gridCount - 1);
                         const y = height - paddingBottom - (ratio * (height - paddingBottom - paddingTop));
-
-                        // グリッド線
                         const gridLine = document.createElementNS("http://www.w3.org/2000/svg", "line");
                         gridLine.setAttribute("x1", paddingLeft);
                         gridLine.setAttribute("y1", y);
@@ -118,11 +108,10 @@
                         gridLines.push(gridLine);
                         svg.appendChild(gridLine);
 
-                        // Y軸ラベル（値）
                         const yValue = displayMinValue + (adjustedDataRange * ratio);
                         const valueLabel = document.createElementNS("http://www.w3.org/2000/svg", "text");
                         valueLabel.setAttribute("x", paddingLeft - 10);
-                        valueLabel.setAttribute("y", y + 4); // テキスト位置微調整
+                        valueLabel.setAttribute("y", y + 4);
                         valueLabel.setAttribute("text-anchor", "end");
                         valueLabel.setAttribute("font-size", "12");
                         valueLabel.setAttribute("class", "text-xs");
@@ -131,7 +120,6 @@
                         svg.appendChild(valueLabel);
                     }
 
-                    // Y軸を追加
                     const yAxis = document.createElementNS("http://www.w3.org/2000/svg", "line");
                     yAxis.setAttribute("x1", paddingLeft);
                     yAxis.setAttribute("y1", paddingTop);
@@ -139,7 +127,6 @@
                     yAxis.setAttribute("y2", height - paddingBottom);
                     svg.appendChild(yAxis);
 
-                    // X軸を追加
                     const xAxis = document.createElementNS("http://www.w3.org/2000/svg", "line");
                     xAxis.setAttribute("x1", paddingLeft);
                     xAxis.setAttribute("y1", height - paddingBottom);
@@ -147,72 +134,53 @@
                     xAxis.setAttribute("y2", height - paddingBottom);
                     svg.appendChild(xAxis);
 
-                    // X軸ラベル表示の設定
-                    // データ数に応じて表示方法を調整
-                    const shouldRotateLabels = data.length > 5; // データが6つ以上ならラベルを回転
-                    const labelRotationAngle = shouldRotateLabels ? -25 : 0; // 回転角度
-                    const labelYOffset = shouldRotateLabels ? 30 : 20; // Y方向オフセット
+                    const shouldRotateLabels = data.length > 5;
+                    const labelRotationAngle = shouldRotateLabels ? -25 : 0;
+                    const labelYOffset = shouldRotateLabels ? 30 : 20;
 
-                    // 各バーを計算して描画（幅一杯に表示）
                     const chartWidth = width - paddingLeft - paddingRight;
-                    // 全体のスペースからデータ数に応じてバーの幅を計算
                     const totalBarSpace = chartWidth - (barSpacing * (data.length - 1));
                     const barWidth = totalBarSpace / data.length;
 
-                    // 各バーを作成
                     data.forEach((value, index) => {
                         const barHeight = calculateBarHeight(value);
                         const x = paddingLeft + (index * (barWidth + barSpacing));
                         const y = height - paddingBottom - barHeight;
 
-                        // バー部分
                         const bar = document.createElementNS("http://www.w3.org/2000/svg", "rect");
                         bar.setAttribute("x", x);
                         bar.setAttribute("y", y);
                         bar.setAttribute("width", barWidth);
                         bar.setAttribute("height", barHeight);
-                        bar.setAttribute("rx", "2"); // 角を丸める
+                        bar.setAttribute("rx", "2");
                         bar.classList.add("cursor-pointer", "transition-all", "duration-200");
                         barElements.push(bar);
 
-                        // ホバー効果
-                        bar.addEventListener('mouseenter', function() {
+                        bar.addEventListener('mouseenter', () => {
                             bar.setAttribute("opacity", "0.8");
-                            const tooltip = document.querySelector(`#${chartId}-tooltip`);
-                            if (tooltip) {
-                                tooltip.textContent = `${labels[index]}: ${value.toLocaleString()}`;
-                            }
+                            tooltip.textContent = `${labels[index]}: ${value.toLocaleString()}`;
                         });
 
-                        bar.addEventListener('mouseleave', function() {
+                        bar.addEventListener('mouseleave', () => {
                             bar.setAttribute("opacity", "1");
-                            const tooltip = document.querySelector(`#${chartId}-tooltip`);
-                            if (tooltip) {
-                                tooltip.textContent = '詳細を表示するにはグラフにカーソルを合わせてください';
-                            }
+                            tooltip.textContent = '詳細を表示するにはグラフにカーソルを合わせてください';
                         });
 
-                        // タッチデバイス対応
-                        bar.addEventListener('touchstart', function() {
-                            const tooltip = document.querySelector(`#${chartId}-tooltip`);
-                            if (tooltip) {
-                                tooltip.textContent = `${labels[index]}: ${value.toLocaleString()}`;
-                            }
+                        bar.addEventListener('touchstart', () => {
+                            tooltip.textContent = `${labels[index]}: ${value.toLocaleString()}`;
                         });
 
                         svg.appendChild(bar);
 
-                        // ラベル部分
                         const label = document.createElementNS("http://www.w3.org/2000/svg", "text");
                         label.setAttribute("x", x + (barWidth / 2));
                         label.setAttribute("y", height - paddingBottom + labelYOffset);
 
-                        // ラベルの回転と位置調整
                         if (shouldRotateLabels) {
                             label.setAttribute("transform", `rotate(${labelRotationAngle} ${x + (barWidth / 2)}, ${height - paddingBottom + 10})`);
-                            label.setAttribute("text-anchor", "end"); // 回転時は右寄せ
+                            label.setAttribute("text-anchor", "end");
                         } else {
-                            label.setAttribute("text-anchor", "middle"); // 通常時は中央寄せ
+                            label.setAttribute("text-anchor", "middle");
                         }
 
                         label.setAttribute("font-size", "12");
@@ -221,66 +189,32 @@
                         svg.appendChild(label);
                     });
 
-                    // SVGをコンテナに追加
                     container.appendChild(svg);
 
-                    // ツールチップ
                     const tooltip = document.createElement('div');
                     tooltip.id = `${chartId}-tooltip`;
                     tooltip.className = 'mt-4 text-center text-sm font-medium';
                     tooltip.textContent = '詳細を表示するにはグラフにカーソルを合わせてください';
                     container.appendChild(tooltip);
 
-                    // ダークモードに応じてスタイルを更新する関数
                     function updateDarkModeStyles() {
                         const dark = isDarkMode();
-
-                        // コンテナの背景色
-                        container.className = `w-full ${dark ? 'bg-gray-900' : 'bg-white'}`;
-
-                        // 表示範囲の色
+                        container.className = `bar-chart-container w-full ${dark ? 'bg-gray-900' : 'bg-white'}`;
                         rangeInfo.className = `text-xs text-right w-full pr-2 opacity-70 mb-4 ${dark ? 'text-gray-400' : 'text-gray-500'}`;
-
-                        // ツールチップのテキスト色
                         tooltip.className = `mt-4 text-center text-sm font-medium ${dark ? 'text-gray-300' : 'text-gray-600'}`;
-
-                        // グリッド線の色
-                        gridLines.forEach(line => {
-                            line.setAttribute("stroke", dark ? "#374151" : "#f1f5f9"); // dark:gray-700, light:slate-100
-                        });
-
-                        // Y軸とX軸の色
-                        yAxis.setAttribute("stroke", dark ? "#4b5563" : "#cbd5e1"); // dark:gray-600, light:slate-300
+                        gridLines.forEach(line => line.setAttribute("stroke", dark ? "#374151" : "#f1f5f9"));
+                        yAxis.setAttribute("stroke", dark ? "#4b5563" : "#cbd5e1");
                         xAxis.setAttribute("stroke", dark ? "#4b5563" : "#cbd5e1");
-
-                        // Y軸の値ラベルの色
-                        gridLabels.forEach(label => {
-                            label.setAttribute("fill", dark ? "#9ca3af" : "#64748b"); // dark:gray-400, light:slate-500
-                        });
-
-                        // バーの色
-                        barElements.forEach(bar => {
-                            bar.setAttribute("fill", dark ? "#3b82f6" : "#3b82f6"); // blue-500
-                        });
-
-                        // ラベルの色
-                        labelElements.forEach(label => {
-                            label.setAttribute("fill", dark ? "#9ca3af" : "#64748b"); // dark:gray-400, light:slate-500
-                        });
+                        gridLabels.forEach(label => label.setAttribute("fill", dark ? "#9ca3af" : "#64748b"));
+                        barElements.forEach(bar => bar.setAttribute("fill", dark ? "#3b82f6" : "#3b82f6"));
+                        labelElements.forEach(label => label.setAttribute("fill", dark ? "#9ca3af" : "#64748b"));
                     }
 
-                    // 初期スタイルの設定
                     updateDarkModeStyles();
-
-                    // メディアクエリの変更検出（システムの色モード変更を検知）
                     window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', updateDarkModeStyles);
                 });
-            })();
-        </script>
-
-        <!-- 棒グラフの表示エリア -->
-        <div id="{{ $chartId }}-container" class="bar-chart-container w-full bg-white dark:bg-gray-900">
-            <!-- グラフ要素はJavaScriptで動的に生成されます -->
-        </div>
-    </div>
-</x-chart.base>
+            }
+        };
+    }
+</script>
+@endonce
