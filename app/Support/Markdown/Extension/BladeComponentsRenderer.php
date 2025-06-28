@@ -111,23 +111,8 @@ class BladeComponentsRenderer implements ConfigurationAwareInterface, NodeRender
     private function loadAllowedComponents(): void
     {
         // 設定オブジェクトからデータを取得
-        if ($this->config !== null) {
-            try {
-                $allowedComponents = $this->config->get('blade_components/allowed_components');
-                // 設定から値が取得できた場合はそれを使用
-                $this->allowedComponents = $allowedComponents;
-            } catch (\Exception $e) {
-                // 設定から値が取得できない場合は空の配列を使用
-                $this->allowedComponents = [];
-            }
-        } else {
-            // 設定が提供されていない場合は空の配列を使用
-            $this->allowedComponents = [];
-        }
-
-        // nullの場合は空の配列を使用
-        if ($this->allowedComponents === null) {
-            $this->allowedComponents = [];
-        }
+        $allowedComponents = rescue(fn () => $this->config->get('blade_components/allowed_components'));
+        // 設定から値が取得できた場合はそれを使用
+        $this->allowedComponents = filled($allowedComponents) ? $allowedComponents : [];
     }
 }
