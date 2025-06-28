@@ -45,8 +45,7 @@
 
                 // グラフのパラメータ
                 const maxBarHeightPx = 256; // 最大の高さ（ピクセル）
-                const barWidth = 32; // バーの幅
-                const barSpacing = 16; // バー間のスペース
+                const barSpacing = 8; // バー間のスペース（より狭く）
                 const labelHeight = 48; // ラベルの高さ
 
                 // グラフの寸法
@@ -150,15 +149,16 @@
                     const labelRotationAngle = shouldRotateLabels ? -25 : 0; // 回転角度
                     const labelYOffset = shouldRotateLabels ? 30 : 20; // Y方向オフセット
 
-                    // 各バーを計算して描画
-                    const barTotalWidth = barWidth + barSpacing;
+                    // 各バーを計算して描画（幅一杯に表示）
                     const chartWidth = width - paddingLeft - paddingRight;
-                    const startX = paddingLeft + ((chartWidth - (barTotalWidth * data.length)) / 2);
+                    // 全体のスペースからデータ数に応じてバーの幅を計算
+                    const totalBarSpace = chartWidth - (barSpacing * (data.length - 1));
+                    const barWidth = totalBarSpace / data.length;
 
                     // 各バーを作成
                     data.forEach((value, index) => {
                         const barHeight = calculateBarHeight(value);
-                        const x = startX + (index * barTotalWidth);
+                        const x = paddingLeft + (index * (barWidth + barSpacing));
                         const y = height - paddingBottom - barHeight;
 
                         // バー部分
