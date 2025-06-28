@@ -6,7 +6,6 @@ use App\Support\Markdown\Extension\BladeComponentsExtension;
 use App\Support\Markdown\Extension\BladeComponentsRenderer;
 use Illuminate\Support\Facades\Blade;
 use League\CommonMark\Extension\CommonMark\Node\Block\FencedCode;
-use League\CommonMark\Node\Node;
 use League\CommonMark\Renderer\ChildNodeRendererInterface;
 use League\Config\ConfigurationInterface;
 use Mockery;
