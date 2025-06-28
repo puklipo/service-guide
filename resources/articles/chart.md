@@ -1,6 +1,6 @@
 # Markdownドキュメントでのグラフ表示機能
 
-この機能を使用すると、Markdownドキュメント内に簡易的なグラフを表示することができます。バニラJavaScriptを使用して実装されており、ダークモード対応しています。
+この機能を使用すると、Markdownドキュメント内に簡易的なグラフを表示することができます。AlpineJSを使用して実装されており、ダークモード対応しています。
 
 ## 使用可能なグラフの種類
 
@@ -152,9 +152,9 @@ Markdownドキュメント内で、以下のように「blade」言語を指定�
 
 1. Bladeコンポーネント：
    - `resources/views/components/chart/base.blade.php` - 共通コンテナ
-   - `resources/views/components/chart/bar.blade.php` - バーグラフ実装
-   - `resources/views/components/chart/line.blade.php` - 折れ線グラフ実装
-   - `resources/views/components/chart/pie.blade.php` - 円グラフ実装
+   - `resources/views/components/chart/bar.blade.php` - AlpineJSによるバーグラフ実装
+   - `resources/views/components/chart/line.blade.php` - AlpineJSによる折れ線グラフ実装
+   - `resources/views/components/chart/pie.blade.php` - AlpineJSによる円グラフ実装
 
 2. CommonMarkエクステンション：
    - `App\Support\Markdown\Extension\BladeComponentsExtension`
@@ -162,4 +162,6 @@ Markdownドキュメント内で、以下のように「blade」言語を指定�
 3. 設定：
    - `config/markdown.php`（許可するコンポーネントを指定）
 
-インライン HTML（含むバニラJavaScript）が使用できるため、Markdownドキュメントのセキュリティには十分注意してください。この機能は管理者が作成する信頼できるMarkdownファイルでのみ使用することを想定しています。
+各グラフコンポーネントは、AlpineJSの`x-data`と`x-init`ディレクティブを使用して実装されており、データの表示と操作の両方をシームレスに処理します。これにより、バニラJavaScriptから高度なリアクティブな機能を備えたグラフコンポーネントに進化し、よりメンテナンス性の高い実装になっています。
+
+インライン HTML（含むAlpineJS）が使用できるため、Markdownドキュメントのセキュリティには十分注意してください。この機能は管理者が作成する信頼できるMarkdownファイルでのみ使用することを想定しています。
