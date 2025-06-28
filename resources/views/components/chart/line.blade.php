@@ -1,6 +1,6 @@
-<x-chart.base>
-    @props(['data', 'labels', 'maxValue' => null, 'title' => null])
+@props(['data', 'labels', 'maxValue' => null, 'title' => null])
 
+<x-chart.base :title="$title">
     @php
         // 最大値が指定されていなければ、データの最大値を使用
         $maxValue = $maxValue ?? max($data);
@@ -10,54 +10,43 @@
         $jsonLabels = json_encode($labels);
     @endphp
 
-    <!-- グラフデータをHTML属性として埋め込み（テスト用） -->
+    <!-- グラフデータをHTML属性として埋め込み -->
     <div
         class="chart-line-component w-full"
         data-chart-values="{{ $jsonData }}"
         data-chart-labels="{{ $jsonLabels }}"
         data-chart-max="{{ $maxValue }}"
     >
+        <script>
+            // この即時実行関数は折れ線グラフを描画します
+            (function() {
+                const data = @json($data);
+                const labels = @json($labels);
+                const maxValue = @json($maxValue);
 
-        <script type="application/json" id="chart-line-data">
-            {
-                "data": {{ $jsonData }},
-                "labels": {{ $jsonLabels }},
-                "maxValue": {{ $maxValue }}
-            }
-        </script>
-
-        <!-- Alpine.jsコンポーネント -->
-        <div
-            x-data="{
-                chartData: {{ $jsonData }},
-                chartLabels: {{ $jsonLabels }},
-                maxValue: {{ $maxValue }},
-                // グラフのプロパティ
-                width: 800,
-                height: 400,
-                paddingBottom: 40,
-                paddingLeft: 40,
-                // 計算されたプロパティ
-                tooltip: 'グラフのポイントにカーソルを合わせると詳細が表示されます',
+                // グラフの寸法
+                const width = 800;
+                const height = 400;
+                const paddingBottom = 40;
+                const paddingLeft = 40;
 
                 // ポイントの位置を計算
-                getPoints() {
+                function calculatePoints() {
                     const points = [];
-                    const xStep = (this.width - this.paddingLeft) / (this.chartData.length - 1);
-                    const yScale = (this.height - this.paddingBottom) / this.maxValue;
+                    const xStep = (width - paddingLeft) / (data.length - 1);
+                    const yScale = (height - paddingBottom) / maxValue;
 
-                    for (let i = 0; i < this.chartData.length; i++) {
-                        const x = this.paddingLeft + i * xStep;
-                        const y = this.height - this.chartData[i] * yScale;
-                        points.push({ x, y, value: this.chartData[i], label: this.chartLabels[i] });
+                    for (let i = 0; i < data.length; i++) {
+                        const x = paddingLeft + i * xStep;
+                        const y = height - data[i] * yScale;
+                        points.push({ x, y, value: data[i], label: labels[i] });
                     }
 
                     return points;
-                },
+                }
 
                 // SVGパスを生成
-                getPath() {
-                    const points = this.getPoints();
+                function getPath(points) {
                     let path = `M ${points[0].x} ${points[0].y}`;
 
                     for (let i = 1; i < points.length; i++) {
@@ -65,60 +54,94 @@
                     }
 
                     return path;
-                },
-
-                // ポイントにホバーした時の処理
-                showTooltip(point) {
-                    this.tooltip = `${point.label}: ${point.value.toLocaleString()}`;
                 }
-            }"
-            x-init="$nextTick(() => { /* 初期化処理があれば */ })"
-        >
-            <!-- グラフ本体 -->
-            <svg :viewBox="`0 0 ${width} ${height}`" class="w-full h-64">
-                <!-- 折れ線 -->
-                <path :d="getPath()" fill="none" stroke="#3b82f6" stroke-width="3" />
 
-                <!-- ポイント -->
-                <template x-for="(point, index) in getPoints()" :key="index">
-                    <circle
-                        :cx="point.x"
-                        :cy="point.y"
-                        r="6"
-                        fill="#3b82f6"
-                        stroke="#ffffff"
-                        stroke-width="2"
-                        @mouseenter="showTooltip(point)"
-                        @touchstart="showTooltip(point)"
-                        class="hover:r-8 transition-all duration-200 cursor-pointer"
-                    />
-                </template>
+                // DOMの準備ができたら実行
+                document.addEventListener('DOMContentLoaded', function() {
+                    // SVG要素を作成
+                    const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+                    svg.setAttribute("viewBox", `0 0 ${width} ${height}`);
+                    svg.setAttribute("class", "w-full h-64");
 
-                <!-- X軸 -->
-                <line
-                    :x1="paddingLeft"
-                    :y1="height - paddingBottom / 2"
-                    :x2="width"
-                    :y2="height - paddingBottom / 2"
-                    stroke="#e5e7eb"
-                    stroke-width="1"
-                />
+                    // ポイントを計算
+                    const points = calculatePoints();
 
-                <!-- X軸ラベル -->
-                <template x-for="(point, index) in getPoints()" :key="index">
-                    <text
-                        :x="point.x"
-                        :y="height - 10"
-                        text-anchor="middle"
-                        font-size="12"
-                        fill="#6b7280"
-                        x-text="point.label"
-                    ></text>
-                </template>
-            </svg>
+                    // 折れ線パスを追加
+                    const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+                    path.setAttribute("d", getPath(points));
+                    path.setAttribute("fill", "none");
+                    path.setAttribute("stroke", "#3b82f6");
+                    path.setAttribute("stroke-width", "3");
+                    svg.appendChild(path);
 
-            <!-- ツールチップ -->
-            <div class="text-center text-sm text-gray-700 mt-2" x-text="tooltip"></div>
+                    // X軸を追加
+                    const xAxis = document.createElementNS("http://www.w3.org/2000/svg", "line");
+                    xAxis.setAttribute("x1", paddingLeft);
+                    xAxis.setAttribute("y1", height - paddingBottom / 2);
+                    xAxis.setAttribute("x2", width);
+                    xAxis.setAttribute("y2", height - paddingBottom / 2);
+                    xAxis.setAttribute("stroke", "#e5e7eb");
+                    xAxis.setAttribute("stroke-width", "1");
+                    svg.appendChild(xAxis);
+
+                    // 各データポイントを追加
+                    points.forEach(point => {
+                        // ポイントのサークル
+                        const circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+                        circle.setAttribute("cx", point.x);
+                        circle.setAttribute("cy", point.y);
+                        circle.setAttribute("r", "6");
+                        circle.setAttribute("fill", "#3b82f6");
+                        circle.setAttribute("stroke", "#ffffff");
+                        circle.setAttribute("stroke-width", "2");
+                        circle.classList.add("cursor-pointer");
+
+                        // ツールチップの表示
+                        circle.addEventListener('mouseover', function() {
+                            const tooltip = document.getElementById('line-chart-tooltip');
+                            if (tooltip) {
+                                tooltip.textContent = `${point.label}: ${parseInt(point.value).toLocaleString()}`;
+                            }
+                        });
+
+                        // ツールチップをリセット
+                        circle.addEventListener('mouseout', function() {
+                            const tooltip = document.getElementById('line-chart-tooltip');
+                            if (tooltip) {
+                                tooltip.textContent = 'グラフのポイントにカーソルを合わせると詳細が表示されます';
+                            }
+                        });
+
+                        svg.appendChild(circle);
+
+                        // X軸ラベル
+                        const text = document.createElementNS("http://www.w3.org/2000/svg", "text");
+                        text.setAttribute("x", point.x);
+                        text.setAttribute("y", height - 10);
+                        text.setAttribute("text-anchor", "middle");
+                        text.setAttribute("font-size", "12");
+                        text.setAttribute("fill", "#6b7280");
+                        text.textContent = point.label;
+                        svg.appendChild(text);
+                    });
+
+                    // SVGをコンテナに追加
+                    const container = document.querySelector('.line-chart-container');
+                    if (container) {
+                        container.appendChild(svg);
+                    }
+                });
+            })();
+        </script>
+
+        <!-- 折れ線グラフの表示エリア -->
+        <div class="line-chart-container w-full">
+            <!-- SVG要素はJavaScriptで動的に生成されます -->
+        </div>
+
+        <!-- ツールチップ -->
+        <div id="line-chart-tooltip" class="text-center text-sm text-gray-700 mt-2">
+            グラフのポイントにカーソルを合わせると詳細が表示されます
         </div>
     </div>
 </x-chart.base>
