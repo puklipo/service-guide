@@ -55,17 +55,32 @@
                     // SVG要素を作成
                     const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
                     svg.setAttribute("viewBox", `0 0 ${width} ${height}`);
-                    svg.setAttribute("class", "w-full h-64");
+                    svg.setAttribute("class", "w-full h-64 bg-opacity-50");
 
                     // ポイントを計算
                     const points = calculatePoints();
+
+                    // グリッド線を追加（より洗練された見た目に）
+                    const gridCount = 5;
+                    for (let i = 1; i < gridCount; i++) {
+                        const y = height - (i * (height - paddingBottom) / gridCount);
+                        const gridLine = document.createElementNS("http://www.w3.org/2000/svg", "line");
+                        gridLine.setAttribute("x1", paddingLeft);
+                        gridLine.setAttribute("y1", y);
+                        gridLine.setAttribute("x2", width);
+                        gridLine.setAttribute("y2", y);
+                        gridLine.setAttribute("stroke", "#f1f5f9"); // slate-100
+                        gridLine.setAttribute("stroke-width", "1");
+                        svg.appendChild(gridLine);
+                    }
 
                     // 折れ線パスを追加
                     const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
                     path.setAttribute("d", getPath(points));
                     path.setAttribute("fill", "none");
-                    path.setAttribute("stroke", "#3b82f6");
+                    path.setAttribute("stroke", "#3b82f6"); // blue-500
                     path.setAttribute("stroke-width", "3");
+                    path.setAttribute("class", "transition-all duration-300");
                     svg.appendChild(path);
 
                     // X軸を追加
@@ -74,7 +89,7 @@
                     xAxis.setAttribute("y1", height - paddingBottom / 2);
                     xAxis.setAttribute("x2", width);
                     xAxis.setAttribute("y2", height - paddingBottom / 2);
-                    xAxis.setAttribute("stroke", "#e5e7eb");
+                    xAxis.setAttribute("stroke", "#cbd5e1"); // slate-300
                     xAxis.setAttribute("stroke-width", "1");
                     svg.appendChild(xAxis);
 
@@ -84,22 +99,26 @@
                         const circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
                         circle.setAttribute("cx", point.x);
                         circle.setAttribute("cy", point.y);
-                        circle.setAttribute("r", "6");
-                        circle.setAttribute("fill", "#3b82f6");
+                        circle.setAttribute("r", "5");
+                        circle.setAttribute("fill", "#3b82f6"); // blue-500
                         circle.setAttribute("stroke", "#ffffff");
                         circle.setAttribute("stroke-width", "2");
-                        circle.classList.add("cursor-pointer");
+                        circle.classList.add("cursor-pointer", "transition-all", "duration-200");
 
-                        // ツールチップの表示
-                        circle.addEventListener('mouseover', function() {
+                        // ホバー時のエフェクト
+                        circle.addEventListener('mouseenter', function() {
+                            circle.setAttribute("r", "7");
+                            circle.setAttribute("fill", "#2563eb"); // blue-600
                             const tooltip = document.getElementById('line-chart-tooltip');
                             if (tooltip) {
-                                tooltip.textContent = `${point.label}: ${parseInt(point.value).toLocaleString()}`;
+                                tooltip.textContent = `${point.label}: ${point.value.toLocaleString()}`;
                             }
                         });
 
-                        // ツールチップをリセット
-                        circle.addEventListener('mouseout', function() {
+                        // ホバー解除時
+                        circle.addEventListener('mouseleave', function() {
+                            circle.setAttribute("r", "5");
+                            circle.setAttribute("fill", "#3b82f6"); // blue-500
                             const tooltip = document.getElementById('line-chart-tooltip');
                             if (tooltip) {
                                 tooltip.textContent = 'グラフのポイントにカーソルを合わせると詳細が表示されます';
@@ -113,8 +132,9 @@
                         text.setAttribute("x", point.x);
                         text.setAttribute("y", height - 10);
                         text.setAttribute("text-anchor", "middle");
-                        text.setAttribute("font-size", "18");
-                        text.setAttribute("fill", "#6b7280");
+                        text.setAttribute("font-size", "12");
+                        text.setAttribute("fill", "#64748b"); // slate-500
+                        text.setAttribute("class", "text-xs md:text-sm");
                         text.textContent = point.label;
                         svg.appendChild(text);
                     });
@@ -129,12 +149,12 @@
         </script>
 
         <!-- 折れ線グラフの表示エリア -->
-        <div class="line-chart-container w-full">
+        <div class="line-chart-container w-full bg-white rounded-md">
             <!-- SVG要素はJavaScriptで動的に生成されます -->
         </div>
 
         <!-- ツールチップ -->
-        <div id="line-chart-tooltip" class="text-center text-sm text-gray-700 mt-2">
+        <div id="line-chart-tooltip" class="text-center text-sm text-gray-600 mt-3 font-medium">
             グラフのポイントにカーソルを合わせると詳細が表示されます
         </div>
     </div>
