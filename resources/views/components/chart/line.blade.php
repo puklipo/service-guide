@@ -119,7 +119,7 @@
                         text.setAttribute("x", point.x);
                         text.setAttribute("y", height - 10);
                         text.setAttribute("text-anchor", "middle");
-                        text.setAttribute("font-size", "12");
+                        text.setAttribute("font-size", "18");
                         text.setAttribute("fill", "#6b7280");
                         text.textContent = point.label;
                         svg.appendChild(text);
