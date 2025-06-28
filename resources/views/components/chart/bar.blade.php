@@ -2,8 +2,10 @@
 
 <x-chart.base :title="$title">
     @php
-    // 最大値が指定されていなければ、データの最大値を使用
-    $maxValue = $maxValue ?? max($data);
+    // 最大値が指定されていなければ、データの最大値に10%余裕を持たせる
+    $dataMaxValue = max($data);
+    $maxValue = $maxValue ?? round($dataMaxValue * 1.1);
+
     // 最小値を取得
     $minValue = min($data);
     // データ範囲を計算
@@ -87,6 +89,12 @@
                     baselineInfo.className = 'text-xs text-right w-full pr-2 opacity-70 -mb-1';
                     baselineInfo.textContent = `表示最小値: ${displayMinValue.toLocaleString()}`;
                     container.appendChild(baselineInfo);
+
+                    // 表示最大値の情報を右上に表示
+                    const maxValueInfo = document.createElement('div');
+                    maxValueInfo.className = 'text-xs text-right w-full pr-2 opacity-70';
+                    maxValueInfo.textContent = `表示最大値: ${maxValue.toLocaleString()}`;
+                    container.appendChild(maxValueInfo);
 
                     // バーの配列を保持（ダークモード切り替え時に参照するため）
                     const barElements = [];
@@ -174,8 +182,9 @@
                         // コンテナの背景色
                         container.className = `w-full ${dark ? 'bg-gray-900' : 'bg-white'}`;
 
-                        // 最小値表示の色
+                        // 最小値・最大値表示の色
                         baselineInfo.className = `text-xs text-right w-full pr-2 opacity-70 -mb-1 ${dark ? 'text-gray-400' : 'text-gray-500'}`;
+                        maxValueInfo.className = `text-xs text-right w-full pr-2 opacity-70 ${dark ? 'text-gray-400' : 'text-gray-500'}`;
 
                         // ツールチップのテキスト色
                         tooltip.className = `mt-4 text-center text-sm font-medium ${dark ? 'text-gray-300' : 'text-gray-600'}`;

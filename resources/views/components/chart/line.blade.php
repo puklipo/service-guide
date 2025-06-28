@@ -2,8 +2,10 @@
 
 <x-chart.base :title="$title">
     @php
-        // 最大値が指定されていなければ、データの最大値を使用
-        $maxValue = $maxValue ?? max($data);
+        // 最大値が指定されていなければ、データの最大値に10%余裕を持たせる
+        $dataMaxValue = max($data);
+        $maxValue = $maxValue ?? round($dataMaxValue * 1.1);
+
         // 最小値を取得
         $minValue = min($data);
         // データの範囲を計算
@@ -106,6 +108,16 @@
                     minValueLabel.textContent = displayMinValue.toLocaleString();
                     svg.appendChild(minValueLabel);
 
+                    // 表示最大値のラベルを追加
+                    const maxValueLabel = document.createElementNS("http://www.w3.org/2000/svg", "text");
+                    maxValueLabel.setAttribute("x", paddingLeft - 10);
+                    maxValueLabel.setAttribute("y", paddingBottom + 15); // 上部に配置
+                    maxValueLabel.setAttribute("text-anchor", "end");
+                    maxValueLabel.setAttribute("font-size", "12");
+                    maxValueLabel.setAttribute("class", "text-xs");
+                    maxValueLabel.textContent = maxValue.toLocaleString();
+                    svg.appendChild(maxValueLabel);
+
                     // ポイントを計算
                     const points = calculatePoints();
 
@@ -132,7 +144,7 @@
                         svg.appendChild(gridLine);
 
                         // Y軸ラベル（値）
-                        if (i > 0) { // 最小値は既に表示済みなのでスキップ
+                        if (i > 0 && i < gridCount - 1) { // 最小値と最大値は既に表示済みなのでスキップ
                             const yValue = displayMinValue + (adjustedDataRange * ratio);
                             const valueLabel = document.createElementNS("http://www.w3.org/2000/svg", "text");
                             valueLabel.setAttribute("x", paddingLeft - 10);
@@ -216,11 +228,11 @@
                     // SVGをコンテナに追加
                     container.appendChild(svg);
 
-                    // 最小値の情報を追加
-                    const minValueInfo = document.createElement('div');
-                    minValueInfo.className = 'text-xs ml-2 opacity-70 mt-1';
-                    minValueInfo.textContent = `※表示最小値: ${displayMinValue.toLocaleString()}`;
-                    container.appendChild(minValueInfo);
+                    // 表示範囲の情報を追加
+                    const rangeInfo = document.createElement('div');
+                    rangeInfo.className = 'text-xs ml-2 opacity-70 mt-1';
+                    rangeInfo.textContent = `※表示範囲: ${displayMinValue.toLocaleString()} 〜 ${maxValue.toLocaleString()}`;
+                    container.appendChild(rangeInfo);
 
                     // ダークモード切替関数
                     function updateChartColors() {
@@ -229,8 +241,8 @@
                         // コンテナの背景色
                         container.className = `w-full rounded-md ${dark ? 'bg-gray-900' : 'bg-white'}`;
 
-                        // 最小値情報の色
-                        minValueInfo.className = `text-xs ml-2 opacity-70 mt-1 ${dark ? 'text-gray-400' : 'text-gray-500'}`;
+                        // 範囲情報の色
+                        rangeInfo.className = `text-xs ml-2 opacity-70 mt-1 ${dark ? 'text-gray-400' : 'text-gray-500'}`;
 
                         // ツールチップのテキスト色
                         const tooltip = document.getElementById('line-chart-tooltip');
@@ -248,8 +260,9 @@
                             label.setAttribute("fill", dark ? "#9ca3af" : "#64748b"); // dark:gray-400, light:slate-500
                         });
 
-                        // 最小値ラベルの色
+                        // 最小値と最大値ラベルの色
                         minValueLabel.setAttribute("fill", dark ? "#9ca3af" : "#64748b");
+                        maxValueLabel.setAttribute("fill", dark ? "#9ca3af" : "#64748b");
 
                         // X軸とY軸の色
                         xAxis.setAttribute("stroke", dark ? "#4b5563" : "#cbd5e1"); // dark:gray-600, light:slate-300
