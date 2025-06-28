@@ -1,6 +1,6 @@
 # Markdownドキュメントでのグラフ表示機能
 
-この機能を使用すると、Markdownドキュメント内にAlpine.jsを利用した簡易的なグラフを表示することができます。
+この機能を使用すると、Markdownドキュメント内に簡易的なグラフを表示することができます。バニラJavaScriptを使用して実装されており、ダークモード対応しています。
 
 ## 使用可能なグラフの種類
 
@@ -116,6 +116,23 @@ Markdownドキュメント内で、以下のように「blade」言語を指定�
 />
 ```
 
+## 特徴と機能
+
+### ダークモード対応
+
+すべてのグラフコンポーネントはダークモードに完全対応しています。ページのカラーモード（ライト/ダーク）に応じてグラフの色が自動的に調整されます。
+
+* ライトモード：明るい背景に濃い色のグラフ要素
+* ダークモード：暗い背景に明るい色のグラフ要素
+
+ダークモードの自動検出と切り替えをサポートしているため、利用者がサイトのダークモードを切り替えると、グラフの表示も即座にそれに合わせて更新されます。
+
+### インタラクティブ機能
+
+* グラフ要素にホバーすると詳細データを表示
+* タッチデバイスでも操作可能
+* レスポンシブデザイン対応
+
 ## 注意事項
 
 1. グラフは信頼できる記事内でのみ使用してください。`parse()` メソッドは信頼できるMarkdownファイル向けです。
@@ -128,10 +145,10 @@ Markdownドキュメント内で、以下のように「blade」言語を指定�
 この機能は以下のコンポーネントによって実現されています：
 
 1. Bladeコンポーネント：
-   - `resources/views/components/chart/base.blade.php`
-   - `resources/views/components/chart/bar.blade.php` 
-   - `resources/views/components/chart/line.blade.php`
-   - `resources/views/components/chart/pie.blade.php`
+   - `resources/views/components/chart/base.blade.php` - 共通コンテナ
+   - `resources/views/components/chart/bar.blade.php` - バーグラフ実装
+   - `resources/views/components/chart/line.blade.php` - 折れ線グラフ実装
+   - `resources/views/components/chart/pie.blade.php` - 円グラフ実装
 
 2. CommonMarkエクステンション：
    - `App\Support\Markdown\Extension\BladeComponentsExtension`
@@ -139,4 +156,4 @@ Markdownドキュメント内で、以下のように「blade」言語を指定�
 3. 設定：
    - `config/markdown.php`（許可するコンポーネントを指定）
 
-インライン HTML（含む Alpine.js）が使用できるため、Markdownドキュメントのセキュリティには十分注意してください。この機能は管理者が作成する信頼できるMarkdownファイルでのみ使用することを想定しています。
+インライン HTML（含むバニラJavaScript）が使用できるため、Markdownドキュメントのセキュリティには十分注意してください。この機能は管理者が作成する信頼できるMarkdownファイルでのみ使用することを想定しています。

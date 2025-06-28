@@ -18,6 +18,12 @@
                 const labels = @json($labels);
                 const maxValue = @json($maxValue);
 
+                // ダークモードかどうかを検出
+                const isDarkMode = () => {
+                    return document.documentElement.classList.contains('dark') ||
+                           window.matchMedia('(prefers-color-scheme: dark)').matches;
+                };
+
                 // グラフの寸法
                 const width = 800;
                 const height = 400;
@@ -52,6 +58,23 @@
 
                 // DOMの準備ができたら実行
                 document.addEventListener('DOMContentLoaded', function() {
+                    const container = document.querySelector('.line-chart-container');
+                    if (!container) return;
+
+                    // ダークモードの監視
+                    const darkModeObserver = new MutationObserver(function(mutations) {
+                        mutations.forEach(function(mutation) {
+                            if (mutation.attributeName === 'class') {
+                                updateChartColors();
+                            }
+                        });
+                    });
+
+                    darkModeObserver.observe(document.documentElement, {
+                        attributes: true,
+                        attributeFilter: ['class']
+                    });
+
                     // SVG要素を作成
                     const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
                     svg.setAttribute("viewBox", `0 0 ${width} ${height}`);
@@ -60,7 +83,12 @@
                     // ポイントを計算
                     const points = calculatePoints();
 
-                    // グリッド線を追加（より洗練された見た目に）
+                    // 参照用に要素を保持する配列
+                    const gridLines = [];
+                    const circles = [];
+                    const axisLabels = [];
+
+                    // グリッド線を追加
                     const gridCount = 5;
                     for (let i = 1; i < gridCount; i++) {
                         const y = height - (i * (height - paddingBottom) / gridCount);
@@ -69,8 +97,8 @@
                         gridLine.setAttribute("y1", y);
                         gridLine.setAttribute("x2", width);
                         gridLine.setAttribute("y2", y);
-                        gridLine.setAttribute("stroke", "#f1f5f9"); // slate-100
                         gridLine.setAttribute("stroke-width", "1");
+                        gridLines.push(gridLine);
                         svg.appendChild(gridLine);
                     }
 
@@ -78,7 +106,6 @@
                     const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
                     path.setAttribute("d", getPath(points));
                     path.setAttribute("fill", "none");
-                    path.setAttribute("stroke", "#3b82f6"); // blue-500
                     path.setAttribute("stroke-width", "3");
                     path.setAttribute("class", "transition-all duration-300");
                     svg.appendChild(path);
@@ -89,8 +116,6 @@
                     xAxis.setAttribute("y1", height - paddingBottom / 2);
                     xAxis.setAttribute("x2", width);
                     xAxis.setAttribute("y2", height - paddingBottom / 2);
-                    xAxis.setAttribute("stroke", "#cbd5e1"); // slate-300
-                    xAxis.setAttribute("stroke-width", "1");
                     svg.appendChild(xAxis);
 
                     // 各データポイントを追加
@@ -100,15 +125,13 @@
                         circle.setAttribute("cx", point.x);
                         circle.setAttribute("cy", point.y);
                         circle.setAttribute("r", "5");
-                        circle.setAttribute("fill", "#3b82f6"); // blue-500
-                        circle.setAttribute("stroke", "#ffffff");
                         circle.setAttribute("stroke-width", "2");
                         circle.classList.add("cursor-pointer", "transition-all", "duration-200");
+                        circles.push(circle);
 
                         // ホバー時のエフェクト
                         circle.addEventListener('mouseenter', function() {
                             circle.setAttribute("r", "7");
-                            circle.setAttribute("fill", "#2563eb"); // blue-600
                             const tooltip = document.getElementById('line-chart-tooltip');
                             if (tooltip) {
                                 tooltip.textContent = `${point.label}: ${point.value.toLocaleString()}`;
@@ -118,7 +141,6 @@
                         // ホバー解除時
                         circle.addEventListener('mouseleave', function() {
                             circle.setAttribute("r", "5");
-                            circle.setAttribute("fill", "#3b82f6"); // blue-500
                             const tooltip = document.getElementById('line-chart-tooltip');
                             if (tooltip) {
                                 tooltip.textContent = 'グラフのポイントにカーソルを合わせると詳細が表示されます';
@@ -133,28 +155,67 @@
                         text.setAttribute("y", height - 10);
                         text.setAttribute("text-anchor", "middle");
                         text.setAttribute("font-size", "12");
-                        text.setAttribute("fill", "#64748b"); // slate-500
                         text.setAttribute("class", "text-xs md:text-sm");
                         text.textContent = point.label;
+                        axisLabels.push(text);
                         svg.appendChild(text);
                     });
 
                     // SVGをコンテナに追加
-                    const container = document.querySelector('.line-chart-container');
-                    if (container) {
-                        container.appendChild(svg);
+                    container.appendChild(svg);
+
+                    // ダークモード切替関数
+                    function updateChartColors() {
+                        const dark = isDarkMode();
+
+                        // コンテナの背景色
+                        container.className = `w-full rounded-md ${dark ? 'bg-gray-900' : 'bg-white'}`;
+
+                        // ツールチップのテキスト色
+                        const tooltip = document.getElementById('line-chart-tooltip');
+                        if (tooltip) {
+                            tooltip.className = `text-center text-sm mt-3 font-medium ${dark ? 'text-gray-300' : 'text-gray-600'}`;
+                        }
+
+                        // グリッド線の色
+                        gridLines.forEach(line => {
+                            line.setAttribute("stroke", dark ? "#374151" : "#f1f5f9"); // dark:gray-700, light:slate-100
+                        });
+
+                        // X軸の色
+                        xAxis.setAttribute("stroke", dark ? "#4b5563" : "#cbd5e1"); // dark:gray-600, light:slate-300
+
+                        // 折れ線の色
+                        path.setAttribute("stroke", dark ? "#3b82f6" : "#3b82f6"); // blue-500 (同じ色でもOK)
+
+                        // データポイントの色
+                        circles.forEach(circle => {
+                            circle.setAttribute("fill", dark ? "#3b82f6" : "#3b82f6"); // blue-500
+                            circle.setAttribute("stroke", dark ? "#1e293b" : "#ffffff"); // dark:slate-800, light:white
+                        });
+
+                        // X軸ラベルの色
+                        axisLabels.forEach(text => {
+                            text.setAttribute("fill", dark ? "#9ca3af" : "#64748b"); // dark:gray-400, light:slate-500
+                        });
                     }
+
+                    // 初期スタイルの設定
+                    updateChartColors();
+
+                    // メディアクエリの変更検出（システムの色モード変更を検知）
+                    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', updateChartColors);
                 });
             })();
         </script>
 
         <!-- 折れ線グラフの表示エリア -->
-        <div class="line-chart-container w-full bg-white rounded-md">
+        <div class="line-chart-container w-full bg-white dark:bg-gray-900 rounded-md">
             <!-- SVG要素はJavaScriptで動的に生成されます -->
         </div>
 
         <!-- ツールチップ -->
-        <div id="line-chart-tooltip" class="text-center text-sm text-gray-600 mt-3 font-medium">
+        <div id="line-chart-tooltip" class="text-center text-sm text-gray-600 dark:text-gray-300 mt-3 font-medium">
             グラフのポイントにカーソルを合わせると詳細が表示されます
         </div>
     </div>

@@ -33,6 +33,12 @@
                 const total = @json($total);
                 const colors = @json($colors);
 
+                // ダークモードかどうかを検出
+                const isDarkMode = () => {
+                    return document.documentElement.classList.contains('dark') ||
+                           window.matchMedia('(prefers-color-scheme: dark)').matches;
+                };
+
                 // SVGコンテナ要素
                 const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
                 svg.setAttribute("viewBox", "0 0 100 100");
@@ -46,6 +52,10 @@
 
                 // 各セグメントとそのデータを格納する配列
                 const segments = [];
+                // 凡例ラベル要素を格納する配列
+                const legendLabels = [];
+                // 凡例アイテム全体の配列
+                const legendItems = [];
 
                 // 各データポイントに対して円弧を描画
                 data.forEach((value, index) => {
@@ -68,8 +78,6 @@
                     const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
                     path.setAttribute("d", `M ${cx},${cy} L ${x1},${y1} A ${r},${r} 0 ${largeArcFlag} 1 ${x2},${y2} Z`);
                     path.setAttribute("fill", colors[index % colors.length]);
-                    path.setAttribute("stroke", "white");
-                    path.setAttribute("stroke-width", "0.7");
                     path.setAttribute("class", "transition-opacity duration-200 cursor-pointer");
 
                     // セグメントデータを格納
@@ -113,74 +121,132 @@
                 // DOMに追加
                 document.addEventListener('DOMContentLoaded', () => {
                     const container = document.querySelector('.pie-chart-container');
-                    if (container) {
-                        container.appendChild(svg);
+                    if (!container) return;
 
-                        // 凡例を作成
-                        const legend = document.createElement('div');
-                        legend.className = 'flex flex-wrap justify-center gap-4 mt-4';
+                    // ダークモードの監視
+                    const darkModeObserver = new MutationObserver(function(mutations) {
+                        mutations.forEach(function(mutation) {
+                            if (mutation.attributeName === 'class') {
+                                updateDarkModeStyles();
+                            }
+                        });
+                    });
 
-                        segments.forEach(segment => {
-                            const legendItem = document.createElement('div');
-                            legendItem.className = 'flex items-center';
+                    darkModeObserver.observe(document.documentElement, {
+                        attributes: true,
+                        attributeFilter: ['class']
+                    });
 
-                            const colorBox = document.createElement('div');
-                            colorBox.className = 'w-4 h-4 mr-2 rounded-sm';
-                            colorBox.style.backgroundColor = segment.color;
+                    container.appendChild(svg);
 
-                            const label = document.createElement('span');
-                            label.className = 'text-sm text-gray-700';
-                            label.textContent = segment.label;
+                    // 凡例を作成
+                    const legend = document.createElement('div');
+                    legend.className = 'flex flex-wrap justify-center gap-4 mt-4';
+                    legend.id = 'pie-chart-legend';
 
-                            legendItem.appendChild(colorBox);
-                            legendItem.appendChild(label);
+                    segments.forEach((segment, index) => {
+                        const legendItem = document.createElement('div');
+                        legendItem.className = 'flex items-center';
+                        legendItems.push(legendItem);
 
-                            // 凡例項目のホバー効果
-                            legendItem.addEventListener('mouseenter', () => {
-                                segment.path.setAttribute("opacity", "0.85");
-                                segment.path.setAttribute("stroke-width", "1.2");
+                        const colorBox = document.createElement('div');
+                        colorBox.className = 'w-4 h-4 mr-2 rounded-sm';
+                        colorBox.style.backgroundColor = segment.color;
 
-                                const tooltip = document.getElementById('pie-tooltip');
-                                if (tooltip) {
-                                    tooltip.textContent = `${segment.label}: ${segment.value.toLocaleString()} (${segment.percent}%)`;
-                                }
-                            });
+                        const label = document.createElement('span');
+                        label.className = 'text-sm';
+                        label.textContent = segment.label;
+                        legendLabels.push(label);
 
-                            legendItem.addEventListener('mouseleave', () => {
-                                segment.path.setAttribute("opacity", "1");
-                                segment.path.setAttribute("stroke-width", "0.7");
+                        legendItem.appendChild(colorBox);
+                        legendItem.appendChild(label);
 
-                                const tooltip = document.getElementById('pie-tooltip');
-                                if (tooltip) {
-                                    tooltip.textContent = '円グラフのセグメントにカーソルを合わせると詳細が表示されます';
-                                }
-                            });
+                        // 凡例項目のホバー効果
+                        legendItem.addEventListener('mouseenter', () => {
+                            segment.path.setAttribute("opacity", "0.85");
+                            segment.path.setAttribute("stroke-width", "1.2");
 
-                            legend.appendChild(legendItem);
+                            const tooltip = document.getElementById('pie-tooltip');
+                            if (tooltip) {
+                                tooltip.textContent = `${segment.label}: ${segment.value.toLocaleString()} (${segment.percent}%)`;
+                            }
                         });
 
-                        const legendContainer = document.querySelector('.pie-chart-legend');
+                        legendItem.addEventListener('mouseleave', () => {
+                            segment.path.setAttribute("opacity", "1");
+                            segment.path.setAttribute("stroke-width", "0.7");
+
+                            const tooltip = document.getElementById('pie-tooltip');
+                            if (tooltip) {
+                                tooltip.textContent = '円グラフのセグメントにカーソルを合わせると詳細が表示されます';
+                            }
+                        });
+
+                        legend.appendChild(legendItem);
+                    });
+
+                    const legendContainer = document.querySelector('.pie-chart-legend');
+                    if (legendContainer) {
+                        legendContainer.appendChild(legend);
+
+                        // 凡例コンテナにIDを追加して参照しやすくする
+                        legendContainer.id = 'pie-legend-container';
+                    }
+
+                    // ダークモードに応じてスタイルを更新する関数
+                    function updateDarkModeStyles() {
+                        const dark = isDarkMode();
+
+                        // コンテナの背景色
+                        container.className = `w-64 h-64 mx-auto ${dark ? 'bg-gray-900' : 'bg-white'}`;
+
+                        // ツールチップのテキスト色
+                        const tooltip = document.getElementById('pie-tooltip');
+                        if (tooltip) {
+                            tooltip.className = `text-center text-sm mt-3 font-medium ${dark ? 'text-gray-300' : 'text-gray-600'}`;
+                        }
+
+                        // セグメントの区切り線の色
+                        segments.forEach(segment => {
+                            segment.path.setAttribute("stroke", dark ? "#1f2937" : "white"); // dark:gray-800, light:white
+                            segment.path.setAttribute("stroke-width", "0.7");
+                        });
+
+                        // 凡例のテキスト色
+                        legendLabels.forEach(label => {
+                            label.className = `text-sm ${dark ? 'text-gray-300' : 'text-gray-700'}`;
+                        });
+
+                        // 凡例コンテナの背景色
+                        const legendContainer = document.getElementById('pie-legend-container');
                         if (legendContainer) {
-                            legendContainer.appendChild(legend);
+                            legendContainer.className = `pie-chart-legend mt-4 w-full ${dark ? 'bg-gray-900' : 'bg-white'}`;
                         }
                     }
+
+                    // 初期スタイルの設定
+                    updateDarkModeStyles();
+
+                    // メディアクエリの変更検出（システムの色モード変更を検知）
+                    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+                    mediaQuery.addEventListener('change', updateDarkModeStyles);
                 });
             })();
         </script>
 
         <!-- 円グラフの表示エリア -->
         <div class="flex flex-col items-center">
-            <div class="pie-chart-container w-64 h-64 mx-auto">
+            <div class="pie-chart-container w-64 h-64 mx-auto bg-white dark:bg-gray-900">
                 <!-- SVG要素はJavaScriptで動的に生成されます -->
             </div>
 
             <!-- ツールチップ -->
-            <div id="pie-tooltip" class="text-center text-sm text-gray-600 mt-3 font-medium">
+            <div id="pie-tooltip" class="text-center text-sm text-gray-600 dark:text-gray-300 mt-3 font-medium">
                 円グラフのセグメントにカーソルを合わせると詳細が表示されます
             </div>
 
             <!-- 凡例表示エリア -->
-            <div class="pie-chart-legend mt-4 w-full">
+            <div class="pie-chart-legend mt-4 w-full bg-white dark:bg-gray-900">
                 <!-- 凡例要素はJavaScriptで動的に生成されます -->
             </div>
         </div>
