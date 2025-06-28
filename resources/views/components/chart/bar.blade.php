@@ -2,9 +2,9 @@
 
 <x-chart.base :title="$title">
     @php
-    // 最大値が指定されていなければ、データの最大値に10%余裕を持たせる
+    // 最大値が指定されていなければ、データの最大値に2%余裕を持たせる
     $dataMaxValue = max($data);
-    $maxValue = $maxValue ?? round($dataMaxValue * 1.1);
+    $maxValue = $maxValue ?? round($dataMaxValue * 1.02);
 
     // 最小値を取得
     $minValue = min($data);
