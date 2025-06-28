@@ -28,7 +28,7 @@
         displayMinValue: {{ json_encode($displayMinValue) }},
         adjustedDataRange: {{ json_encode($adjustedDataRange) }}
     })" x-init="init()">
-        <div x-ref="container" class="bar-chart-container w-full bg-white dark:bg-gray-900">
+        <div x-ref="container" class="bar-chart-container w-full bg-white dark:bg-gray-900 rounded-md">
             <!-- Alpine will generate the chart here -->
         </div>
     </div>
@@ -199,7 +199,7 @@
 
                     function updateDarkModeStyles() {
                         const dark = isDarkMode();
-                        container.className = `bar-chart-container w-full ${dark ? 'bg-gray-900' : 'bg-white'}`;
+                        container.className = `bar-chart-container w-full rounded-md ${dark ? 'bg-gray-900' : 'bg-white'}`;
                         rangeInfo.className = `text-xs text-right w-full pr-2 opacity-70 mb-4 ${dark ? 'text-gray-400' : 'text-gray-500'}`;
                         tooltip.className = `mt-4 text-center text-sm font-medium ${dark ? 'text-gray-300' : 'text-gray-600'}`;
                         gridLines.forEach(line => line.setAttribute("stroke", dark ? "#374151" : "#f1f5f9"));
