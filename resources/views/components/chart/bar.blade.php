@@ -4,15 +4,24 @@
     @php
     // 最大値が指定されていなければ、データの最大値を使用
     $maxValue = $maxValue ?? max($data);
-    // 最小値を取得（グラフのベースラインに使用）
+    // 最小値を取得
     $minValue = min($data);
     // データ範囲を計算
     $dataRange = $maxValue - $minValue;
+
+    // 表示最小値: 実際の最小値より10%上げる（ただしデータ範囲の10%分）
+    $displayMinValue = $minValue - ($dataRange * 0.1);
+    // 下限値が負になる場合は0に補正
+    $displayMinValue = max(0, $displayMinValue);
+
+    // 調整後のデータ範囲
+    $adjustedDataRange = $maxValue - $displayMinValue;
 
     // データとラベルをJSON形式にエンコード
     $jsonData = json_encode($data);
     $jsonLabels = json_encode($labels);
     $jsonMinValue = json_encode($minValue);
+    $jsonDisplayMinValue = json_encode($displayMinValue);
     @endphp
 
     <div class="chart-bar-component w-full">
@@ -23,7 +32,8 @@
                 const labels = @json($labels);
                 const maxValue = @json($maxValue);
                 const minValue = @json($minValue);
-                const dataRange = @json($dataRange);
+                const displayMinValue = @json($displayMinValue);
+                const adjustedDataRange = @json($adjustedDataRange);
 
                 // ダークモードかどうかを検出
                 const isDarkMode = () => {
@@ -37,10 +47,10 @@
                 const barSpacing = 8; // バー間のスペース
                 const labelHeight = 48; // ラベルの高さ
 
-                // 高さを計算（最小値を考慮）
+                // 高さを計算（調整後の最小値を考慮）
                 function calculateBarHeight(value) {
-                    // 値の相対位置に基づいて高さを計算（最小値からの相対的な高さ）
-                    return Math.round(((value - minValue) / dataRange) * maxBarHeightPx);
+                    // 値の相対位置に基づいて高さを計算（調整後の最小値からの相対的な高さ）
+                    return Math.round(((value - displayMinValue) / adjustedDataRange) * maxBarHeightPx);
                 }
 
                 // DOMの準備ができたら実行
@@ -72,10 +82,10 @@
                     tooltip.className = 'mt-4 text-center text-sm font-medium';
                     tooltip.textContent = '詳細を表示するにはグラフにカーソルを合わせてください';
 
-                    // 最小値のベースラインを表示
+                    // 表示最小値のベースラインを表示
                     const baselineInfo = document.createElement('div');
                     baselineInfo.className = 'text-xs text-right w-full pr-2 opacity-70 -mb-1';
-                    baselineInfo.textContent = `最小値: ${minValue.toLocaleString()}`;
+                    baselineInfo.textContent = `表示最小値: ${displayMinValue.toLocaleString()}`;
                     container.appendChild(baselineInfo);
 
                     // バーの配列を保持（ダークモード切り替え時に参照するため）
@@ -145,8 +155,8 @@
                         gridLabel.className = 'absolute -left-1 text-xs opacity-70';
                         gridLabel.style.bottom = `${position}%`;
                         gridLabel.style.transform = 'translateY(50%)';
-                        // 最小値からの相対的な値を計算
-                        const gridValue = Math.round(minValue + (dataRange * i / gridCount));
+                        // 表示最小値からの相対的な値を計算
+                        const gridValue = Math.round(displayMinValue + (adjustedDataRange * i / gridCount));
                         gridLabel.textContent = gridValue.toLocaleString();
 
                         gridLines.push(gridLine);

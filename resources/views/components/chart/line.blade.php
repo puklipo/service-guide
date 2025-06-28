@@ -4,10 +4,18 @@
     @php
         // 最大値が指定されていなければ、データの最大値を使用
         $maxValue = $maxValue ?? max($data);
-        // 最小値を取得（グラフのベースラインとして使用）
+        // 最小値を取得
         $minValue = min($data);
         // データの範囲を計算
         $dataRange = $maxValue - $minValue;
+
+        // 表示最小値: 実際の最小値より10%下げる（データ範囲の10%分）
+        $displayMinValue = $minValue - ($dataRange * 0.1);
+        // 下限値が負になる場合は0に補正
+        $displayMinValue = max(0, $displayMinValue);
+
+        // 調整後のデータ範囲
+        $adjustedDataRange = $maxValue - $displayMinValue;
 
         // データとラベルをJSON形式にエンコード
         $jsonData = json_encode($data);
@@ -22,7 +30,8 @@
                 const labels = @json($labels);
                 const maxValue = @json($maxValue);
                 const minValue = @json($minValue);
-                const dataRange = maxValue - minValue;
+                const displayMinValue = @json($displayMinValue);
+                const adjustedDataRange = @json($adjustedDataRange);
 
                 // ダークモードかどうかを検出
                 const isDarkMode = () => {
@@ -36,16 +45,16 @@
                 const paddingBottom = 40;
                 const paddingLeft = 60; // Y軸ラベル用に少し広げる
 
-                // ポイントの位置を計算（最小値を基準とした相対的な位置）
+                // ポイントの位置を計算（調整済み最小値を基準とした相対的な位置）
                 function calculatePoints() {
                     const points = [];
                     const xStep = (width - paddingLeft) / (data.length - 1);
-                    const yScale = (height - paddingBottom) / dataRange; // 範囲に基づくスケール
+                    const yScale = (height - paddingBottom) / adjustedDataRange; // 調整済み範囲に基づくスケール
 
                     for (let i = 0; i < data.length; i++) {
                         const x = paddingLeft + i * xStep;
-                        // 最小値を引いて相対的な位置を計算
-                        const y = height - ((data[i] - minValue) * yScale) - paddingBottom;
+                        // 調整済み最小値を引いて相対的な位置を計算
+                        const y = height - ((data[i] - displayMinValue) * yScale) - paddingBottom;
                         points.push({ x, y, value: data[i], label: labels[i] });
                     }
 
@@ -87,14 +96,14 @@
                     svg.setAttribute("viewBox", `0 0 ${width} ${height}`);
                     svg.setAttribute("class", "w-full h-64 bg-opacity-50");
 
-                    // 最小値と最大値のラベルを追加
+                    // 表示最小値のラベルを追加
                     const minValueLabel = document.createElementNS("http://www.w3.org/2000/svg", "text");
                     minValueLabel.setAttribute("x", paddingLeft - 10);
                     minValueLabel.setAttribute("y", height - paddingBottom);
                     minValueLabel.setAttribute("text-anchor", "end");
                     minValueLabel.setAttribute("font-size", "12");
                     minValueLabel.setAttribute("class", "text-xs");
-                    minValueLabel.textContent = minValue.toLocaleString();
+                    minValueLabel.textContent = displayMinValue.toLocaleString();
                     svg.appendChild(minValueLabel);
 
                     // ポイントを計算
@@ -124,7 +133,7 @@
 
                         // Y軸ラベル（値）
                         if (i > 0) { // 最小値は既に表示済みなのでスキップ
-                            const yValue = minValue + (dataRange * ratio);
+                            const yValue = displayMinValue + (adjustedDataRange * ratio);
                             const valueLabel = document.createElementNS("http://www.w3.org/2000/svg", "text");
                             valueLabel.setAttribute("x", paddingLeft - 10);
                             valueLabel.setAttribute("y", y + 4); // テキスト位置微調整
@@ -210,7 +219,7 @@
                     // 最小値の情報を追加
                     const minValueInfo = document.createElement('div');
                     minValueInfo.className = 'text-xs ml-2 opacity-70 mt-1';
-                    minValueInfo.textContent = `※グラフの最小値: ${minValue.toLocaleString()}`;
+                    minValueInfo.textContent = `※表示最小値: ${displayMinValue.toLocaleString()}`;
                     container.appendChild(minValueInfo);
 
                     // ダークモード切替関数
