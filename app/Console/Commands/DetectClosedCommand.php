@@ -58,7 +58,7 @@ class DetectClosedCommand extends Command
     private function getAllCsvNumbers(): array
     {
         $allNumbers = [];
-        $csvPath = resource_path('csv');
+        $csvPath = resource_path('csv/'.config('wam.current'));
         $files = glob($csvPath.'/*.csv');
 
         foreach ($files as $file) {
