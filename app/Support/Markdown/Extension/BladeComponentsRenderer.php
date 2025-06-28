@@ -110,17 +110,6 @@ class BladeComponentsRenderer implements ConfigurationAwareInterface, NodeRender
      */
     private function loadAllowedComponents(): void
     {
-        if ($this->allowedComponents !== null) {
-            return;
-        }
-
-        // デフォルト値
-        $defaultAllowedComponents = [
-            'chart.bar',
-            'chart.line',
-            'chart.pie',
-        ];
-
         // 設定オブジェクトからデータを取得
         if ($this->config !== null) {
             try {
@@ -128,17 +117,17 @@ class BladeComponentsRenderer implements ConfigurationAwareInterface, NodeRender
                 // 設定から値が取得できた場合はそれを使用
                 $this->allowedComponents = $allowedComponents;
             } catch (\Exception $e) {
-                // 設定から値が取得できない場合はデフォルト値を使用
-                $this->allowedComponents = $defaultAllowedComponents;
+                // 設定から値が取得できない場合は空の配列を使用
+                $this->allowedComponents = [];
             }
         } else {
-            // フォールバックとしてLaravelの設定を使用
-            $this->allowedComponents = config('markdown.blade_components.allowed_components', $defaultAllowedComponents);
+            // 設定が提供されていない場合は空の配列を使用
+            $this->allowedComponents = [];
         }
 
-        // nullの場合はデフォルト値を使用
+        // nullの場合は空の配列を使用
         if ($this->allowedComponents === null) {
-            $this->allowedComponents = $defaultAllowedComponents;
+            $this->allowedComponents = [];
         }
     }
 }

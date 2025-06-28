@@ -227,20 +227,20 @@ class BladeComponentsExtensionTest extends TestCase
         // 例外が発生してもエラーにならないことを確認
         $method->invoke($renderer);
 
-        // デフォルト値が使用されることを確認
+        // 例外が発生した場合は空の配列が使用されることを確認
         $allowedComponentsProperty = $reflection->getProperty('allowedComponents');
         $allowedComponentsProperty->setAccessible(true);
         $allowedComponents = $allowedComponentsProperty->getValue($renderer);
 
-        $this->assertEquals(['chart.bar', 'chart.line', 'chart.pie'], $allowedComponents);
+        $this->assertEquals([], $allowedComponents);
     }
 
     /**
-     * 設定が注入されていない場合はLaravelの設定にフォールバックすることを確認
+     * 設定が注入されていない場合は空の配列が使用されることを確認
      */
-    public function test_falls_back_to_laravel_config_when_configuration_not_injected()
+    public function test_uses_empty_array_when_configuration_not_injected()
     {
-        // Laravelの設定を定義
+        // あえてLaravelの設定を定義（これは使用されなくなった）
         config(['markdown.blade_components.allowed_components' => ['laravel-component']]);
 
         // レンダラーのインスタンスを作成（設定を注入しない）
@@ -252,18 +252,18 @@ class BladeComponentsExtensionTest extends TestCase
         $method->setAccessible(true);
         $method->invoke($renderer);
 
-        // allowedComponentsプロパティがLaravelの設定から読み込まれたことを確認
+        // allowedComponentsプロパティが空の配列になることを確認
         $allowedComponentsProperty = $reflection->getProperty('allowedComponents');
         $allowedComponentsProperty->setAccessible(true);
         $allowedComponents = $allowedComponentsProperty->getValue($renderer);
 
-        $this->assertEquals(['laravel-component'], $allowedComponents);
+        $this->assertEquals([], $allowedComponents);
     }
 
     /**
      * 設定値がnullだった場合のテスト
      */
-    public function test_uses_default_when_configuration_value_is_null()
+    public function test_uses_empty_array_when_configuration_value_is_null()
     {
         // レンダラーのインスタンスを作成
         $renderer = new BladeComponentsRenderer;
@@ -283,11 +283,11 @@ class BladeComponentsExtensionTest extends TestCase
         $method->setAccessible(true);
         $method->invoke($renderer);
 
-        // デフォルト値が使用されることを確認
+        // 設定値がnullの場合は空の配列が使用されることを確認
         $allowedComponentsProperty = $reflection->getProperty('allowedComponents');
         $allowedComponentsProperty->setAccessible(true);
         $allowedComponents = $allowedComponentsProperty->getValue($renderer);
 
-        $this->assertEquals(['chart.bar', 'chart.line', 'chart.pie'], $allowedComponents);
+        $this->assertEquals([], $allowedComponents);
     }
 }
