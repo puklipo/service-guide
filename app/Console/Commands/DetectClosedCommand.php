@@ -4,7 +4,6 @@ namespace App\Console\Commands;
 
 use App\Models\Facility;
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\Storage;
 
 class DetectClosedCommand extends Command
 {
@@ -33,16 +32,44 @@ class DetectClosedCommand extends Command
 
         if (empty($closedNumbers)) {
             $this->info('閉鎖済み事業所は検出されませんでした。');
+
             return 0;
         }
 
+        // 閉鎖された事業所のWAM IDと法人番号のペアを取得
+        $closedFacilities = Facility::whereIn('no', $closedNumbers)
+            ->select(['wam', 'company_id'])
+            ->get()
+            ->map(function ($facility) {
+                return [
+                    'wam' => $facility->wam,
+                    'company' => $facility->company_id,
+                ];
+            })
+            ->toArray();
+
+        $this->info(sprintf('WAM IDと法人番号のペア数: %s', number_format(count($closedFacilities))));
+
         // 既存のconfigと統合
         $existingDeleted = config('deleted', []);
-        $allDeleted = array_values(array_unique(array_merge($existingDeleted, $closedNumbers)));
-        $this->info(sprintf('config/deleted.phpに保存する事業所数: %s', number_format(count($allDeleted))));
+        $allDeleted = array_merge($existingDeleted, $closedFacilities);
+
+        // 重複除去（WAMと法人番号の組み合わせで一意になるようにする）
+        $uniqueDeleted = [];
+        $keys = [];
+
+        foreach ($allDeleted as $item) {
+            $key = $item['wam'].'-'.$item['company'];
+            if (! in_array($key, $keys)) {
+                $keys[] = $key;
+                $uniqueDeleted[] = $item;
+            }
+        }
+
+        $this->info(sprintf('config/deleted.phpに保存する事業所数: %s', number_format(count($uniqueDeleted))));
 
         // config/deleted.phpを更新
-        $this->updateDeletedConfig($allDeleted);
+        $this->updateDeletedConfig($uniqueDeleted);
         $this->info('config/deleted.phpを更新しました。');
 
         // --deleteオプションが指定されている場合は削除も実行
@@ -71,6 +98,7 @@ class DetectClosedCommand extends Command
 
             if ($noIndex === false) {
                 $this->warn(sprintf('ファイル %s に "事業所番号" 列が見つかりません', basename($file)));
+
                 continue;
             }
 
@@ -86,13 +114,27 @@ class DetectClosedCommand extends Command
         return array_unique($allNumbers);
     }
 
-    private function updateDeletedConfig(array $numbers): void
+    private function updateDeletedConfig(array $deletedItems): void
     {
-        sort($numbers);
-        $content = "<?php\n\n// 閉鎖済みなどでインポート時に除外する事業所番号\nreturn [\n";
-        foreach ($numbers as $number) {
-            $content .= "    {$number},\n";
+        usort($deletedItems, function ($a, $b) {
+            $wamCompare = strcmp($a['wam'], $b['wam']);
+            if ($wamCompare === 0) {
+                return strcmp($a['company'], $b['company']);
+            }
+
+            return $wamCompare;
+        });
+
+        $content = "<?php\n\n/**\n * 閉鎖済み事業所。\n";
+        $content .= " * 事業所番号は重複しているのでWAM ID「NO（※システム内の固有の番号、連番）」と「法人番号」のセットで指定。\n";
+        $content .= " * 固有なはずのNOも重複しているので法人番号も必要。\n";
+        $content .= " * ['wam' => 'A0000000000', 'company' => '1234567890123'],\n";
+        $content .= " */\nreturn [\n";
+
+        foreach ($deletedItems as $item) {
+            $content .= "    ['wam' => '{$item['wam']}', 'company' => '{$item['company']}'],\n";
         }
+
         $content .= "];\n";
 
         file_put_contents(config_path('deleted.php'), $content);
