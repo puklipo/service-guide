@@ -10,13 +10,7 @@
         $jsonLabels = json_encode($labels);
     @endphp
 
-    <!-- グラフデータをHTML属性として埋め込み -->
-    <div
-        class="chart-line-component w-full"
-        data-chart-values="{{ $jsonData }}"
-        data-chart-labels="{{ $jsonLabels }}"
-        data-chart-max="{{ $maxValue }}"
-    >
+    <div class="chart-line-component w-full">
         <script>
             // この即時実行関数は折れ線グラフを描画します
             (function() {
