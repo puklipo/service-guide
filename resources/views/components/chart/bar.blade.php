@@ -180,7 +180,7 @@
                             bar.setAttribute("opacity", "0.8");
                             const tooltip = document.querySelector(`#${chartId}-tooltip`);
                             if (tooltip) {
-                                tooltip.textContent = `${labels[index]}: ${value.toLocaleString()}施設`;
+                                tooltip.textContent = `${labels[index]}: ${value.toLocaleString()}`;
                             }
                         });
 
@@ -196,7 +196,7 @@
                         bar.addEventListener('touchstart', function() {
                             const tooltip = document.querySelector(`#${chartId}-tooltip`);
                             if (tooltip) {
-                                tooltip.textContent = `${labels[index]}: ${value.toLocaleString()}施設`;
+                                tooltip.textContent = `${labels[index]}: ${value.toLocaleString()}`;
                             }
                         });
 
