@@ -51,7 +51,7 @@
                         ></div>
 
                         <!-- ラベル -->
-                        <div class="text-xs md:text-sm text-gray-600 mt-2 transform -rotate-45 origin-top-left h-12">
+                        <div class="text-xs md:text-sm text-gray-600 mt-2 h-12">
                             <span x-text="chartLabels[index]"></span>
                         </div>
                     </div>
