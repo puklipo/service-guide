@@ -17,8 +17,6 @@
         data-chart-labels="{{ $jsonLabels }}"
         data-chart-max="{{ $maxValue }}"
     >
-        <!-- テスト対応のためにデータを明示的に表示する（テキストは非表示） -->
-        <div class="hidden">data: {{ $jsonData }}, labels: {{ $jsonLabels }}</div>
 
         <script type="application/json" id="chart-line-data">
             {
