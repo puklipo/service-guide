@@ -23,13 +23,7 @@
     $jsonColors = json_encode($colors);
     @endphp
 
-    <!-- グラフデータをHTML属性として埋め込み（テスト用） -->
-    <div
-        class="chart-pie-component w-full"
-        data-chart-values="{{ $jsonData }}"
-        data-chart-labels="{{ $jsonLabels }}"
-        data-chart-total="{{ $total }}"
-    >
+    <div class="chart-pie-component w-full">
         <script>
             // この即時実行関数は円グラフを描画します
             (function() {
