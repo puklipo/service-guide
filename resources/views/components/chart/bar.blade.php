@@ -46,13 +46,21 @@
                 // グラフのパラメータ
                 const maxBarHeightPx = 256; // 最大の高さ（ピクセル）
                 const barWidth = 32; // バーの幅
-                const barSpacing = 8; // バー間のスペース
+                const barSpacing = 16; // バー間のスペース
                 const labelHeight = 48; // ラベルの高さ
+
+                // グラフの寸法
+                const width = 800;
+                const height = 400;
+                const paddingBottom = 60; // ラベル用に余白を増やす
+                const paddingLeft = 60; // Y軸ラベル用に余白を確保
+                const paddingTop = 20; // 上部の余白
+                const paddingRight = 20; // 右側の余白
 
                 // 高さを計算（調整後の最小値を考慮）
                 function calculateBarHeight(value) {
                     // 値の相対位置に基づいて高さを計算（調整後の最小値からの相対的な高さ）
-                    return Math.round(((value - displayMinValue) / adjustedDataRange) * maxBarHeightPx);
+                    return ((value - displayMinValue) / adjustedDataRange) * (height - paddingBottom - paddingTop);
                 }
 
                 // DOMの準備ができたら実行
@@ -74,106 +82,136 @@
                         attributeFilter: ['class']
                     });
 
-                    // グラフ表示エリア
-                    const barsContainer = document.createElement('div');
-                    barsContainer.className = 'h-64 flex items-end justify-center space-x-1 md:space-x-2';
+                    // 表示範囲の情報を追加
+                    const rangeInfo = document.createElement('div');
+                    rangeInfo.className = 'text-xs text-right w-full pr-2 opacity-70 mb-2';
+                    rangeInfo.textContent = `表示範囲: ${displayMinValue.toLocaleString()} 〜 ${maxValue.toLocaleString()}`;
+                    container.appendChild(rangeInfo);
+
+                    // SVG要素を作成
+                    const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+                    svg.setAttribute("viewBox", `0 0 ${width} ${height}`);
+                    svg.setAttribute("class", "w-full h-64 bg-opacity-50");
+
+                    // バーの配列を保持（ダークモード切り替え時に参照するため）
+                    const barElements = [];
+                    const labelElements = [];
+                    const gridLines = [];
+                    const gridLabels = [];
+
+                    // グリッド線を追加
+                    const gridCount = 5;
+                    for (let i = 0; i < gridCount; i++) {
+                        const ratio = i / (gridCount - 1);
+                        const y = height - paddingBottom - (ratio * (height - paddingBottom - paddingTop));
+
+                        // グリッド線
+                        const gridLine = document.createElementNS("http://www.w3.org/2000/svg", "line");
+                        gridLine.setAttribute("x1", paddingLeft);
+                        gridLine.setAttribute("y1", y);
+                        gridLine.setAttribute("x2", width - paddingRight);
+                        gridLine.setAttribute("y2", y);
+                        gridLine.setAttribute("stroke-width", "1");
+                        gridLines.push(gridLine);
+                        svg.appendChild(gridLine);
+
+                        // Y軸ラベル（値）
+                        const yValue = displayMinValue + (adjustedDataRange * ratio);
+                        const valueLabel = document.createElementNS("http://www.w3.org/2000/svg", "text");
+                        valueLabel.setAttribute("x", paddingLeft - 10);
+                        valueLabel.setAttribute("y", y + 4); // テキスト位置微調整
+                        valueLabel.setAttribute("text-anchor", "end");
+                        valueLabel.setAttribute("font-size", "12");
+                        valueLabel.setAttribute("class", "text-xs");
+                        valueLabel.textContent = Math.round(yValue).toLocaleString();
+                        gridLabels.push(valueLabel);
+                        svg.appendChild(valueLabel);
+                    }
+
+                    // Y軸を追加
+                    const yAxis = document.createElementNS("http://www.w3.org/2000/svg", "line");
+                    yAxis.setAttribute("x1", paddingLeft);
+                    yAxis.setAttribute("y1", paddingTop);
+                    yAxis.setAttribute("x2", paddingLeft);
+                    yAxis.setAttribute("y2", height - paddingBottom);
+                    svg.appendChild(yAxis);
+
+                    // X軸を追加
+                    const xAxis = document.createElementNS("http://www.w3.org/2000/svg", "line");
+                    xAxis.setAttribute("x1", paddingLeft);
+                    xAxis.setAttribute("y1", height - paddingBottom);
+                    xAxis.setAttribute("x2", width - paddingRight);
+                    xAxis.setAttribute("y2", height - paddingBottom);
+                    svg.appendChild(xAxis);
+
+                    // 各バーを計算して描画
+                    const barTotalWidth = barWidth + barSpacing;
+                    const chartWidth = width - paddingLeft - paddingRight;
+                    const startX = paddingLeft + ((chartWidth - (barTotalWidth * data.length)) / 2);
+
+                    // 各バーを作成
+                    data.forEach((value, index) => {
+                        const barHeight = calculateBarHeight(value);
+                        const x = startX + (index * barTotalWidth);
+                        const y = height - paddingBottom - barHeight;
+
+                        // バー部分
+                        const bar = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+                        bar.setAttribute("x", x);
+                        bar.setAttribute("y", y);
+                        bar.setAttribute("width", barWidth);
+                        bar.setAttribute("height", barHeight);
+                        bar.setAttribute("rx", "2"); // 角を丸める
+                        bar.classList.add("cursor-pointer", "transition-all", "duration-200");
+                        barElements.push(bar);
+
+                        // ホバー効果
+                        bar.addEventListener('mouseenter', function() {
+                            bar.setAttribute("opacity", "0.8");
+                            const tooltip = document.getElementById('bar-chart-tooltip');
+                            if (tooltip) {
+                                tooltip.textContent = `${labels[index]}: ${value.toLocaleString()}施設`;
+                            }
+                        });
+
+                        bar.addEventListener('mouseleave', function() {
+                            bar.setAttribute("opacity", "1");
+                            const tooltip = document.getElementById('bar-chart-tooltip');
+                            if (tooltip) {
+                                tooltip.textContent = '詳細を表示するにはグラフにカーソルを合わせてください';
+                            }
+                        });
+
+                        // タッチデバイス対応
+                        bar.addEventListener('touchstart', function() {
+                            const tooltip = document.getElementById('bar-chart-tooltip');
+                            if (tooltip) {
+                                tooltip.textContent = `${labels[index]}: ${value.toLocaleString()}施設`;
+                            }
+                        });
+
+                        svg.appendChild(bar);
+
+                        // ラベル部分
+                        const label = document.createElementNS("http://www.w3.org/2000/svg", "text");
+                        label.setAttribute("x", x + (barWidth / 2));
+                        label.setAttribute("y", height - paddingBottom + 20);
+                        label.setAttribute("text-anchor", "middle");
+                        label.setAttribute("font-size", "12");
+                        label.textContent = labels[index];
+                        labelElements.push(label);
+                        svg.appendChild(label);
+                    });
+
+                    // SVGをコンテナに追加
+                    container.appendChild(svg);
 
                     // ツールチップ
                     const tooltip = document.createElement('div');
                     tooltip.id = 'bar-chart-tooltip';
                     tooltip.className = 'mt-4 text-center text-sm font-medium';
                     tooltip.textContent = '詳細を表示するにはグラフにカーソルを合わせてください';
-
-                    // 表示最小値のベースラインを表示
-                    const baselineInfo = document.createElement('div');
-                    baselineInfo.className = 'text-xs text-right w-full pr-2 opacity-70 -mb-1';
-                    baselineInfo.textContent = `表示最小値: ${displayMinValue.toLocaleString()}`;
-                    container.appendChild(baselineInfo);
-
-                    // 表示最大値の情報を右上に表示
-                    const maxValueInfo = document.createElement('div');
-                    maxValueInfo.className = 'text-xs text-right w-full pr-2 opacity-70';
-                    maxValueInfo.textContent = `表示最大値: ${maxValue.toLocaleString()}`;
-                    container.appendChild(maxValueInfo);
-
-                    // バーの配列を保持（ダークモード切り替え時に参照するため）
-                    const barElements = [];
-                    const labelElements = [];
-
-                    // 各バーを作成
-                    data.forEach((value, index) => {
-                        const barGroup = document.createElement('div');
-                        barGroup.className = 'flex flex-col items-center';
-
-                        // バー部分
-                        const bar = document.createElement('div');
-                        bar.className = 'w-8 md:w-12 rounded-t transition-all duration-200 cursor-pointer';
-                        bar.style.height = `${calculateBarHeight(value)}px`;
-                        barElements.push(bar);
-
-                        // ホバー効果とツールチップの表示
-                        bar.addEventListener('mouseenter', function() {
-                            // ツールチップ
-                            tooltip.textContent = `${labels[index]}: ${value.toLocaleString()}施設`;
-                        });
-
-                        bar.addEventListener('mouseleave', function() {
-                            // ツールチップをリセット
-                            tooltip.textContent = '詳細を表示するにはグラフにカーソルを合わせてください';
-                        });
-
-                        // タッチデバイス対応
-                        bar.addEventListener('touchstart', function() {
-                            tooltip.textContent = `${labels[index]}: ${value.toLocaleString()}施設`;
-                        });
-
-                        // ラベル部分
-                        const labelContainer = document.createElement('div');
-                        labelContainer.className = 'text-xs md:text-sm mt-2 h-12 flex items-center';
-                        labelElements.push(labelContainer);
-
-                        const label = document.createElement('span');
-                        label.className = 'text-center';
-                        label.textContent = labels[index];
-
-                        labelContainer.appendChild(label);
-                        barGroup.appendChild(bar);
-                        barGroup.appendChild(labelContainer);
-                        barsContainer.appendChild(barGroup);
-                    });
-
-                    // DOM追加
-                    container.appendChild(barsContainer);
                     container.appendChild(tooltip);
-
-                    // グリッド線の追加
-                    const gridContainer = document.createElement('div');
-                    gridContainer.className = 'absolute inset-0 pointer-events-none';
-                    gridContainer.style.zIndex = '-1';
-
-                    const gridLines = [];
-                    const gridCount = 4;
-                    for (let i = 1; i <= gridCount; i++) {
-                        const gridLine = document.createElement('div');
-                        const position = 100 - (i / gridCount) * 100;
-                        gridLine.className = 'absolute w-full h-px';
-                        gridLine.style.bottom = `${position}%`;
-                        // グリッド線に値を表示するラベルを追加
-                        const gridLabel = document.createElement('div');
-                        gridLabel.className = 'absolute -left-1 text-xs opacity-70';
-                        gridLabel.style.bottom = `${position}%`;
-                        gridLabel.style.transform = 'translateY(50%)';
-                        // 表示最小値からの相対的な値を計算
-                        const gridValue = Math.round(displayMinValue + (adjustedDataRange * i / gridCount));
-                        gridLabel.textContent = gridValue.toLocaleString();
-
-                        gridLines.push(gridLine);
-                        gridContainer.appendChild(gridLine);
-                        gridContainer.appendChild(gridLabel);
-                    }
-
-                    container.style.position = 'relative';
-                    container.appendChild(gridContainer);
 
                     // ダークモードに応じてスタイルを更新する関数
                     function updateDarkModeStyles() {
@@ -182,26 +220,34 @@
                         // コンテナの背景色
                         container.className = `w-full ${dark ? 'bg-gray-900' : 'bg-white'}`;
 
-                        // 最小値・最大値表示の色
-                        baselineInfo.className = `text-xs text-right w-full pr-2 opacity-70 -mb-1 ${dark ? 'text-gray-400' : 'text-gray-500'}`;
-                        maxValueInfo.className = `text-xs text-right w-full pr-2 opacity-70 ${dark ? 'text-gray-400' : 'text-gray-500'}`;
+                        // 表示範囲の色
+                        rangeInfo.className = `text-xs text-right w-full pr-2 opacity-70 mb-2 ${dark ? 'text-gray-400' : 'text-gray-500'}`;
 
                         // ツールチップのテキスト色
                         tooltip.className = `mt-4 text-center text-sm font-medium ${dark ? 'text-gray-300' : 'text-gray-600'}`;
 
+                        // グリッド線の色
+                        gridLines.forEach(line => {
+                            line.setAttribute("stroke", dark ? "#374151" : "#f1f5f9"); // dark:gray-700, light:slate-100
+                        });
+
+                        // Y軸とX軸の色
+                        yAxis.setAttribute("stroke", dark ? "#4b5563" : "#cbd5e1"); // dark:gray-600, light:slate-300
+                        xAxis.setAttribute("stroke", dark ? "#4b5563" : "#cbd5e1");
+
+                        // Y軸の値ラベルの色
+                        gridLabels.forEach(label => {
+                            label.setAttribute("fill", dark ? "#9ca3af" : "#64748b"); // dark:gray-400, light:slate-500
+                        });
+
                         // バーの色
                         barElements.forEach(bar => {
-                            bar.className = `w-8 md:w-12 rounded-t transition-all duration-200 cursor-pointer ${dark ? 'bg-blue-500 hover:bg-blue-400' : 'bg-blue-500 hover:bg-blue-600'}`;
+                            bar.setAttribute("fill", dark ? "#3b82f6" : "#3b82f6"); // blue-500
                         });
 
                         // ラベルの色
                         labelElements.forEach(label => {
-                            label.className = `text-xs md:text-sm mt-2 h-12 flex items-center ${dark ? 'text-gray-300' : 'text-gray-600'}`;
-                        });
-
-                        // グリッド線の色
-                        gridLines.forEach(line => {
-                            line.className = `absolute w-full h-px ${dark ? 'bg-gray-700' : 'bg-gray-100'}`;
+                            label.setAttribute("fill", dark ? "#9ca3af" : "#64748b"); // dark:gray-400, light:slate-500
                         });
                     }
 
