@@ -144,6 +144,12 @@
                     xAxis.setAttribute("y2", height - paddingBottom);
                     svg.appendChild(xAxis);
 
+                    // X軸ラベル表示の設定
+                    // データ数に応じて表示方法を調整
+                    const shouldRotateLabels = data.length > 5; // データが6つ以上ならラベルを回転
+                    const labelRotationAngle = shouldRotateLabels ? -25 : 0; // 回転角度
+                    const labelYOffset = shouldRotateLabels ? 30 : 20; // Y方向オフセット
+
                     // 各バーを計算して描画
                     const barTotalWidth = barWidth + barSpacing;
                     const chartWidth = width - paddingLeft - paddingRight;
@@ -195,8 +201,16 @@
                         // ラベル部分
                         const label = document.createElementNS("http://www.w3.org/2000/svg", "text");
                         label.setAttribute("x", x + (barWidth / 2));
-                        label.setAttribute("y", height - paddingBottom + 20);
-                        label.setAttribute("text-anchor", "middle");
+                        label.setAttribute("y", height - paddingBottom + labelYOffset);
+
+                        // ラベルの回転と位置調整
+                        if (shouldRotateLabels) {
+                            label.setAttribute("transform", `rotate(${labelRotationAngle} ${x + (barWidth / 2)}, ${height - paddingBottom + 10})`);
+                            label.setAttribute("text-anchor", "end"); // 回転時は右寄せ
+                        } else {
+                            label.setAttribute("text-anchor", "middle"); // 通常時は中央寄せ
+                        }
+
                         label.setAttribute("font-size", "12");
                         label.textContent = labels[index];
                         labelElements.push(label);

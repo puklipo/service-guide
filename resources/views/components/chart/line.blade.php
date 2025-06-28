@@ -44,19 +44,27 @@
                 // グラフの寸法
                 const width = 800;
                 const height = 400;
-                const paddingBottom = 40;
+                const paddingBottom = 60; // ラベル用に余白を増やす
                 const paddingLeft = 60; // Y軸ラベル用に少し広げる
+                const paddingTop = 20; // 上部の余白
+                const paddingRight = 20; // 右側の余白
+
+                // X軸ラベル表示の設定
+                // データ数に応じて表示方法を調整
+                const shouldRotateLabels = data.length > 5; // データが6つ以上ならラベルを回転
+                const labelRotationAngle = shouldRotateLabels ? -25 : 0; // 回転角度
+                const labelYOffset = shouldRotateLabels ? 30 : 15; // Y方向オフセット
 
                 // ポイントの位置を計算（調整済み最小値を基準とした相対的な位置）
                 function calculatePoints() {
                     const points = [];
-                    const xStep = (width - paddingLeft) / (data.length - 1);
-                    const yScale = (height - paddingBottom) / adjustedDataRange; // 調整済み範囲に基づくスケール
+                    const xStep = (width - paddingLeft - paddingRight) / (data.length - 1);
+                    const yScale = (height - paddingBottom - paddingTop) / adjustedDataRange; // 調整済み範囲に基づくスケール
 
                     for (let i = 0; i < data.length; i++) {
                         const x = paddingLeft + i * xStep;
                         // 調整済み最小値を引いて相対的な位置を計算
-                        const y = height - ((data[i] - displayMinValue) * yScale) - paddingBottom;
+                        const y = height - paddingBottom - ((data[i] - displayMinValue) * yScale);
                         points.push({ x, y, value: data[i], label: labels[i] });
                     }
 
@@ -93,6 +101,12 @@
                         attributeFilter: ['class']
                     });
 
+                    // 表示範囲の情報を追加
+                    const rangeInfo = document.createElement('div');
+                    rangeInfo.className = 'text-xs text-right w-full pr-2 opacity-70 mb-2';
+                    rangeInfo.textContent = `表示範囲: ${displayMinValue.toLocaleString()} 〜 ${maxValue.toLocaleString()}`;
+                    container.appendChild(rangeInfo);
+
                     // SVG要素を作成
                     const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
                     svg.setAttribute("viewBox", `0 0 ${width} ${height}`);
@@ -111,7 +125,7 @@
                     // 表示最大値のラベルを追加
                     const maxValueLabel = document.createElementNS("http://www.w3.org/2000/svg", "text");
                     maxValueLabel.setAttribute("x", paddingLeft - 10);
-                    maxValueLabel.setAttribute("y", paddingBottom + 15); // 上部に配置
+                    maxValueLabel.setAttribute("y", paddingTop + 15); // 上部に配置
                     maxValueLabel.setAttribute("text-anchor", "end");
                     maxValueLabel.setAttribute("font-size", "12");
                     maxValueLabel.setAttribute("class", "text-xs");
@@ -131,13 +145,13 @@
                     const gridCount = 5;
                     for (let i = 0; i < gridCount; i++) {
                         const ratio = i / (gridCount - 1);
-                        const y = ((height - paddingBottom) * (1 - ratio)) + paddingBottom / 2;
+                        const y = height - paddingBottom - (ratio * (height - paddingBottom - paddingTop));
 
                         // グリッド線
                         const gridLine = document.createElementNS("http://www.w3.org/2000/svg", "line");
                         gridLine.setAttribute("x1", paddingLeft);
                         gridLine.setAttribute("y1", y);
-                        gridLine.setAttribute("x2", width);
+                        gridLine.setAttribute("x2", width - paddingRight);
                         gridLine.setAttribute("y2", y);
                         gridLine.setAttribute("stroke-width", "1");
                         gridLines.push(gridLine);
@@ -161,17 +175,17 @@
                     // Y軸を追加
                     const yAxis = document.createElementNS("http://www.w3.org/2000/svg", "line");
                     yAxis.setAttribute("x1", paddingLeft);
-                    yAxis.setAttribute("y1", paddingBottom / 2);
+                    yAxis.setAttribute("y1", paddingTop);
                     yAxis.setAttribute("x2", paddingLeft);
-                    yAxis.setAttribute("y2", height - paddingBottom / 2);
+                    yAxis.setAttribute("y2", height - paddingBottom);
                     svg.appendChild(yAxis);
 
                     // X軸を追加
                     const xAxis = document.createElementNS("http://www.w3.org/2000/svg", "line");
                     xAxis.setAttribute("x1", paddingLeft);
-                    xAxis.setAttribute("y1", height - paddingBottom / 2);
-                    xAxis.setAttribute("x2", width);
-                    xAxis.setAttribute("y2", height - paddingBottom / 2);
+                    xAxis.setAttribute("y1", height - paddingBottom);
+                    xAxis.setAttribute("x2", width - paddingRight);
+                    xAxis.setAttribute("y2", height - paddingBottom);
                     svg.appendChild(xAxis);
 
                     // 折れ線パスを追加
@@ -216,10 +230,18 @@
                         // X軸ラベル
                         const text = document.createElementNS("http://www.w3.org/2000/svg", "text");
                         text.setAttribute("x", point.x);
-                        text.setAttribute("y", height - 10);
-                        text.setAttribute("text-anchor", "middle");
+                        text.setAttribute("y", height - paddingBottom + labelYOffset);
+
+                        // ラベルの回転と位置調整
+                        if (shouldRotateLabels) {
+                            text.setAttribute("transform", `rotate(${labelRotationAngle} ${point.x}, ${height - paddingBottom + 10})`);
+                            text.setAttribute("text-anchor", "end"); // 回転時は右寄せ
+                        } else {
+                            text.setAttribute("text-anchor", "middle"); // 通常時は中央寄せ
+                        }
+
                         text.setAttribute("font-size", "12");
-                        text.setAttribute("class", "text-sm md:text-md");
+                        text.setAttribute("class", "text-sm");
                         text.textContent = point.label;
                         axisLabels.push(text);
                         svg.appendChild(text);
@@ -228,11 +250,12 @@
                     // SVGをコンテナに追加
                     container.appendChild(svg);
 
-                    // 表示範囲の情報を追加
-                    const rangeInfo = document.createElement('div');
-                    rangeInfo.className = 'text-xs ml-2 opacity-70 mt-1';
-                    rangeInfo.textContent = `※表示範囲: ${displayMinValue.toLocaleString()} 〜 ${maxValue.toLocaleString()}`;
-                    container.appendChild(rangeInfo);
+                    // ツールチップ
+                    const tooltip = document.createElement('div');
+                    tooltip.id = 'line-chart-tooltip';
+                    tooltip.className = 'mt-4 text-center text-sm font-medium';
+                    tooltip.textContent = 'グラフのポイントにカーソルを合わせると詳細が表示されます';
+                    container.appendChild(tooltip);
 
                     // ダークモード切替関数
                     function updateChartColors() {
@@ -242,13 +265,10 @@
                         container.className = `w-full rounded-md ${dark ? 'bg-gray-900' : 'bg-white'}`;
 
                         // 範囲情報の色
-                        rangeInfo.className = `text-xs ml-2 opacity-70 mt-1 ${dark ? 'text-gray-400' : 'text-gray-500'}`;
+                        rangeInfo.className = `text-xs text-right w-full pr-2 opacity-70 mb-2 ${dark ? 'text-gray-400' : 'text-gray-500'}`;
 
                         // ツールチップのテキスト色
-                        const tooltip = document.getElementById('line-chart-tooltip');
-                        if (tooltip) {
-                            tooltip.className = `text-center text-sm mt-3 font-medium ${dark ? 'text-gray-300' : 'text-gray-600'}`;
-                        }
+                        tooltip.className = `text-center text-sm mt-3 font-medium ${dark ? 'text-gray-300' : 'text-gray-600'}`;
 
                         // グリッド線の色
                         gridLines.forEach(line => {
@@ -295,11 +315,6 @@
         <!-- 折れ線グラフの表示エリア -->
         <div class="line-chart-container w-full bg-white dark:bg-gray-900 rounded-md">
             <!-- SVG要素はJavaScriptで動的に生成されます -->
-        </div>
-
-        <!-- ツールチップ -->
-        <div id="line-chart-tooltip" class="text-center text-sm text-gray-600 dark:text-gray-300 mt-3 font-medium">
-            グラフのポイントにカーソルを合わせると詳細が表示されます
         </div>
     </div>
 </x-chart.base>
