@@ -103,7 +103,7 @@
 
                     // 表示範囲の情報を追加
                     const rangeInfo = document.createElement('div');
-                    rangeInfo.className = 'text-xs text-right w-full pr-2 opacity-70 mb-2';
+                    rangeInfo.className = 'text-xs text-right w-full pr-2 opacity-70 mb-4';
                     rangeInfo.textContent = `表示範囲: ${displayMinValue.toLocaleString()} 〜 ${maxValue.toLocaleString()}`;
                     container.appendChild(rangeInfo);
 
@@ -111,26 +111,6 @@
                     const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
                     svg.setAttribute("viewBox", `0 0 ${width} ${height}`);
                     svg.setAttribute("class", "w-full h-64 bg-opacity-50");
-
-                    // 表示最小値のラベルを追加
-                    const minValueLabel = document.createElementNS("http://www.w3.org/2000/svg", "text");
-                    minValueLabel.setAttribute("x", paddingLeft - 10);
-                    minValueLabel.setAttribute("y", height - paddingBottom);
-                    minValueLabel.setAttribute("text-anchor", "end");
-                    minValueLabel.setAttribute("font-size", "12");
-                    minValueLabel.setAttribute("class", "text-xs");
-                    minValueLabel.textContent = displayMinValue.toLocaleString();
-                    svg.appendChild(minValueLabel);
-
-                    // 表示最大値のラベルを追加
-                    const maxValueLabel = document.createElementNS("http://www.w3.org/2000/svg", "text");
-                    maxValueLabel.setAttribute("x", paddingLeft - 10);
-                    maxValueLabel.setAttribute("y", paddingTop + 15); // 上部に配置
-                    maxValueLabel.setAttribute("text-anchor", "end");
-                    maxValueLabel.setAttribute("font-size", "12");
-                    maxValueLabel.setAttribute("class", "text-xs");
-                    maxValueLabel.textContent = maxValue.toLocaleString();
-                    svg.appendChild(maxValueLabel);
 
                     // ポイントを計算
                     const points = calculatePoints();
@@ -158,18 +138,16 @@
                         svg.appendChild(gridLine);
 
                         // Y軸ラベル（値）
-                        if (i > 0 && i < gridCount - 1) { // 最小値と最大値は既に表示済みなのでスキップ
-                            const yValue = displayMinValue + (adjustedDataRange * ratio);
-                            const valueLabel = document.createElementNS("http://www.w3.org/2000/svg", "text");
-                            valueLabel.setAttribute("x", paddingLeft - 10);
-                            valueLabel.setAttribute("y", y + 4); // テキスト位置微調整
-                            valueLabel.setAttribute("text-anchor", "end");
-                            valueLabel.setAttribute("font-size", "12");
-                            valueLabel.setAttribute("class", "text-xs");
-                            valueLabel.textContent = Math.round(yValue).toLocaleString();
-                            gridLabels.push(valueLabel);
-                            svg.appendChild(valueLabel);
-                        }
+                        const yValue = displayMinValue + (adjustedDataRange * ratio);
+                        const valueLabel = document.createElementNS("http://www.w3.org/2000/svg", "text");
+                        valueLabel.setAttribute("x", paddingLeft - 10);
+                        valueLabel.setAttribute("y", y + 4); // テキスト位置微調整
+                        valueLabel.setAttribute("text-anchor", "end");
+                        valueLabel.setAttribute("font-size", "12");
+                        valueLabel.setAttribute("class", "text-xs");
+                        valueLabel.textContent = Math.round(yValue).toLocaleString();
+                        gridLabels.push(valueLabel);
+                        svg.appendChild(valueLabel);
                     }
 
                     // Y軸を追加
@@ -265,7 +243,7 @@
                         container.className = `w-full rounded-md ${dark ? 'bg-gray-900' : 'bg-white'}`;
 
                         // 範囲情報の色
-                        rangeInfo.className = `text-xs text-right w-full pr-2 opacity-70 mb-2 ${dark ? 'text-gray-400' : 'text-gray-500'}`;
+                        rangeInfo.className = `text-xs text-right w-full pr-2 opacity-70 mb-4 ${dark ? 'text-gray-400' : 'text-gray-500'}`;
 
                         // ツールチップのテキスト色
                         tooltip.className = `text-center text-sm mt-3 font-medium ${dark ? 'text-gray-300' : 'text-gray-600'}`;
@@ -279,10 +257,6 @@
                         gridLabels.forEach(label => {
                             label.setAttribute("fill", dark ? "#9ca3af" : "#64748b"); // dark:gray-400, light:slate-500
                         });
-
-                        // 最小値と最大値ラベルの色
-                        minValueLabel.setAttribute("fill", dark ? "#9ca3af" : "#64748b");
-                        maxValueLabel.setAttribute("fill", dark ? "#9ca3af" : "#64748b");
 
                         // X軸とY軸の色
                         xAxis.setAttribute("stroke", dark ? "#4b5563" : "#cbd5e1"); // dark:gray-600, light:slate-300
