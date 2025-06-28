@@ -14,6 +14,8 @@
 
 Markdownドキュメント内で、以下のように「blade」言語を指定したコードブロック内にBladeコンポーネントを記述します。
 
+`:max-value`を指定しなければ適切に調整されて表示されるので通常は不要です。
+
 ````markdown
 ```blade
 <x-chart.bar
