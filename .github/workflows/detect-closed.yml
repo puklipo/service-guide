@@ -1,0 +1,47 @@
+name: Detect Closed
+
+on:
+  workflow_dispatch:
+
+jobs:
+  update-csv:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.4'
+          extensions: mbstring
+          coverage: none
+
+      - name: Install dependencies
+        run: composer install --no-dev -q
+
+      - name: Create environment file
+        run: |
+          cp .env.example .env
+          php artisan key:generate
+
+      - name: Run Detect Closed Command
+        run: php artisan wam:detect-closed
+        env:
+          DB_CONNECTION: ${ { secrets.DB_CONNECTION }}
+          DB_HOST: ${ { secrets.DB_HOST }}
+          DB_PORT: ${ { secrets.DB_PORT || 3306 }}
+          DB_DATABASE: ${ { secrets.DB_DATABASE }}
+          DB_USERNAME: ${ { secrets.DB_USERNAME }}
+          DB_PASSWORD: ${ { secrets.DB_PASSWORD }}
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v7
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: 'feat: update deleted.php'
+          title: 'Detect Closed'
+          body: |
+            This PR updates the `deleted.php` file with the latest changes detected by the `wam:detect-closed` command.
+          branch: update-deleted-files
