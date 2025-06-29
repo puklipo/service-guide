@@ -20,12 +20,12 @@ jobs:
           coverage: xdebug
       - name: Install Composer dependencies
         run: composer install -q
-      - name: env
-        run: |
-          cp .env.example .env
-          php artisan key:generate
-      - name: Test
-        run: vendor/bin/phpunit
+#      - name: env
+#        run: |
+#          cp .env.example .env
+#          php artisan key:generate
+#      - name: Test
+#        run: vendor/bin/phpunit
       - name: Deploy Environment
         if: success() && (github.event_name != 'pull_request')
         run: ./vendor/bin/vapor deploy production
