@@ -51,7 +51,7 @@ class DetectClosedCommand extends Command
         $this->info(sprintf('WAM IDと法人番号のペア数: %s', number_format(count($closedFacilities))));
 
         // 既存のconfigと統合
-        $existingDeleted = config('deleted', []);
+        $existingDeleted = []; // config('deleted', []);
         $allDeleted = array_merge($existingDeleted, $closedFacilities);
 
         // 重複除去（WAMと法人番号の組み合わせで一意になるようにする）
