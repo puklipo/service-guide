@@ -9,44 +9,44 @@ class DetectClosedCommand extends Command
 {
     protected $signature = 'wam:detect-closed {--delete : 検出した閉鎖済み事業所を削除する}';
 
-    protected $description = 'CSVに存在しない閉鎖済み事業所を検出し、config/deleted.phpを更新します';
+    protected $description = 'CSVに存在しないWAM NOと法人番号の組み合わせを検出し、config/deleted.phpを更新します';
 
     /**
      * Execute the console command.
      */
     public function handle(): int
     {
-        // CSVから全事業所番号を抽出
-        $this->info('CSVから全事業所番号を収集中...');
-        $csvNumbers = $this->getAllCsvNumbers();
-        $this->info(sprintf('CSV内の事業所数: %s', number_format(count($csvNumbers))));
+        // CSVからWAM NOと法人番号の組み合わせを抽出
+        $this->info('CSVからWAM NOと法人番号の組み合わせを収集中...');
+        $csvData = $this->getAllCsvWamCompanyPairs();
+        $this->info(sprintf('CSV内の事業所数: %s', number_format(count($csvData))));
 
-        // DBから全事業所番号を取得
-        $this->info('データベースから事業所番号を取得中...');
-        $dbNumbers = Facility::pluck('no')->toArray();
-        $this->info(sprintf('データベース内の事業所数: %s', number_format(count($dbNumbers))));
+        // DBからWAM NOと法人番号の組み合わせを取得
+        $this->info('データベースからWAM NOと法人番号の組み合わせを取得中...');
+        $dbData = Facility::select(['wam', 'company_id'])->get()->map(function ($facility) {
+            return $facility->wam . '-' . $facility->company_id;
+        })->toArray();
+        $this->info(sprintf('データベース内の事業所数: %s', number_format(count($dbData))));
 
         // CSVに存在しない事業所を特定
-        $closedNumbers = array_values(array_diff($dbNumbers, $csvNumbers));
-        $this->info(sprintf('検出された閉鎖済み事業所数: %s', number_format(count($closedNumbers))));
+        $closedFacilityKeys = array_values(array_diff($dbData, $csvData));
+        $this->info(sprintf('検出された閉鎖済み事業所数: %s', number_format(count($closedFacilityKeys))));
 
-        if (empty($closedNumbers)) {
+        if (empty($closedFacilityKeys)) {
             $this->info('閉鎖済み事業所は検出されませんでした。');
 
             return 0;
         }
 
-        // 閉鎖された事業所のWAM IDと法人番号のペアを取得
-        $closedFacilities = Facility::whereIn('no', $closedNumbers)
-            ->select(['wam', 'company_id', 'service_id', 'area_id'])
-            ->get()
-            ->map(function ($facility) {
-                return [
-                    'wam' => $facility->wam,
-                    'company' => $facility->company_id,
-                ];
-            })
-            ->toArray();
+        // 閉鎖された事業所のWAM IDと法人番号のペアを作成
+        $closedFacilities = [];
+        foreach ($closedFacilityKeys as $key) {
+            [$wam, $companyId] = explode('-', $key);
+            $closedFacilities[] = [
+                'wam' => $wam,
+                'company' => $companyId,
+            ];
+        }
 
         $this->info(sprintf('WAM IDと法人番号のペア数: %s', number_format(count($closedFacilities))));
 
@@ -82,9 +82,12 @@ class DetectClosedCommand extends Command
         return 0;
     }
 
-    private function getAllCsvNumbers(): array
+    /**
+     * CSVからWAM NOと法人番号の組み合わせを取得
+     */
+    private function getAllCsvWamCompanyPairs(): array
     {
-        $allNumbers = [];
+        $allPairs = [];
         $csvPath = resource_path('csv/'.config('wam.current'));
         $files = glob($csvPath.'/*.csv');
 
@@ -92,26 +95,32 @@ class DetectClosedCommand extends Command
             $this->comment(sprintf('処理中: %s', basename($file)));
             $handle = fopen($file, 'r');
 
-            // ヘッダー行をスキップ
+            // ヘッダー行を読み込む
             $headers = fgetcsv($handle);
-            $noIndex = array_search('事業所番号', $headers);
+            $wamIndex = array_search('NO（※システム内の固有の番号、連番）', $headers);
+            $companyIndex = array_search('法人番号', $headers);
 
-            if ($noIndex === false) {
-                $this->warn(sprintf('ファイル %s に "事業所番号" 列が見つかりません', basename($file)));
+            if ($wamIndex === false) {
+                $this->warn(sprintf('ファイル %s に "NO（※システム内の固有の番号、連番）" 列が見つかりません', basename($file)));
+                continue;
+            }
 
+            if ($companyIndex === false) {
+                $this->warn(sprintf('ファイル %s に "法人番号" 列が見つかりません', basename($file)));
                 continue;
             }
 
             while (($data = fgetcsv($handle)) !== false) {
-                if (isset($data[$noIndex]) && is_numeric($data[$noIndex])) {
-                    $allNumbers[] = (int) $data[$noIndex];
+                if (isset($data[$wamIndex]) && !empty($data[$wamIndex]) &&
+                    isset($data[$companyIndex]) && !empty($data[$companyIndex])) {
+                    $allPairs[] = $data[$wamIndex] . '-' . $data[$companyIndex];
                 }
             }
 
             fclose($handle);
         }
 
-        return array_unique($allNumbers);
+        return array_unique($allPairs);
     }
 
     private function updateDeletedConfig(array $deletedItems): void
