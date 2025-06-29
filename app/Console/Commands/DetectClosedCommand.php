@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use App\Models\Facility;
 use Illuminate\Console\Command;
+use Illuminate\Support\Arr;
 
 class DetectClosedCommand extends Command
 {
@@ -50,9 +51,8 @@ class DetectClosedCommand extends Command
 
         $this->info(sprintf('WAM IDと法人番号のペア数: %s', number_format(count($closedFacilities))));
 
-        // 既存のconfigと統合
-        $existingDeleted = []; // config('deleted', []);
-        $allDeleted = array_merge($existingDeleted, $closedFacilities);
+        // 既存のconfigと統合は不要。常に上書き。件数が多すぎると削除時にタイムアウトするので一定に制限をかける
+        $allDeleted = Arr::take($closedFacilities, limit: 500);
 
         // 重複除去（WAMと法人番号の組み合わせで一意になるようにする）
         $uniqueDeleted = [];
