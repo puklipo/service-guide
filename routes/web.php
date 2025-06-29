@@ -34,3 +34,7 @@ Route::view('profile', 'profile')
 require __DIR__.'/auth.php';
 
 require __DIR__.'/redirect.php';
+
+Route::fallback(function () {
+    return to_route('home');
+});
