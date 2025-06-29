@@ -23,8 +23,8 @@ class DetectClosedCommand extends Command
 
         // DBからWAM NOと法人番号の組み合わせを取得
         $this->info('データベースからWAM NOと法人番号の組み合わせを取得中...');
-        $dbData = Facility::select(['wam', 'company_id'])->get()->map(function ($facility) {
-            return $facility->wam . '-' . $facility->company_id;
+        $dbData = Facility::select(['wam', 'company_id', 'service_id', 'area_id'])->get()->map(function ($facility) {
+            return $facility->wam.'-'.$facility->company_id;
         })->toArray();
         $this->info(sprintf('データベース内の事業所数: %s', number_format(count($dbData))));
 
@@ -111,9 +111,9 @@ class DetectClosedCommand extends Command
             }
 
             while (($data = fgetcsv($handle)) !== false) {
-                if (isset($data[$wamIndex]) && !empty($data[$wamIndex]) &&
-                    isset($data[$companyIndex]) && !empty($data[$companyIndex])) {
-                    $allPairs[] = $data[$wamIndex] . '-' . $data[$companyIndex];
+                if (isset($data[$wamIndex]) && ! empty($data[$wamIndex]) &&
+                    isset($data[$companyIndex]) && ! empty($data[$companyIndex])) {
+                    $allPairs[] = $data[$wamIndex].'-'.$data[$companyIndex];
                 }
             }
 
