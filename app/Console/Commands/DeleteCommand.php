@@ -26,6 +26,8 @@ class DeleteCommand extends Command
      */
     public function handle(): int
     {
+        $this->comment('閉鎖済み事業所を削除します。');
+
         foreach (config('deleted') as $deleted) {
             $facility = Facility::where('wam', $deleted['wam'])
                 ->where('company_id', $deleted['company'])
