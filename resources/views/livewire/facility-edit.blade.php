@@ -35,23 +35,27 @@ $draft = function () {
             <form wire:submit="draft" class="mt-6 space-y-6">
                 <div>
                     <x-input-label for="description_draft" :value="__('事業所情報')"/>
-                    <x-textarea wire:model.live="description_draft" id="description_draft" name="description_draft"
-                                type="text" class="mt-1 block w-full"
-                                rows="10"/>
+                    <div
+                        x-data="markdownEditor"
+                        x-init="() => { setTimeout(() => init(), 100); }"
+                        class="mt-1"
+                    >
+                        <div
+                            x-ref="editor"
+                            style="height: 300px;"
+                            class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300"
+                        ></div>
+                    </div>
                     <x-input-error class="mt-2" :messages="$errors->get('description_draft')"/>
                 </div>
 
-                @if(filled($description_draft))
-                    <div class="border border-gray-300 prose prose-indigo dark:prose-invert max-w-none">
-                        <h3 class="px-3 bg-base-200">プレビュー</h3>
-                        <div class="px-3">
-                            {{ \App\Support\Markdown::escape($description_draft) }}
-                        </div>
-                    </div>
-                @endif
-
                 <div class="flex items-center gap-4">
-                    <x-secondary-button wire:click="$toggle('show_draft')">キャンセル</x-secondary-button>
+                    <x-secondary-button
+                        wire:click="$toggle('show_draft')"
+                        x-on:click="destroy()"
+                    >
+                        キャンセル
+                    </x-secondary-button>
 
                     <x-primary-button>{{ __('下書きを投稿') }}</x-primary-button>
 
