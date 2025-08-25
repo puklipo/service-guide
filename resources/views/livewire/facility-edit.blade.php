@@ -37,8 +37,9 @@ $draft = function () {
                     <x-input-label for="description_draft" :value="__('事業所情報')"/>
                     <div
                         x-data="markdownEditor"
-                        x-init="() => { setTimeout(() => init(), 100); }"
+                        x-init="init()"
                         class="mt-1"
+                        wire:ignore
                     >
                         <div
                             x-ref="editor"

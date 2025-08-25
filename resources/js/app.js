@@ -16,21 +16,24 @@ Alpine.data('markdownEditor', () => ({
     init() {
         this.$nextTick(() => {
             if (this.$refs.editor) {
-                // Correct OverType initialization according to documentation
-                const [instance] = new OverType(this.$refs.editor, {
-                    value: this.$wire.get('description_draft') || '',
-                    placeholder: 'マークダウンで記入してください...',
-                    theme: 'solar',
-                    toolbar: true,
-                    showStats: true,
-                    autoResize: true,
-                    minHeight: '200px',
-                    maxHeight: '500px',
-                    onChange: (value, instance) => {
-                        this.$wire.set('description_draft', value);
-                    }
-                });
-                this.editor = instance;
+                try {
+                    const [instance] = new OverType(this.$refs.editor, {
+                        value: this.$wire.get('description_draft') || '',
+                        placeholder: 'マークダウンで記入してください...',
+                        theme: 'solar',
+                        toolbar: true,
+                        showStats: false,
+                        autoResize: false,
+                        minHeight: '200px',
+                        maxHeight: '500px',
+                        onChange: (value, instance) => {
+                            this.$wire.set('description_draft', value);
+                        }
+                    });
+                    this.editor = instance;
+                } catch (error) {
+                    console.error('OverType initialization failed:', error);
+                }
             }
         });
     },
