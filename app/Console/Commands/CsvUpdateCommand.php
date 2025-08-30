@@ -2,8 +2,8 @@
 
 namespace App\Console\Commands;
 
-use Dom\HTMLDocument;
-use Dom\XPath;
+use DOMDocument;
+use DOMXPath;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Http;
@@ -113,12 +113,17 @@ class CsvUpdateCommand extends Command
 
             $html = $response->body();
 
-            // Use PHP 8.4's new Dom\HTMLDocument for more robust HTML parsing
-            $dom = HTMLDocument::createFromString($html);
-            $xpath = new XPath($dom);
+            // Use DOMDocument to parse HTML more robustly
+            $dom = new DOMDocument;
+            // Suppress warnings for malformed HTML
+            libxml_use_internal_errors(true);
+            $dom->loadHTML($html, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+            libxml_clear_errors();
+
+            $xpath = new DOMXPath($dom);
 
             // Look for links with .zip extension
-            $zipLinks = $xpath->evaluate('//a[contains(@href, ".zip")]');
+            $zipLinks = $xpath->query('//a[contains(@href, ".zip")]');
 
             foreach ($zipLinks as $link) {
                 $href = $link->getAttribute('href');
