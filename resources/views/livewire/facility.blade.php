@@ -18,7 +18,7 @@ state('facility');
 
 mount(function (Request $request, Facility $facility) {
     if ($request->has('service')) {
-        return to_route('facility', $facility, 308);
+        $this->redirectRoute('facility', $facility, 308);
     }
 
     $this->facility = $facility;
