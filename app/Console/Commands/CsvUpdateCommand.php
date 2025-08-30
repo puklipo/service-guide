@@ -27,6 +27,9 @@ class CsvUpdateCommand extends Command
 
     private string $baseUrl = 'https://www.wam.go.jp/content/files/pcpub/top/sfkopendata';
 
+    /**
+     * html4, Shift-JIS
+     */
     private string $discoveryUrl = 'https://www.wam.go.jp/content/wamnet/pcpub/top/sfkopendata/';
 
     private string $csvPath;
