@@ -102,11 +102,13 @@ class DetectClosedCommand extends Command
 
             if ($wamIndex === false) {
                 $this->warn(sprintf('ファイル %s に "NO（※システム内の固有の番号、連番）" 列が見つかりません', basename($file)));
+
                 continue;
             }
 
             if ($companyIndex === false) {
                 $this->warn(sprintf('ファイル %s に "法人番号" 列が見つかりません', basename($file)));
+
                 continue;
             }
 

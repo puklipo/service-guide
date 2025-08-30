@@ -54,11 +54,13 @@ class DetectDuplicatesCommand extends Command
 
             if ($noIndex === false) {
                 $this->warn(sprintf('ファイル %s に "事業所番号" 列が見つかりません', basename($file)));
+
                 continue;
             }
 
             if ($wamIndex === false) {
                 $this->warn(sprintf('ファイル %s に "NO（※システム内の固有の番号、連番）" 列が見つかりません', basename($file)));
+
                 continue;
             }
 
@@ -112,7 +114,7 @@ class DetectDuplicatesCommand extends Command
         // 最も重複しているアイテム
         $this->info("\n最も重複している{$itemName}:");
         $this->table(
-            ["{$itemName}", "出現回数"],
+            ["{$itemName}", '出現回数'],
             $this->getTopDuplicates($frequency, 10),
         );
 
@@ -120,7 +122,7 @@ class DetectDuplicatesCommand extends Command
         $this->info("\n重複頻度の分布:");
         $distribution = $this->getDuplicateDistribution($frequency);
         $this->table(
-            ["出現回数", "{$itemName}の数"],
+            ['出現回数', "{$itemName}の数"],
             $distribution,
         );
     }

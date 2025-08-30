@@ -67,6 +67,7 @@ class Markdown
      *
      * @param  string  $file  The path to the Markdown file.
      * @return array|null The front matter data, or null if not found.
+     *
      * @throws FileNotFoundException
      */
     public static function matter(string $file): ?array
