@@ -5,7 +5,6 @@ namespace App\Console\Commands;
 use DOMDocument;
 use DOMXPath;
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Http;
 use ZipArchive;
 
@@ -28,7 +27,7 @@ class CsvUpdateCommand extends Command
     private string $baseUrl = 'https://www.wam.go.jp/content/files/pcpub/top/sfkopendata';
 
     /**
-     * html4, Shift-JIS
+     * Since the HTML is HTML4 and encoded in Shift-JIS, PHP 8.4's Dom\HTMLDocument cannot parse it correctly.
      */
     private string $discoveryUrl = 'https://www.wam.go.jp/content/wamnet/pcpub/top/sfkopendata/';
 
