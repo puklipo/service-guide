@@ -24,6 +24,7 @@ mount(function (string $date, string $slug) {
     $this->file = resource_path('articles/'.$date.'/'.$slug.'.md');
     if (! file_exists($this->file)) {
         $this->redirectRoute('home');
+        return;
     }
 
     $matter = Markdown::matter($this->file);
