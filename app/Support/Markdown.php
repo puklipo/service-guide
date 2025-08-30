@@ -3,6 +3,7 @@
 namespace App\Support;
 
 use App\Support\Markdown\Extension\BladeComponentsExtension;
+use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\HtmlString;
 use Illuminate\Support\Str;
@@ -66,6 +67,7 @@ class Markdown
      *
      * @param  string  $file  The path to the Markdown file.
      * @return array|null The front matter data, or null if not found.
+     * @throws FileNotFoundException
      */
     public static function matter(string $file): ?array
     {
